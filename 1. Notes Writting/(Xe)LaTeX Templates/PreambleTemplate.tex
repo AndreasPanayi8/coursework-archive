@@ -1,0 +1,80 @@
+%==============================================================================
+					%XELATEX PACKAGES SECTION
+%------------------------------------------------------------------------------
+% Core and Essentials: XeLaTeX and Language
+\usepackage{fontspec}        							% Core package for font support
+\usepackage{amsmath,amssymb,amsthm}						% Core math packages
+\usepackage{mathtools}								 	% Extensions to amsmath
+\usepackage{unicode-math}							 	% For unicode support
+%\usepackage{xgreek}									% Greek - English support
+\usepackage{polyglossia}							 	% Add support for more languages
+	\setmainlanguage{greek}
+	\setotherlanguage{english}
+
+% Set fonts
+\newfontfamily\greekfont[Script=Greek]{Times New Roman}
+\newfontfamily\greekfontsf[Script=Greek, Scale=MatchLowercase]{Times New Roman}
+	\setmainfont[Ligatures=TeX, Scale=MatchLowercase]{Times New Roman}
+	\setmathfont[Scale=MatchLowercase]{Latin Modern Math}
+%------------------------------------------------------------------------------
+% Layout 
+\usepackage{enumitem}			% Customize list environments
+\usepackage{multicol}				% Multi-column layout
+%\usepackage{fancyhdr}			% Custom headers and footers
+%\usepackage{titlesec}				% Customize title
+
+% Letter appearance: Color - Bold
+\usepackage{xcolor}							% Color support
+\usepackage[normalem]{ulem}			% Underlining and strikeouts
+%\usepackage{bm}							% Bold math symbols
+
+% Tables
+\usepackage{array}					% Extended table features
+\usepackage{booktabs}				% Professional-quality tables
+%\usepackage{longtable}			% Multi-page tables
+%\usepackage{tabularx}			% Tables with flexible column widths
+
+% Figures and Captions
+\usepackage{graphicx}						% Insert images
+%\usepackage{float}							% Improved interface for floating objects
+%\usepackage{caption,subcaption}			% Captions and sub-captions
+
+% Referencing and Bibliography
+\usepackage{url}	% URLs in text
+\usepackage[colorlinks=true, linkcolor=blue, filecolor=blue, urlcolor=blue, citecolor=blue]{hyperref} 	% Hyperlinks
+%\usepackage{cleveref}	%  Intelligent cross-referencing
+%\usepackage{biblatex}	% Modern bibliography management
+
+% Code Listings
+%\usepackage{algorithm2e}			% Sudo-Code
+%\usepackage{listings, minted}		% Source code listings
+
+% Miscellaneous
+%\usepackage{tikz,pgfplots}							% Graphics and drawings
+\usepackage{xunicode,xltxtra}		% Includes fontspec, graphicx, xunicode and more
+%\usepackage{pdfcomment, todonotes}		% PDF comments and todo notes
+%\usepackage{microtype}			% Improve typography
+%------------------------------------------------------------------------------
+					%CUSTOMIZATIONS
+%\usepackage{parksip}				%remove indentaton and custom spacing
+
+%	\setlength{\parindent}{0pt}		%for removing the default indentation
+
+
+	% Change ToC link color to red	
+	\usepackage{etoolbox}
+		\definecolor{darkbrown}{rgb}{0.4,0.2,0}
+		\makeatletter
+			\pretocmd{\tableofcontents}{%
+				\hypersetup{linkcolor=darkbrown}%
+			}{}{}
+			\apptocmd{\endtableofcontents}{%
+				\hypersetup{linkcolor=blue}%
+			}{}{}
+		\makeatother
+	
+	\graphicspath{ {build/} }
+	
+	\newtheorem{exercise}[]{Άσκηση}
+	\newtheorem{solution}[]{Λύση Άσκησης}
+%==============================================================================

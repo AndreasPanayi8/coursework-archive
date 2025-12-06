@@ -1,0 +1,6 @@
+\selectlanguage *[]{greek}
+\contentsline {section}{\numberline {1}Άσκηση}{1}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Εκφώνηση}{1}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Λύση}{1}{subsection.1.2}%
+\contentsline {subsubsection}{\numberline {1.2.1}Μέθοδος 1}{1}{subsubsection.1.2.1}%
+\contentsline {subsubsection}{\numberline {1.2.2}Μέθοδος 2}{1}{subsubsection.1.2.2}%

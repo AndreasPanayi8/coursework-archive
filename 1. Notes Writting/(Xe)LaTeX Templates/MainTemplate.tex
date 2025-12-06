@@ -1,0 +1,58 @@
+%============================================================================== 
+% Document class
+%------------------------------------------------------------------------------ 
+\documentclass[a4paper, 12pt, oneside, xelatex, final]{article}
+\usepackage[a4paper, left=1.5cm, right=1.5cm, top=1.5cm, bottom=1.5cm]{geometry}
+%------------------------------------------------------------------------------
+% Packages and Customizations
+\input{PreambleTemplate}
+%============================================================================== 
+\begin{document}
+
+\begin{titlepage}
+	\title{Τίτλος \vspace{-0.5em}\\
+			\noindent \rule{11cm}{2pt} }
+	
+	\author{Παναγή Αντρέας \\
+			\hfill\\
+			Τμήμα Μαθηματικών\\
+            Εθνικόν και Καποδιστριακόν Πανεπιστήμιον Αθηνών\\
+            Αθήνα, Ελλάδα
+		\thanks{Σημειώσεις,
+				\hfill(\href{mailto: andreaspanayi8@gmail.com}{andreaspanayi8@gmail.com})}
+      		}
+	
+	\date{\hfill\\ Μήνας Χρονολογία}
+	
+	\clearpage\maketitle
+	
+	\thispagestyle{empty}
+	
+	\centering	
+	\includegraphics[scale=1.2]{ekpa_logo}
+	\begin{center}
+	\textbf{ΕΛΛΗΝΙΚΗ ΔΗΜΟΚΡΑΤΙΑ}\\
+	\textbf{Εθνικόν και Καποδιστριακόν}\\
+	\textbf{Πανεπιστήμιο Αθηνών}
+	\end{center}
+
+\end{titlepage}
+%------------------------------------------------------------------------------
+%\setcounter{secnumdepth}{0}
+\pagenumbering{alph}
+\tableofcontents
+\newpage
+%------------------------------------------------------------------------------
+\pagenumbering{arabic}
+\section{Άσκηση}
+	\subsection{Εκφώνηση}
+	Εκφώνηση Άσκησης
+	\subsection{Λύση}
+	Λύση Άσκησης
+		\subsubsection{Μέθοδος 1}
+		Προσέγγιση 1
+		\subsubsection{Μέθοδος 2}
+		Προσέγγιση 2
+	
+\end{document}
+%==============================================================================
