@@ -1,0 +1,578 @@
+[
+  {
+    "src": "0. Presentations/Smoothed Analysis.pdf",
+    "title": "Smoothed Analysis",
+    "category": "Presentations",
+    "course": "0. Presentations"
+  },
+  {
+    "src": "0. Presentations/The Complexity of Theorem-Proving Procedures.pdf",
+    "title": "The Complexity of Theorem-Proving Procedures",
+    "category": "Presentations",
+    "course": "0. Presentations"
+  },
+  {
+    "src": "0. Presentations/Lossy Kernelization.pdf",
+    "title": "Lossy Kernelization",
+    "category": "Presentations",
+    "course": "0. Presentations"
+  },
+  {
+    "src": "0. Presentations/Exact Edge-Cover in Temporal Graphs.pdf",
+    "title": "Exact Edge-Cover in Temporal Graphs",
+    "category": "Presentations",
+    "course": "0. Presentations"
+  },
+  {
+    "src": "0. Presentations/When Does An Algorithm Halt.pdf",
+    "title": "When Does An Algorithm Halt",
+    "category": "Presentations",
+    "course": "0. Presentations"
+  },
+  {
+    "src": "0. Presentations/Smoothed Analysis files/[0] bwca.pdf",
+    "title": "[0] bwca",
+    "category": "Presentations",
+    "course": "Smoothed Analysis files"
+  },
+  {
+    "src": "0. Presentations/Smoothed Analysis files/[1] Smooth Analysis.pdf",
+    "title": "[1] Smooth Analysis",
+    "category": "Presentations",
+    "course": "Smoothed Analysis files"
+  },
+  {
+    "src": "0. Presentations/Smoothed Analysis files/[2]TimSmoothAnalysis.pdf",
+    "title": "[2]TimSmoothAnalysis",
+    "category": "Presentations",
+    "course": "Smoothed Analysis files"
+  },
+  {
+    "src": "0. Presentations/Smoothed Analysis files/[3] Simplex Smooth Analysis.pdf",
+    "title": "[3] Simplex Smooth Analysis",
+    "category": "Presentations",
+    "course": "Smoothed Analysis files"
+  },
+  {
+    "src": "0. Presentations/The Complexity of Theorem-Proving Procedures files/Cook-1971-NP-completeness-of-SAT.pdf",
+    "title": "Cook-1971-NP-completeness-of-SAT",
+    "category": "Presentations",
+    "course": "The Complexity of Theorem-Proving Procedures files"
+  },
+  {
+    "src": "0. Presentations/Lossy Kernelization files/Lossy Kernalization.pdf",
+    "title": "Lossy Kernalization",
+    "category": "Presentations",
+    "course": "Lossy Kernelization files"
+  },
+  {
+    "src": "0. Presentations/Lossy Kernelization files/Lossy_Kernels_LPRS17.pdf",
+    "title": "Lossy_Kernels_LPRS17",
+    "category": "Presentations",
+    "course": "Lossy Kernelization files"
+  },
+  {
+    "src": "0. Presentations/Lossy Kernelization files/Lossy-Kernels-pcss-version.pdf",
+    "title": "Lossy-Kernels-pcss-version",
+    "category": "Presentations",
+    "course": "Lossy Kernelization files"
+  },
+  {
+    "src": "0. Presentations/Lossy Kernelization files/lossy-kernel.pdf",
+    "title": "lossy-kernel",
+    "category": "Presentations",
+    "course": "Lossy Kernelization files"
+  },
+  {
+    "src": "0. Presentations/Exact Edge-Cover in Temporal Graphs files/slides_short.pdf",
+    "title": "slides_short",
+    "category": "Presentations",
+    "course": "Exact Edge-Cover in Temporal Graphs files"
+  },
+  {
+    "src": "0. Presentations/Exact Edge-Cover in Temporal Graphs files/34850-Article Text-38917-1-2-20250410.pdf",
+    "title": "34850-Article Text-38917-1-2-20250410",
+    "category": "Presentations",
+    "course": "Exact Edge-Cover in Temporal Graphs files"
+  },
+  {
+    "src": "0. Presentations/When Does An Algorithm Halt files/Reccursion Theory by John Moschovakis.pdf",
+    "title": "Reccursion Theory by John Moschovakis",
+    "category": "Presentations",
+    "course": "When Does An Algorithm Halt files"
+  },
+  {
+    "src": "1. Notes Writting/(Xe)LaTeX_Introduction.pdf",
+    "title": "(Xe)LaTeX_Introduction",
+    "category": "Personal Projects",
+    "course": "1. Notes Writting"
+  },
+  {
+    "src": "1. Notes Writting/(Xe)LaTeX Templates.pdf",
+    "title": "(Xe)LaTeX Templates",
+    "category": "Personal Projects",
+    "course": "1. Notes Writting"
+  },
+  {
+    "src": "1. Notes Writting/(Xe)LaTeX Templates/PreambleTemplate.tex",
+    "title": "PreambleTemplate",
+    "category": "Personal Projects",
+    "course": "(Xe)LaTeX Templates"
+  },
+  {
+    "src": "1. Notes Writting/(Xe)LaTeX Templates/MainTemplate.tex",
+    "title": "MainTemplate",
+    "category": "Personal Projects",
+    "course": "(Xe)LaTeX Templates"
+  },
+  {
+    "src": "1. Notes Writting/Introduction To (Xe)LaTeX files/(Xe)LaTeX_Introduction.tex",
+    "title": "(Xe)LaTeX_Introduction",
+    "category": "Personal Projects",
+    "course": "Introduction To (Xe)LaTeX files"
+  },
+  {
+    "src": "1. Notes Writting/Introduction To (Xe)LaTeX files/Preamble.tex",
+    "title": "Preamble",
+    "category": "Personal Projects",
+    "course": "Introduction To (Xe)LaTeX files"
+  },
+  {
+    "src": "1. Notes Writting/Introduction To (Xe)LaTeX files/build/ekpa_logo.jpg",
+    "title": "ekpa_logo",
+    "category": "Personal Projects",
+    "course": "build"
+  },
+  {
+    "src": "1. Notes Writting/(Xe)LaTeX Templates/build/MainTemplate.log",
+    "title": "MainTemplate",
+    "category": "Personal Projects",
+    "course": "build"
+  },
+  {
+    "src": "1. Notes Writting/(Xe)LaTeX Templates/build/MainTemplate.aux",
+    "title": "MainTemplate",
+    "category": "Personal Projects",
+    "course": "build"
+  },
+  {
+    "src": "1. Notes Writting/(Xe)LaTeX Templates/build/MainTemplate.out",
+    "title": "MainTemplate",
+    "category": "Personal Projects",
+    "course": "build"
+  },
+  {
+    "src": "1. Notes Writting/(Xe)LaTeX Templates/build/MainTemplate.toc",
+    "title": "MainTemplate",
+    "category": "Personal Projects",
+    "course": "build"
+  },
+  {
+    "src": "1. Notes Writting/(Xe)LaTeX Templates/build/MainTemplate.synctex.gz",
+    "title": "MainTemplate.synctex",
+    "category": "Personal Projects",
+    "course": "build"
+  },
+  {
+    "src": "1. Notes Writting/(Xe)LaTeX Templates/build/ekpa_logo.jpg",
+    "title": "ekpa_logo",
+    "category": "Personal Projects",
+    "course": "build"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Algorithmic Data Science/MMDS.pdf",
+    "title": "MMDS",
+    "category": "Solved Exercises",
+    "course": "Algorithmic Data Science"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Algorithmic Data Science/1. Exercises",
+    "title": "1",
+    "category": "Solved Exercises",
+    "course": "Algorithmic Data Science"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Algorithms/Algorithm Design by Jon Kleinberg, Eva Tardos.pdf",
+    "title": "Algorithm Design by Jon Kleinberg, Eva Tardos",
+    "category": "Solved Exercises",
+    "course": "Algorithms"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Algorithms/Algorithms by Vazirani and Dasgupta.pdf",
+    "title": "Algorithms by Vazirani and Dasgupta",
+    "category": "Solved Exercises",
+    "course": "Algorithms"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Algorithms/Introduction to Algorithms - 3rd Edition.pdf",
+    "title": "Introduction to Algorithms - 3rd Edition",
+    "category": "Solved Exercises",
+    "course": "Algorithms"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Algorithms/1. Exercises and SudoCode",
+    "title": "1",
+    "category": "Solved Exercises",
+    "course": "Algorithms"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Algorithms/2. Solved Exercises",
+    "title": "2",
+    "category": "Solved Exercises",
+    "course": "Algorithms"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Approximation Algorithms/1. Exercises",
+    "title": "1",
+    "category": "Solved Exercises",
+    "course": "Approximation Algorithms"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Approximation Algorithms/Approximation Algorthms.pdf",
+    "title": "Approximation Algorthms",
+    "category": "Solved Exercises",
+    "course": "Approximation Algorithms"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Computational Complexity/1. Exercises",
+    "title": "1",
+    "category": "Solved Exercises",
+    "course": "Computational Complexity"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Computational Complexity/Computational Complexity Arora Barak.pdf",
+    "title": "Computational Complexity Arora Barak",
+    "category": "Solved Exercises",
+    "course": "Computational Complexity"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Graph Theory/\u0398\u03b5\u03c9\u03c1\u03af\u03b1 \u0393\u03c1\u03b1\u03c6\u03b7\u03bc\u03ac\u03c4\u03c9\u03bd - \u03a3\u03b7\u03bc\u03b5\u03b9\u03ce\u03c3\u03b5\u03b9\u03c2.pdf",
+    "title": "\u0398\u03b5\u03c9\u03c1\u03af\u03b1 \u0393\u03c1\u03b1\u03c6\u03b7\u03bc\u03ac\u03c4\u03c9\u03bd - \u03a3\u03b7\u03bc\u03b5\u03b9\u03ce\u03c3\u03b5\u03b9\u03c2",
+    "category": "Solved Exercises",
+    "course": "Graph Theory"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Graph Theory/1. Exercises",
+    "title": "1",
+    "category": "Solved Exercises",
+    "course": "Graph Theory"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Machine Learning/Elements of Statistical Machine Learning.pdf",
+    "title": "Elements of Statistical Machine Learning",
+    "category": "Solved Exercises",
+    "course": "Machine Learning"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Machine Learning/Introduction To Statistical Learning (Python).pdf",
+    "title": "Introduction To Statistical Learning (Python)",
+    "category": "Solved Exercises",
+    "course": "Machine Learning"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Machine Learning/1. Exercises",
+    "title": "1",
+    "category": "Solved Exercises",
+    "course": "Machine Learning"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Machine Learning/2. Python Code Lab",
+    "title": "2",
+    "category": "Solved Exercises",
+    "course": "Machine Learning"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Network Algorithms and Complexity /1. Exercises",
+    "title": "1",
+    "category": "Solved Exercises",
+    "course": "Network Algorithms and Complexity "
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Parametrized Complexity and Algorithms/Parameterized Algorithms Book.pdf",
+    "title": "Parameterized Algorithms Book",
+    "category": "Solved Exercises",
+    "course": "Parametrized Complexity and Algorithms"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Parametrized Complexity and Algorithms/1. Exercises",
+    "title": "1",
+    "category": "Solved Exercises",
+    "course": "Parametrized Complexity and Algorithms"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Reccursion Theory/Reccursion Theory Notes.pdf",
+    "title": "Reccursion Theory Notes",
+    "category": "Solved Exercises",
+    "course": "Reccursion Theory"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Reccursion Theory/1. Exercises",
+    "title": "1",
+    "category": "Solved Exercises",
+    "course": "Reccursion Theory"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Structural Complexity /CC Slides.pdf",
+    "title": "CC Slides",
+    "category": "Solved Exercises",
+    "course": "Structural Complexity "
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Structural Complexity /Fine - Grained Complexity.pdf",
+    "title": "Fine - Grained Complexity",
+    "category": "Solved Exercises",
+    "course": "Structural Complexity "
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Reccursion Theory/1. Exercises/Reccursion Theory 1.pdf",
+    "title": "Reccursion Theory 1",
+    "category": "Solved Exercises",
+    "course": "1. Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Reccursion Theory/1. Exercises/Reccursion Theory 2.pdf",
+    "title": "Reccursion Theory 2",
+    "category": "Solved Exercises",
+    "course": "1. Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Reccursion Theory/1. Exercises/Reccursion Theory 3.pdf",
+    "title": "Reccursion Theory 3",
+    "category": "Solved Exercises",
+    "course": "1. Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Reccursion Theory/1. Exercises/Reccursion Theory 4.pdf",
+    "title": "Reccursion Theory 4",
+    "category": "Solved Exercises",
+    "course": "1. Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Parametrized Complexity and Algorithms/1. Exercises/Parametrized Algorithms 1.pdf",
+    "title": "Parametrized Algorithms 1",
+    "category": "Solved Exercises",
+    "course": "1. Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Parametrized Complexity and Algorithms/1. Exercises/Parametrized Algorithms 2.pdf",
+    "title": "Parametrized Algorithms 2",
+    "category": "Solved Exercises",
+    "course": "1. Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Network Algorithms and Complexity /1. Exercises/Advanced Algorithms 1.pdf",
+    "title": "Advanced Algorithms 1",
+    "category": "Solved Exercises",
+    "course": "1. Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Network Algorithms and Complexity /1. Exercises/Advanced Algorithms 2.pdf",
+    "title": "Advanced Algorithms 2",
+    "category": "Solved Exercises",
+    "course": "1. Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Machine Learning/1. Exercises/Machine Learning 1.pdf",
+    "title": "Machine Learning 1",
+    "category": "Solved Exercises",
+    "course": "1. Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Machine Learning/1. Exercises/Machine Learning 2.pdf",
+    "title": "Machine Learning 2",
+    "category": "Solved Exercises",
+    "course": "1. Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Machine Learning/2. Python Code Lab/labs.ipynb",
+    "title": "labs",
+    "category": "Solved Exercises",
+    "course": "2. Python Code Lab"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Machine Learning/2. Python Code Lab/test.ipynb",
+    "title": "test",
+    "category": "Solved Exercises",
+    "course": "2. Python Code Lab"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Machine Learning/2. Python Code Lab/prob2.Rdata",
+    "title": "prob2",
+    "category": "Solved Exercises",
+    "course": "2. Python Code Lab"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Machine Learning/2. Python Code Lab/prob4.Rdata",
+    "title": "prob4",
+    "category": "Solved Exercises",
+    "course": "2. Python Code Lab"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Machine Learning/2. Python Code Lab/prob3.Rdata",
+    "title": "prob3",
+    "category": "Solved Exercises",
+    "course": "2. Python Code Lab"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Machine Learning/2. Python Code Lab/lab_compact.py",
+    "title": "lab_compact",
+    "category": "Solved Exercises",
+    "course": "2. Python Code Lab"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Machine Learning/1. Exercises/Machine Learning 1 files/Ergasia1.html",
+    "title": "Ergasia1",
+    "category": "Solved Exercises",
+    "course": "Machine Learning 1 files"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Machine Learning/1. Exercises/Machine Learning 1 files/exercise1.ipynb",
+    "title": "exercise1",
+    "category": "Solved Exercises",
+    "course": "Machine Learning 1 files"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Machine Learning/1. Exercises/Machine Learning 1 files/sa_heart_dataset.csv",
+    "title": "sa_heart_dataset",
+    "category": "Solved Exercises",
+    "course": "Machine Learning 1 files"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Machine Learning/1. Exercises/Machine Learning 2 files/Ergasia2.html",
+    "title": "Ergasia2",
+    "category": "Solved Exercises",
+    "course": "Machine Learning 2 files"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Machine Learning/1. Exercises/Machine Learning 2 files/dropout_prediction/paper1.pdf",
+    "title": "paper1",
+    "category": "Solved Exercises",
+    "course": "dropout_prediction"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Machine Learning/1. Exercises/Machine Learning 2 files/dropout_prediction/data.csv",
+    "title": "data",
+    "category": "Solved Exercises",
+    "course": "dropout_prediction"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Graph Theory/1. Exercises/Graph Thoery 1.pdf",
+    "title": "Graph Thoery 1",
+    "category": "Solved Exercises",
+    "course": "1. Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Graph Theory/1. Exercises/Graph Theory 2.pdf",
+    "title": "Graph Theory 2",
+    "category": "Solved Exercises",
+    "course": "1. Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Graph Theory/1. Exercises/Graph Theory 3.pdf",
+    "title": "Graph Theory 3",
+    "category": "Solved Exercises",
+    "course": "1. Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Computational Complexity/1. Exercises/\u0391\u039b\u039c\u0391___\u03a5\u03c0\u03bf\u03bb\u03bf\u03b3\u03b9\u03c3\u03c4\u03b9\u03ba\u03ae_\u03a0\u03bf\u03bb\u03c5\u03c0\u03bb\u03bf\u03ba\u03cc\u03c4\u03b7\u03c4\u03b1_3.pdf",
+    "title": "\u0391\u039b\u039c\u0391___\u03a5\u03c0\u03bf\u03bb\u03bf\u03b3\u03b9\u03c3\u03c4\u03b9\u03ba\u03ae_\u03a0\u03bf\u03bb\u03c5\u03c0\u03bb\u03bf\u03ba\u03cc\u03c4\u03b7\u03c4\u03b1_3",
+    "category": "Solved Exercises",
+    "course": "1. Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Computational Complexity/1. Exercises/\u0391\u039b\u039c\u0391___\u03a5\u03c0\u03bf\u03bb\u03bf\u03b3\u03b9\u03c3\u03c4\u03b9\u03ba\u03ae_\u03a0\u03bf\u03bb\u03c5\u03c0\u03bb\u03bf\u03ba\u03cc\u03c4\u03b7\u03c4\u03b1_2.pdf",
+    "title": "\u0391\u039b\u039c\u0391___\u03a5\u03c0\u03bf\u03bb\u03bf\u03b3\u03b9\u03c3\u03c4\u03b9\u03ba\u03ae_\u03a0\u03bf\u03bb\u03c5\u03c0\u03bb\u03bf\u03ba\u03cc\u03c4\u03b7\u03c4\u03b1_2",
+    "category": "Solved Exercises",
+    "course": "1. Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Computational Complexity/1. Exercises/\u0391\u039b\u039c\u0391___\u03a5\u03c0\u03bf\u03bb\u03bf\u03b3\u03b9\u03c3\u03c4\u03b9\u03ba\u03ae_\u03a0\u03bf\u03bb\u03c5\u03c0\u03bb\u03bf\u03ba\u03cc\u03c4\u03b7\u03c4\u03b1_1.pdf",
+    "title": "\u0391\u039b\u039c\u0391___\u03a5\u03c0\u03bf\u03bb\u03bf\u03b3\u03b9\u03c3\u03c4\u03b9\u03ba\u03ae_\u03a0\u03bf\u03bb\u03c5\u03c0\u03bb\u03bf\u03ba\u03cc\u03c4\u03b7\u03c4\u03b1_1",
+    "category": "Solved Exercises",
+    "course": "1. Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Approximation Algorithms/1. Exercises/Approximation Algorithms 1.pdf",
+    "title": "Approximation Algorithms 1",
+    "category": "Solved Exercises",
+    "course": "1. Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Approximation Algorithms/1. Exercises/Approximation Algorithms 2.pdf",
+    "title": "Approximation Algorithms 2",
+    "category": "Solved Exercises",
+    "course": "1. Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Algorithms/1. Exercises and SudoCode/Algorithms 1.pdf",
+    "title": "Algorithms 1",
+    "category": "Solved Exercises",
+    "course": "1. Exercises and SudoCode"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Algorithms/1. Exercises and SudoCode/Algorithms 2.pdf",
+    "title": "Algorithms 2",
+    "category": "Solved Exercises",
+    "course": "1. Exercises and SudoCode"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Algorithms/1. Exercises and SudoCode/Algorithms 3.pdf",
+    "title": "Algorithms 3",
+    "category": "Solved Exercises",
+    "course": "1. Exercises and SudoCode"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Algorithms/1. Exercises and SudoCode/Algorithms Sudocode 1.pdf",
+    "title": "Algorithms Sudocode 1",
+    "category": "Solved Exercises",
+    "course": "1. Exercises and SudoCode"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Algorithms/1. Exercises and SudoCode/Algorithms Sudocode 3.pdf",
+    "title": "Algorithms Sudocode 3",
+    "category": "Solved Exercises",
+    "course": "1. Exercises and SudoCode"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Algorithms/1. Exercises and SudoCode/Algoritms Sudocode 2.pdf",
+    "title": "Algoritms Sudocode 2",
+    "category": "Solved Exercises",
+    "course": "1. Exercises and SudoCode"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Algorithms/2. Solved Exercises/set04.pdf",
+    "title": "set04",
+    "category": "Solved Exercises",
+    "course": "2. Solved Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Algorithms/2. Solved Exercises/set03.pdf",
+    "title": "set03",
+    "category": "Solved Exercises",
+    "course": "2. Solved Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Algorithms/2. Solved Exercises/set02.pdf",
+    "title": "set02",
+    "category": "Solved Exercises",
+    "course": "2. Solved Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Algorithms/2. Solved Exercises/set01.pdf",
+    "title": "set01",
+    "category": "Solved Exercises",
+    "course": "2. Solved Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Algorithmic Data Science/1. Exercises/Algorithmic Data Science 1.pdf",
+    "title": "Algorithmic Data Science 1",
+    "category": "Solved Exercises",
+    "course": "1. Exercises"
+  },
+  {
+    "src": "2. Exercises and Labs by Course/Algorithmic Data Science/1. Exercises/Algorithmic Data Science 2.pdf",
+    "title": "Algorithmic Data Science 2",
+    "category": "Solved Exercises",
+    "course": "1. Exercises"
+  }
+]
