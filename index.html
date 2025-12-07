@@ -1,288 +1,827 @@
-cat > index.html <<'EOF'
 <!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Coursework Archive — Folder view</title>
+<title>Theoretical CS Archive – Andreas Panayi</title>
 <style>
   :root{
-    --bg:#f7f8fb; --card:#fff; --muted:#667085; --accent:#2563eb;
-    --radius:12px; --gap:12px;
-    font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --card: #ffffff;
+    --card-hover: #f8f9ff;
+    --text: #1a202c;
+    --text-muted: #718096;
+    --accent: #5a67d8;
+    --accent-light: #eef2ff;
+    --border: #e2e8f0;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+    --radius: 12px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
-  body{margin:0;padding:22px;background:var(--bg);color:#0f172a}
-  header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
-  h1{margin:0;font-size:20px}
-  .controls{display:flex;gap:8px;align-items:center}
-  input[type=search]{padding:8px;border-radius:10px;border:1px solid #e6e9f0;background:white}
-  main{display:grid;grid-template-columns:330px 1fr;gap:18px}
-  .tree{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 6px 18px rgba(16,24,40,0.06);height:75vh;overflow:auto}
-  .panel{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 6px 18px rgba(16,24,40,0.04);min-height:75vh;overflow:auto}
-  .folder {padding:6px 8px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:space-between}
-  .folder:hover{background:#f1f5ff}
-  .folder .name{font-weight:700;display:flex;align-items:center;gap:8px}
-  .children{margin-left:12px;margin-top:6px;border-left:1px dashed rgba(0,0,0,0.03);padding-left:10px}
-  .file{display:flex;flex-direction:column;border-radius:8px;overflow:hidden;border:1px solid #eef2f7;background:white;cursor:pointer}
-  .file .thumb{height:140px;display:flex;align-items:center;justify-content:center;background:#eef3ff;font-weight:700;color:var(--muted)}
-  .file .meta{padding:8px;font-size:13px}
-  .title{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .small{color:var(--muted);font-size:12px}
-  .muted{color:var(--muted)}
-  .badge{background:#eef2ff;color:#0b4dd8;padding:2px 8px;border-radius:999px;font-size:12px;margin-left:8px}
-  /* caret */
-  .caret{display:inline-block;width:12px;height:12px;transform:rotate(0deg);transition:transform .14s ease}
-  .caret.open{transform:rotate(90deg)}
-  /* lightbox */
-  .lb{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:none;align-items:center;justify-content:center;padding:20px;z-index:80}
-  .lb.show{display:flex}
-  .lb-box{max-width:1100px;max-height:90vh;background:#071026;border-radius:8px;overflow:auto;padding:12px}
-  .lb-content img,.lb-content video,.lb-content iframe{max-width:100%;height:auto;display:block}
-  .lb-info{display:flex;justify-content:space-between;align-items:center;margin-top:8px;color:#fff}
-  .btn{background:white;padding:8px 12px;border-radius:8px;text-decoration:none;color:#111;font-weight:600}
-  @media (max-width:900px){main{grid-template-columns:1fr}}
+  
+  * { box-sizing: border-box; }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  
+  .hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 60px 24px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1" fill="white" opacity="0.1"/></svg>') repeat;
+    opacity: 0.1;
+  }
+  
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .hero h1 {
+    margin: 0 0 12px 0;
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  
+  .hero p {
+    font-size: 18px;
+    opacity: 0.95;
+    margin: 0 0 32px 0;
+    font-weight: 300;
+  }
+  
+  .stats {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .stat {
+    text-align: center;
+  }
+  
+  .stat-number {
+    font-size: 32px;
+    font-weight: 700;
+    display: block;
+  }
+  
+  .stat-label {
+    font-size: 14px;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .container {
+    max-width: 1400px;
+    margin: -20px auto 40px;
+    padding: 0 24px;
+  }
+  
+  .controls-bar {
+    background: var(--card);
+    padding: 20px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 24px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .search-box {
+    flex: 1;
+    min-width: 280px;
+    position: relative;
+  }
+  
+  .search-box input {
+    width: 100%;
+    padding: 12px 16px 12px 44px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-size: 15px;
+    transition: all 0.2s;
+    background: white;
+  }
+  
+  .search-box input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-light);
+  }
+  
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+  
+  .view-toggle {
+    display: flex;
+    gap: 8px;
+    background: var(--accent-light);
+    padding: 4px;
+    border-radius: 8px;
+  }
+  
+  .view-btn {
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: all 0.2s;
+  }
+  
+  .view-btn.active {
+    background: white;
+    color: var(--accent);
+    box-shadow: var(--shadow-sm);
+  }
+  
+  main {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  
+  .sidebar {
+    position: sticky;
+    top: 24px;
+    background: var(--card);
+    padding: 20px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+  }
+  
+  .sidebar h3 {
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+  }
+  
+  .folder-item {
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s;
+    margin-bottom: 4px;
+  }
+  
+  .folder-item:hover {
+    background: var(--card-hover);
+    transform: translateX(4px);
+  }
+  
+  .folder-item.active {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  
+  .folder-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+  }
+  
+  .folder-count {
+    font-size: 12px;
+    color: var(--text-muted);
+    background: var(--accent-light);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+  }
+  
+  .caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 5px solid currentColor;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    transition: transform 0.2s;
+  }
+  
+  .caret.open {
+    transform: rotate(90deg);
+  }
+  
+  .children {
+    margin-left: 24px;
+    margin-top: 4px;
+    border-left: 2px solid var(--border);
+    padding-left: 12px;
+    display: none;
+  }
+  
+  .children.show {
+    display: block;
+  }
+  
+  .content-area {
+    background: var(--card);
+    padding: 28px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    min-height: 600px;
+  }
+  
+  .content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+  }
+  
+  .content-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+  }
+  
+  .content-count {
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+  
+  .files-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  
+  .file-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+  
+  .file-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent);
+  }
+  
+  .file-thumb {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--accent);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .file-thumb img, .file-thumb video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .file-meta {
+    padding: 16px;
+  }
+  
+  .file-title {
+    font-weight: 600;
+    font-size: 14px;
+    margin: 0 0 6px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text);
+  }
+  
+  .file-path {
+    font-size: 12px;
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .file-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255,255,255,0.95);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--accent);
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+  }
+  
+  .lightbox.show {
+    display: flex;
+  }
+  
+  .lightbox-content {
+    max-width: 1200px;
+    max-height: 90vh;
+    background: #1a202c;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+  }
+  
+  .lightbox-media {
+    max-height: 70vh;
+    overflow: auto;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .lightbox-media img, .lightbox-media video, .lightbox-media iframe {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .lightbox-footer {
+    padding: 20px;
+    background: #2d3748;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+  }
+  
+  .lightbox-title {
+    font-weight: 600;
+    font-size: 16px;
+  }
+  
+  .lightbox-actions {
+    display: flex;
+    gap: 12px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background: #4c51bf;
+    transform: translateY(-1px);
+  }
+  
+  .btn-secondary {
+    background: white;
+    color: var(--text);
+  }
+  
+  .btn-secondary:hover {
+    background: #f7fafc;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--text-muted);
+  }
+  
+  .empty-state svg {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 24px;
+    opacity: 0.3;
+  }
+  
+  @media (max-width: 1024px) {
+    main {
+      grid-template-columns: 1fr;
+    }
+    
+    .sidebar {
+      position: relative;
+      top: 0;
+      max-height: 400px;
+    }
+    
+    .hero h1 {
+      font-size: 32px;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .hero {
+      padding: 40px 20px 30px;
+    }
+    
+    .hero h1 {
+      font-size: 28px;
+    }
+    
+    .stats {
+      gap: 20px;
+    }
+    
+    .files-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
 </head>
 <body>
-<header>
-  <div>
-    <h1>Coursework Archive</h1>
-    <div class="muted" id="summary">Loading…</div>
-  </div>
-  <div class="controls">
-    <input id="search" placeholder="Search title or filename..." type="search" />
-  </div>
-</header>
 
-<main>
-  <aside class="tree" id="tree" aria-label="Folder tree">Loading manifest…</aside>
-  <section class="panel" id="panel">
-    <div id="panel-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-      <div><strong id="panel-path">All files</strong></div>
-      <div><span id="panel-count" class="muted"></span></div>
+<div class="hero">
+  <div class="hero-content">
+    <h1>📚 Theoretical Computer Science Archive</h1>
+    <p>A comprehensive collection of coursework, exercises, and research materials</p>
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-number" id="total-files">0</span>
+        <span class="stat-label">Total Files</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number" id="total-courses">0</span>
+        <span class="stat-label">Courses</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number" id="total-categories">0</span>
+        <span class="stat-label">Categories</span>
+      </div>
     </div>
-    <div id="files" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px"></div>
-  </section>
-</main>
+  </div>
+</div>
 
-<div id="lightbox" class="lb" role="dialog" aria-hidden="true">
-  <div class="lb-box">
-    <div class="lb-content" id="lb-content"></div>
-    <div class="lb-info"><div id="lb-title"></div><div><a id="lb-download" class="btn" href="#" download>Download</a>&nbsp;<button id="lb-close" class="btn">Close</button></div></div>
+<div class="container">
+  <div class="controls-bar">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="search" id="search" placeholder="Search by title, course, or category..." />
+    </div>
+    <div class="view-toggle">
+      <button class="view-btn active" data-view="grid">Grid</button>
+      <button class="view-btn" data-view="list">List</button>
+    </div>
+  </div>
+
+  <main>
+    <aside class="sidebar">
+      <h3>Browse by Folder</h3>
+      <div id="tree"></div>
+    </aside>
+
+    <section class="content-area">
+      <div class="content-header">
+        <h2 class="content-title" id="current-path">All Files</h2>
+        <span class="content-count" id="file-count"></span>
+      </div>
+      <div class="files-grid" id="files-container"></div>
+    </section>
+  </main>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-content">
+    <div class="lightbox-media" id="lightbox-media"></div>
+    <div class="lightbox-footer">
+      <div class="lightbox-title" id="lightbox-title"></div>
+      <div class="lightbox-actions">
+        <a class="btn btn-primary" id="lightbox-download" href="#" download>Download</a>
+        <button class="btn btn-secondary" id="lightbox-close">Close</button>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
-  const safe = s => encodeURI(s);
-  const treeEl = document.getElementById('tree');
-  const filesEl = document.getElementById('files');
-  const panelPath = document.getElementById('panel-path');
-  const panelCount = document.getElementById('panel-count');
-  const search = document.getElementById('search');
-  let manifest = [];
+const safe = s => encodeURI(s);
+const esc = s => (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
 
-  async function loadManifest(){
-    try{
-      const res = await fetch('manifest.json', {cache:'no-store'});
-      if(!res.ok) throw new Error('no manifest');
-      manifest = await res.json();
-    }catch(e){
-      manifest = [];
-    }
-    manifest.forEach(m => { m.title = m.title || m.src; });
-    buildTreeAndRender();
-    document.getElementById('summary').textContent = `${manifest.length} items — folder view`;
+let manifest = [];
+let currentView = 'grid';
+
+async function loadManifest() {
+  try {
+    const res = await fetch('manifest.json', {cache: 'no-store'});
+    if (!res.ok) throw new Error('No manifest');
+    manifest = await res.json();
+  } catch(e) {
+    manifest = [];
   }
+  
+  manifest.forEach(m => { m.title = m.title || m.src; });
+  
+  // Update stats
+  document.getElementById('total-files').textContent = manifest.length;
+  const courses = new Set(manifest.map(m => m.course).filter(Boolean));
+  document.getElementById('total-courses').textContent = courses.size;
+  const categories = new Set(manifest.map(m => m.category).filter(Boolean));
+  document.getElementById('total-categories').textContent = categories.size;
+  
+  buildTree();
+  showAllFiles();
+}
 
-  function buildTree(items){
-    const root = { type:'folder', name:'/', children: {} };
-    items.forEach(it => {
-      const parts = it.src.split('/').filter(p=>p.length>0);
-      let node = root;
-      for(let i=0;i<parts.length;i++){
-        const part = parts[i];
-        const isLeaf = (i === parts.length-1);
-        if(isLeaf){
-          node.children.files = node.children.files || [];
-          node.children.files.push(Object.assign({}, it));
-        } else {
-          node.children[part] = node.children[part] || { type:'folder', name:part, children:{} };
-          node = node.children[part];
+function buildTree() {
+  const tree = {};
+  
+  manifest.forEach(item => {
+    const parts = item.src.split('/').filter(p => p.length > 0);
+    let current = tree;
+    
+    for (let i = 0; i < parts.length - 1; i++) {
+      const part = parts[i];
+      if (!current[part]) {
+        current[part] = { _files: [], _children: {} };
+      }
+      current = current[part]._children;
+    }
+    
+    const folder = parts[parts.length - 2] || 'root';
+    if (!current[folder]) {
+      current[folder] = { _files: [], _children: {} };
+    }
+    current[folder]._files.push(item);
+  });
+  
+  renderTree(tree, document.getElementById('tree'));
+}
+
+function renderTree(node, container, path = []) {
+  Object.keys(node).sort().forEach(key => {
+    const folder = node[key];
+    const fullPath = [...path, key];
+    const fileCount = countFiles(folder);
+    
+    const item = document.createElement('div');
+    item.className = 'folder-item';
+    item.innerHTML = `
+      <div class="folder-name">
+        <span class="caret"></span>
+        <span>📁 ${key}</span>
+      </div>
+      <span class="folder-count">${fileCount}</span>
+    `;
+    
+    container.appendChild(item);
+    
+    const children = document.createElement('div');
+    children.className = 'children';
+    container.appendChild(children);
+    
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = children.classList.contains('show');
+      children.classList.toggle('show');
+      item.querySelector('.caret').classList.toggle('open');
+      
+      if (!isOpen && children.childElementCount === 0) {
+        if (Object.keys(folder._children).length > 0) {
+          renderTree(folder._children, children, fullPath);
         }
       }
-    });
-    return root;
-  }
-
-  // Render tree: this version only adds a single [files] button per folder (handled by renderTree itself)
-  function renderTree(node, container, pathParts = []){
-    Object.keys(node.children).sort((a,b)=>a.localeCompare(b)).forEach(key => {
-      if(key === 'files') return;
-      const child = node.children[key];
-      const row = document.createElement('div');
-      row.className = 'folder';
-      const displayPath = [...pathParts, child.name].join('/');
-      row.innerHTML = `<div class="name"><span class="caret">&#9656;</span><span style="margin-left:6px">${child.name}</span></div><div class="muted">${countFilesInNode(child)}</div>`;
-      container.appendChild(row);
-
-      // children container
-      const sub = document.createElement('div'); sub.className='children'; sub.style.display='none';
-      container.appendChild(sub);
-
-      // click toggles children and renders them on first open
-      row.addEventListener('click', ()=>{
-        const open = sub.style.display === 'block';
-        sub.style.display = open ? 'none' : 'block';
-        row.querySelector('.caret').classList.toggle('open', !open);
-        if(!open && sub.childElementCount === 0){
-          renderTree(child, sub, [...pathParts, child.name]);
-        }
-      });
-    });
-
-    // Add a single "[files] n file(s)" button for THIS node if it has files
-    if(node.children.files && node.children.files.length){
-      const showBtn = document.createElement('div');
-      showBtn.className = 'folder';
-      showBtn.style.marginTop='6px';
-      showBtn.innerHTML = `<div style="font-weight:700">[files] ${node.children.files.length} file(s)</div><div class="muted">open</div>`;
-      container.appendChild(showBtn);
-      showBtn.addEventListener('click',(e)=>{ e.stopPropagation(); showFiles(node, pathParts.join('/')); });
-    }
-  }
-
-  function countFilesInNode(node){
-    let c = 0;
-    if(node.children && node.children.files) c += node.children.files.length;
-    Object.keys(node.children||{}).forEach(k => {
-      if(k === 'files') return;
-      c += countFilesInNode(node.children[k]);
-    });
-    return c;
-  }
-
-  function showFiles(node, path){
-    const files = node.children.files ? node.children.files : [];
-    panelPath.textContent = path || '/';
-    panelCount.textContent = `${files.length} file(s)`;
-    filesEl.innerHTML = '';
-    files.sort((a,b)=> (a.title||'').localeCompare(b.title||''));
-    files.forEach(it => {
-      const f = document.createElement('div'); f.className='file';
-      const thumb = document.createElement('div'); thumb.className='thumb';
-      const ext = (it.src.split('.').pop()||'').toLowerCase();
-      if(['png','jpg','jpeg','gif','svg','webp'].includes(ext)){
-        const img = document.createElement('img'); img.src = safe(it.src); img.alt = it.title; img.style.width='100%'; img.style.height='140px'; img.style.objectFit='cover';
-        thumb.appendChild(img);
-      } else if(['mp4','webm','ogg'].includes(ext)){
-        const v = document.createElement('video'); v.src = safe(it.src); v.muted=true; v.loop=true; v.playsInline=true; v.autoplay=true; v.style.width='100%'; v.style.height='140px'; v.style.objectFit='cover';
-        thumb.appendChild(v);
-      } else {
-        thumb.textContent = ext.toUpperCase();
+      
+      if (folder._files.length > 0) {
+        showFiles(folder._files, fullPath.join('/'));
+        document.querySelectorAll('.folder-item').forEach(f => f.classList.remove('active'));
+        item.classList.add('active');
       }
-      const meta = document.createElement('div'); meta.className='meta';
-      meta.innerHTML = `<div class="title" title="${escapeHtml(it.title)}">${it.title}</div><div class="small">${it.src}</div>`;
-      f.appendChild(thumb); f.appendChild(meta);
-      f.addEventListener('click', ()=> openLightbox(it));
-      filesEl.appendChild(f);
-    });
-  }
-
-  function escapeHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
-
-  function showRootFiles(root){
-    const files = root.children.files || [];
-    panelPath.textContent = '/ (repo root)';
-    panelCount.textContent = `${files.length} file(s)`;
-    filesEl.innerHTML = '';
-    files.forEach(it=>{
-      const f = document.createElement('div'); f.className='file';
-      const thumb = document.createElement('div'); thumb.className='thumb';
-      const ext = (it.src.split('.').pop()||'').toLowerCase();
-      if(['png','jpg','jpeg','gif','svg','webp'].includes(ext)){
-        const img = document.createElement('img'); img.src = safe(it.src); img.alt = it.title; img.style.width='100%'; img.style.height='140px'; img.style.objectFit='cover';
-        thumb.appendChild(img);
-      } else if(['mp4','webm','ogg'].includes(ext)){
-        const v = document.createElement('video'); v.src = safe(it.src); v.muted=true; v.loop=true; v.playsInline=true; v.autoplay=true; v.style.width='100%'; v.style.height='140px'; v.style.objectFit='cover';
-        thumb.appendChild(v);
-      } else {
-        thumb.textContent = ext.toUpperCase();
-      }
-      const meta = document.createElement('div'); meta.className='meta';
-      meta.innerHTML = `<div class="title" title="${escapeHtml(it.title)}">${it.title}</div><div class="small">${it.src}</div>`;
-      f.appendChild(thumb); f.appendChild(meta);
-      f.addEventListener('click', ()=> openLightbox(it));
-      filesEl.appendChild(f);
-    });
-  }
-
-  function buildTreeAndRender(){
-    const root = buildTree(manifest);
-    treeEl.innerHTML = '';
-    const rootBtn = document.createElement('div'); rootBtn.className='folder'; rootBtn.innerHTML = `<div style="font-weight:700">/ (repo root)</div><div class="muted">${countFilesInNode(root)} files</div>`;
-    treeEl.appendChild(rootBtn);
-    rootBtn.addEventListener('click', ()=> { showRootFiles(root); });
-    renderTree(root, treeEl, []);
-    showRootFiles(root);
-  }
-
-  function fileIcon(src){
-    const ext = src.split('.').pop().toLowerCase();
-    if(['png','jpg','jpeg','gif','svg','webp'].includes(ext)) return 'image';
-    if(['mp4','webm','ogg'].includes(ext)) return 'video';
-    if(['pdf'].includes(ext)) return 'pdf';
-    return 'file';
-  }
-
-  function openLightbox(item){
-    const lb = document.getElementById('lightbox');
-    const content = document.getElementById('lb-content');
-    const title = document.getElementById('lb-title');
-    const dl = document.getElementById('lb-download');
-    content.innerHTML = ''; title.textContent = item.title || item.src; dl.href = safe(item.src); dl.download = item.title || '';
-    const ext = fileIcon(item.src);
-    if(ext==='image'){ const img = document.createElement('img'); img.src = safe(item.src); content.appendChild(img); }
-    else if(ext==='video'){ const v = document.createElement('video'); v.controls=true; v.src = safe(item.src); content.appendChild(v); }
-    else if(ext==='pdf'){ const iframe = document.createElement('iframe'); iframe.src = safe(item.src); iframe.style.width='100%'; iframe.style.height='80vh'; content.appendChild(iframe); }
-    else{ const info = document.createElement('div'); info.style.padding='24px'; info.style.color='#fff'; info.textContent = 'Preview not available. Use download.'; content.appendChild(info); }
-    lb.classList.add('show'); lb.setAttribute('aria-hidden','false');
-  }
-
-  document.getElementById('lb-close').addEventListener('click', ()=>{ const lb=document.getElementById('lightbox'); lb.classList.remove('show'); lb.setAttribute('aria-hidden','true'); document.getElementById('lb-content').innerHTML=''; });
-  document.getElementById('lightbox').addEventListener('click',(e)=>{ if(e.target.id==='lightbox') { document.getElementById('lightbox').classList.remove('show'); document.getElementById('lb-content').innerHTML=''; } });
-
-  search.addEventListener('input', ()=>{
-    const q = search.value.trim().toLowerCase();
-    if(!q){ buildTreeAndRender(); return; }
-    const results = manifest.filter(it => ((it.title||'') + ' ' + it.src + ' ' + (it.course||'')).toLowerCase().includes(q));
-    panelPath.textContent = `Search: "${q}" (${results.length})`;
-    panelCount.textContent = `${results.length} result(s)`;
-    filesEl.innerHTML = '';
-    results.sort((a,b)=> (a.title||'').localeCompare(b.title||''));
-    results.forEach(it=>{
-      const f = document.createElement('div'); f.className='file';
-      const thumb = document.createElement('div'); thumb.className='thumb';
-      const ext = (it.src.split('.').pop()||'').toLowerCase();
-      if(['png','jpg','jpeg','gif','svg','webp'].includes(ext)){
-        const img = document.createElement('img'); img.src = safe(it.src); img.alt = it.title; img.style.width='100%'; img.style.height='140px'; img.style.objectFit='cover';
-        thumb.appendChild(img);
-      } else if(['mp4','webm','ogg'].includes(ext)){
-        const v = document.createElement('video'); v.src = safe(it.src); v.muted=true; v.loop=true; v.playsInline=true; v.autoplay=true; v.style.width='100%'; v.style.height='140px'; v.style.objectFit='cover';
-        thumb.appendChild(v);
-      } else {
-        thumb.textContent = ext.toUpperCase();
-      }
-      const meta = document.createElement('div'); meta.className='meta';
-      meta.innerHTML = `<div class="title" title="${escapeHtml(it.title)}">${it.title}</div><div class="small">${it.src}</div>`;
-      f.appendChild(thumb); f.appendChild(meta);
-      f.addEventListener('click', ()=> openLightbox(it));
-      filesEl.appendChild(f);
     });
   });
+}
 
-  loadManifest();
+function countFiles(node) {
+  let count = node._files.length;
+  Object.values(node._children).forEach(child => {
+    count += countFiles(child);
+  });
+  return count;
+}
+
+function showFiles(files, path) {
+  const container = document.getElementById('files-container');
+  const pathEl = document.getElementById('current-path');
+  const countEl = document.getElementById('file-count');
+  
+  pathEl.textContent = path || 'All Files';
+  countEl.textContent = `${files.length} file${files.length !== 1 ? 's' : ''}`;
+  
+  container.innerHTML = '';
+  
+  if (files.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        <p>No files found</p>
+      </div>
+    `;
+    return;
+  }
+  
+  files.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+  
+  files.forEach(file => {
+    const card = createFileCard(file);
+    container.appendChild(card);
+  });
+}
+
+function showAllFiles() {
+  showFiles(manifest, 'All Files');
+}
+
+function createFileCard(file) {
+  const card = document.createElement('div');
+  card.className = 'file-card';
+  
+  const ext = (file.src.split('.').pop() || '').toLowerCase();
+  const thumb = document.createElement('div');
+  thumb.className = 'file-thumb';
+  
+  if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'].includes(ext)) {
+    const img = document.createElement('img');
+    img.src = safe(file.src);
+    img.alt = file.title;
+    thumb.appendChild(img);
+  } else if (['mp4', 'webm', 'ogg'].includes(ext)) {
+    const video = document.createElement('video');
+    video.src = safe(file.src);
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+    thumb.appendChild(video);
+  } else {
+    thumb.textContent = ext.toUpperCase();
+  }
+  
+  const badge = document.createElement('div');
+  badge.className = 'file-badge';
+  badge.textContent = ext.toUpperCase();
+  thumb.appendChild(badge);
+  
+  const meta = document.createElement('div');
+  meta.className = 'file-meta';
+  meta.innerHTML = `
+    <div class="file-title" title="${esc(file.title)}">${esc(file.title)}</div>
+    <div class="file-path">${esc(file.src)}</div>
+  `;
+  
+  card.appendChild(thumb);
+  card.appendChild(meta);
+  
+  card.addEventListener('click', () => openLightbox(file));
+  
+  return card;
+}
+
+function openLightbox(file) {
+  const lightbox = document.getElementById('lightbox');
+  const media = document.getElementById('lightbox-media');
+  const title = document.getElementById('lightbox-title');
+  const download = document.getElementById('lightbox-download');
+  
+  media.innerHTML = '';
+  title.textContent = file.title;
+  download.href = safe(file.src);
+  download.download = file.title;
+  
+  const ext = (file.src.split('.').pop() || '').toLowerCase();
+  
+  if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'].includes(ext)) {
+    const img = document.createElement('img');
+    img.src = safe(file.src);
+    media.appendChild(img);
+  } else if (['mp4', 'webm', 'ogg'].includes(ext)) {
+    const video = document.createElement('video');
+    video.src = safe(file.src);
+    video.controls = true;
+    media.appendChild(video);
+  } else if (ext === 'pdf') {
+    const iframe = document.createElement('iframe');
+    iframe.src = safe(file.src);
+    iframe.style.width = '100%';
+    iframe.style.height = '70vh';
+    media.appendChild(iframe);
+  } else {
+    media.innerHTML = '<div style="color:white;padding:40px">Preview not available. Use download button.</div>';
+  }
+  
+  lightbox.classList.add('show');
+}
+
+document.getElementById('lightbox-close').addEventListener('click', () => {
+  document.getElementById('lightbox').classList.remove('show');
+});
+
+document.getElementById('lightbox').addEventListener('click', (e) => {
+  if (e.target.id === 'lightbox') {
+    document.getElementById('lightbox').classList.remove('show');
+  }
+});
+
+document.getElementById('search').addEventListener('input', (e) => {
+  const query = e.target.value.trim().toLowerCase();
+  
+  if (!query) {
+    showAllFiles();
+    return;
+  }
+  
+  const results = manifest.filter(file => {
+    const searchText = `${file.title} ${file.src} ${file.course} ${file.category}`.toLowerCase();
+    return searchText.includes(query);
+  });
+  
+  showFiles(results, `Search: "${query}"`);
+});
+
+document.querySelectorAll('.view-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentView = btn.dataset.view;
+  });
+});
+
+loadManifest();
 </script>
+
 </body>
 </html>
-EOF
-
