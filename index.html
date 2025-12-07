@@ -50,15 +50,32 @@
   }
   
   .site-title {
-    font-size: 20px;
-    font-weight: 700;
+    font-size: 22px;
+    font-weight: 800;
     color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
   
   .site-subtitle {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text-muted);
     font-weight: 400;
+    margin-top: 2px;
+  }
+  
+  .stats-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--accent-light);
+    color: var(--accent);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-left: 8px;
   }
   
   .search-container {
@@ -465,8 +482,11 @@
 <header class="header">
   <div class="header-content">
     <div>
-      <div class="site-title">📚 Coursework Archive</div>
-      <div class="site-subtitle">Theoretical Computer Science</div>
+      <div class="site-title">
+        📚 Coursework Archive
+        <span class="stats-badge" id="total-files-badge">0 files</span>
+      </div>
+      <div class="site-subtitle">Theoretical Computer Science • Andreas Panayi</div>
     </div>
     <div class="search-container">
       <span class="search-icon">🔍</span>
@@ -525,6 +545,9 @@ async function loadManifest() {
     
     // Collect all files
     allFiles = collectAllFiles(manifest);
+    
+    // Update total files badge
+    document.getElementById('total-files-badge').textContent = `${allFiles.length} files`;
     
     // Build and render tree
     renderFolderTree();
