@@ -539,12 +539,20 @@ let currentFolder = null;
 // Load manifest
 async function loadManifest() {
   try {
+    console.log('Attempting to load manifest.json...');
     const res = await fetch('manifest.json', {cache: 'no-store'});
-    if (!res.ok) throw new Error('No manifest');
+    console.log('Fetch response:', res.status, res.statusText);
+    
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    
     manifest = await res.json();
+    console.log('Manifest loaded successfully:', manifest);
     
     // Collect all files
     allFiles = collectAllFiles(manifest);
+    console.log('Total files found:', allFiles.length);
     
     // Update total files badge
     document.getElementById('total-files-badge').textContent = `${allFiles.length} files`;
@@ -554,7 +562,14 @@ async function loadManifest() {
     showAllFiles();
   } catch(e) {
     console.error('Failed to load manifest:', e);
-    document.getElementById('files-grid').innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><p>Failed to load files</p></div>';
+    document.getElementById('files-grid').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">⚠️</div>
+        <p>Failed to load files</p>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">Error: ${e.message}</p>
+        <p style="font-size: 12px; color: var(--text-muted);">Check browser console for details</p>
+      </div>
+    `;
   }
 }
 
@@ -562,14 +577,22 @@ async function loadManifest() {
 function collectAllFiles(node, basePath = '') {
   const files = [];
   
+  // Use the node's path property if available, otherwise use basePath
+  const currentPath = node.path || basePath;
+  
   // Add files in current directory
   if (node.files && Array.isArray(node.files)) {
     node.files.forEach(filename => {
-      const fullPath = basePath ? `${basePath}/${filename}` : filename;
+      // Skip index.html and manifest.json from the root
+      if (filename === 'index.html' || filename === 'manifest.json') {
+        return;
+      }
+      
+      const fullPath = currentPath && currentPath !== '.' ? `${currentPath}/${filename}` : filename;
       files.push({
         name: filename,
         path: fullPath,
-        folder: basePath || 'Root'
+        folder: currentPath && currentPath !== '.' ? currentPath : 'Root'
       });
     });
   }
@@ -577,8 +600,7 @@ function collectAllFiles(node, basePath = '') {
   // Recursively add files from subdirectories
   if (node.dirs && Array.isArray(node.dirs)) {
     node.dirs.forEach(dir => {
-      const dirPath = basePath ? `${basePath}/${dir.name}` : dir.name;
-      const subFiles = collectAllFiles(dir, dirPath);
+      const subFiles = collectAllFiles(dir, dir.path || '');
       files.push(...subFiles);
     });
   }
@@ -695,6 +717,7 @@ function showAllFiles() {
 // Show files for a specific folder
 function showFolderFiles(folderPath) {
   currentFolder = folderPath;
+  // Match files where the folder path matches exactly
   const files = allFiles.filter(f => f.folder === folderPath);
   document.getElementById('current-path').textContent = folderPath;
   document.getElementById('file-count').textContent = `${files.length} files`;
