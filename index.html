@@ -28,7 +28,6 @@
     line-height: 1.6;
   }
   
-  /* Header */
   .header {
     background: white;
     border-bottom: 1px solid var(--border);
@@ -107,7 +106,6 @@
     color: var(--text-muted);
   }
   
-  /* Main Layout */
   .container {
     max-width: 1400px;
     margin: 0 auto;
@@ -118,7 +116,6 @@
     align-items: start;
   }
   
-  /* Sidebar */
   .sidebar {
     background: var(--card);
     border-radius: 12px;
@@ -218,7 +215,6 @@
     display: block;
   }
   
-  /* Main Content */
   .main-content {
     background: var(--card);
     border-radius: 12px;
@@ -247,7 +243,6 @@
     color: var(--text-muted);
   }
   
-  /* Files Grid */
   .files-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -324,7 +319,6 @@
     white-space: nowrap;
   }
   
-  /* Lightbox */
   .lightbox {
     position: fixed;
     inset: 0;
@@ -429,7 +423,6 @@
     opacity: 0.3;
   }
   
-  /* Responsive */
   @media (max-width: 1024px) {
     .container {
       grid-template-columns: 1fr;
@@ -457,7 +450,6 @@
     }
   }
   
-  /* Scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -484,7 +476,7 @@
     <div>
       <div class="site-title">
         📚 Coursework Archive
-        <span class="stats-badge" id="total-files-badge">0 files</span>
+        <span class="stats-badge" id="total-files-badge">Loading...</span>
       </div>
       <div class="site-subtitle">Theoretical Computer Science • Andreas Panayi</div>
     </div>
@@ -503,15 +495,27 @@
 <div class="container">
   <aside class="sidebar">
     <div class="sidebar-header">Folders</div>
-    <ul class="folder-tree" id="folder-tree"></ul>
+    <ul class="folder-tree" id="folder-tree">
+      <li class="folder-item">
+        <div class="folder-label">
+          <span class="folder-icon">⏳</span>
+          <span class="folder-name">Loading...</span>
+        </div>
+      </li>
+    </ul>
   </aside>
 
   <main class="main-content">
     <div class="content-header">
-      <h1 class="current-path" id="current-path">All Files</h1>
-      <span class="file-count" id="file-count"></span>
+      <h1 class="current-path" id="current-path">Loading</h1>
+      <span class="file-count" id="file-count">Please wait...</span>
     </div>
-    <div class="files-grid" id="files-grid"></div>
+    <div class="files-grid" id="files-grid">
+      <div class="empty-state">
+        <div class="empty-icon">⏳</div>
+        <p>Loading files...</p>
+      </div>
+    </div>
   </main>
 </div>
 
@@ -529,337 +533,305 @@
 </div>
 
 <script>
-const safe = s => encodeURI(s);
-const esc = s => (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+(function() {
+  'use strict';
+  
+  const safe = s => encodeURI(s);
+  const esc = s => (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
 
-let manifest = null;
-let allFiles = [];
-let currentFolder = null;
+  let manifest = null;
+  let allFiles = [];
+  let currentFolder = null;
 
-// Load manifest
-async function loadManifest() {
-  try {
-    console.log('Attempting to load manifest.json...');
-    const res = await fetch('manifest.json', {cache: 'no-store'});
-    console.log('Fetch response:', res.status, res.statusText);
+  function collectAllFiles(node) {
+    const files = [];
+    const currentPath = node.path || '';
     
-    if (!res.ok) {
-      throw new Error(`HTTP error! status: ${res.status}`);
+    if (node.files && Array.isArray(node.files)) {
+      node.files.forEach(filename => {
+        if (filename === 'index.html' || filename === 'manifest.json') return;
+        
+        const fullPath = currentPath && currentPath !== '.' ? `${currentPath}/${filename}` : filename;
+        files.push({
+          name: filename,
+          path: fullPath,
+          folder: currentPath && currentPath !== '.' ? currentPath : 'Root'
+        });
+      });
     }
     
-    manifest = await res.json();
-    console.log('Manifest loaded successfully:', manifest);
+    if (node.dirs && Array.isArray(node.dirs)) {
+      node.dirs.forEach(dir => {
+        const subFiles = collectAllFiles(dir);
+        files.push(...subFiles);
+      });
+    }
     
-    // Collect all files
-    allFiles = collectAllFiles(manifest);
-    console.log('Total files found:', allFiles.length);
+    return files;
+  }
+
+  function countFilesInDir(dir) {
+    let count = dir.files ? dir.files.length : 0;
+    if (dir.dirs) {
+      dir.dirs.forEach(subdir => {
+        count += countFilesInDir(subdir);
+      });
+    }
+    return count;
+  }
+
+  function renderFolderTree() {
+    const tree = document.getElementById('folder-tree');
+    tree.innerHTML = '';
     
-    // Update total files badge
-    document.getElementById('total-files-badge').textContent = `${allFiles.length} files`;
-    
-    // Build and render tree
-    renderFolderTree();
-    showAllFiles();
-  } catch(e) {
-    console.error('Failed to load manifest:', e);
-    document.getElementById('files-grid').innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">⚠️</div>
-        <p>Failed to load files</p>
-        <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">Error: ${e.message}</p>
-        <p style="font-size: 12px; color: var(--text-muted);">Check browser console for details</p>
+    const allItem = document.createElement('li');
+    allItem.className = 'folder-item';
+    allItem.innerHTML = `
+      <div class="folder-label active" data-path="">
+        <span class="folder-icon">📂</span>
+        <span class="folder-name">All Files</span>
+        <span class="folder-count">${allFiles.length}</span>
       </div>
     `;
-  }
-}
-
-// Recursively collect all files from directory structure
-function collectAllFiles(node, basePath = '') {
-  const files = [];
-  
-  // Use the node's path property if available, otherwise use basePath
-  const currentPath = node.path || basePath;
-  
-  // Add files in current directory
-  if (node.files && Array.isArray(node.files)) {
-    node.files.forEach(filename => {
-      // Skip index.html and manifest.json from the root
-      if (filename === 'index.html' || filename === 'manifest.json') {
-        return;
-      }
-      
-      const fullPath = currentPath && currentPath !== '.' ? `${currentPath}/${filename}` : filename;
-      files.push({
-        name: filename,
-        path: fullPath,
-        folder: currentPath && currentPath !== '.' ? currentPath : 'Root'
+    tree.appendChild(allItem);
+    
+    if (manifest.dirs) {
+      manifest.dirs.forEach(dir => {
+        const item = renderTreeNode(dir, '');
+        tree.appendChild(item);
+      });
+    }
+    
+    tree.querySelectorAll('.folder-label').forEach(label => {
+      label.addEventListener('click', (e) => {
+        e.stopPropagation();
+        
+        tree.querySelectorAll('.folder-label').forEach(l => l.classList.remove('active'));
+        label.classList.add('active');
+        
+        const parent = label.parentElement;
+        const subfolder = parent.querySelector('.subfolder-list');
+        if (subfolder) {
+          const caret = label.querySelector('.caret');
+          subfolder.classList.toggle('open');
+          if (caret) caret.classList.toggle('open');
+        }
+        
+        const path = label.dataset.path;
+        if (path === '') {
+          showAllFiles();
+        } else {
+          showFolderFiles(path);
+        }
       });
     });
   }
-  
-  // Recursively add files from subdirectories
-  if (node.dirs && Array.isArray(node.dirs)) {
-    node.dirs.forEach(dir => {
-      const subFiles = collectAllFiles(dir, dir.path || '');
-      files.push(...subFiles);
-    });
-  }
-  
-  return files;
-}
 
-// Count files in a directory (including subdirectories)
-function countFilesInDir(dir) {
-  let count = dir.files ? dir.files.length : 0;
-  if (dir.dirs) {
-    dir.dirs.forEach(subdir => {
-      count += countFilesInDir(subdir);
-    });
-  }
-  return count;
-}
-
-// Render folder tree in sidebar
-function renderFolderTree() {
-  const tree = document.getElementById('folder-tree');
-  tree.innerHTML = '';
-  
-  // Add "All Files" option
-  const allItem = document.createElement('li');
-  allItem.className = 'folder-item';
-  allItem.innerHTML = `
-    <div class="folder-label active" data-path="">
-      <span class="folder-icon">📂</span>
-      <span class="folder-name">All Files</span>
-      <span class="folder-count">${allFiles.length}</span>
-    </div>
-  `;
-  tree.appendChild(allItem);
-  
-  // Add directory structure
-  if (manifest.dirs) {
-    manifest.dirs.forEach(dir => {
-      const item = renderTreeNode(dir, '');
-      tree.appendChild(item);
-    });
-  }
-  
-  // Add click handlers
-  tree.querySelectorAll('.folder-label').forEach(label => {
-    label.addEventListener('click', (e) => {
-      e.stopPropagation();
-      
-      // Update active state
-      tree.querySelectorAll('.folder-label').forEach(l => l.classList.remove('active'));
-      label.classList.add('active');
-      
-      // Toggle subfolder
-      const parent = label.parentElement;
-      const subfolder = parent.querySelector('.subfolder-list');
-      if (subfolder) {
-        const caret = label.querySelector('.caret');
-        subfolder.classList.toggle('open');
-        if (caret) caret.classList.toggle('open');
-      }
-      
-      // Show files for this folder
-      const path = label.dataset.path;
-      if (path === '') {
-        showAllFiles();
-      } else {
-        showFolderFiles(path);
-      }
-    });
-  });
-}
-
-// Render a single tree node
-function renderTreeNode(dir, parentPath) {
-  const dirPath = parentPath ? `${parentPath}/${dir.name}` : dir.name;
-  const fileCount = countFilesInDir(dir);
-  
-  const li = document.createElement('li');
-  li.className = 'folder-item';
-  
-  const hasSubdirs = dir.dirs && dir.dirs.length > 0;
-  
-  li.innerHTML = `
-    <div class="folder-label" data-path="${esc(dirPath)}">
-      ${hasSubdirs ? '<span class="caret"></span>' : ''}
-      <span class="folder-icon">📁</span>
-      <span class="folder-name">${esc(dir.name)}</span>
-      <span class="folder-count">${fileCount}</span>
-    </div>
-  `;
-  
-  // Add subdirectories
-  if (hasSubdirs) {
-    const sublist = document.createElement('ul');
-    sublist.className = 'subfolder-list';
-    dir.dirs.forEach(subdir => {
-      const subItem = renderTreeNode(subdir, dirPath);
-      sublist.appendChild(subItem);
-    });
-    li.appendChild(sublist);
-  }
-  
-  return li;
-}
-
-// Show all files
-function showAllFiles() {
-  currentFolder = null;
-  document.getElementById('current-path').textContent = 'All Files';
-  document.getElementById('file-count').textContent = `${allFiles.length} files`;
-  renderFiles(allFiles);
-}
-
-// Show files for a specific folder
-function showFolderFiles(folderPath) {
-  currentFolder = folderPath;
-  // Match files where the folder path matches exactly
-  const files = allFiles.filter(f => f.folder === folderPath);
-  document.getElementById('current-path').textContent = folderPath;
-  document.getElementById('file-count').textContent = `${files.length} files`;
-  renderFiles(files);
-}
-
-// Render files in grid
-function renderFiles(files) {
-  const grid = document.getElementById('files-grid');
-  grid.innerHTML = '';
-  
-  if (files.length === 0) {
-    grid.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><p>No files found</p></div>';
-    return;
-  }
-  
-  files.sort((a, b) => a.name.localeCompare(b.name));
-  
-  files.forEach(file => {
-    const card = createFileCard(file);
-    grid.appendChild(card);
-  });
-}
-
-// Create file card element
-function createFileCard(file) {
-  const card = document.createElement('div');
-  card.className = 'file-card';
-  
-  const ext = (file.name.split('.').pop() || '').toLowerCase();
-  const thumbnail = document.createElement('div');
-  thumbnail.className = 'file-thumbnail';
-  
-  // Handle different file types
-  if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'].includes(ext)) {
-    const img = document.createElement('img');
-    img.src = safe(file.path);
-    img.alt = file.name;
-    thumbnail.appendChild(img);
-  } else if (['mp4', 'webm', 'ogg'].includes(ext)) {
-    const video = document.createElement('video');
-    video.src = safe(file.path);
-    video.muted = true;
-    video.loop = true;
-    video.playsInline = true;
-    thumbnail.appendChild(video);
-  } else {
-    thumbnail.textContent = ext.toUpperCase();
-  }
-  
-  const badge = document.createElement('div');
-  badge.className = 'file-ext-badge';
-  badge.textContent = ext.toUpperCase();
-  thumbnail.appendChild(badge);
-  
-  const info = document.createElement('div');
-  info.className = 'file-info';
-  info.innerHTML = `
-    <div class="file-title" title="${esc(file.name)}">${esc(file.name)}</div>
-    <div class="file-path">${esc(file.folder)}</div>
-  `;
-  
-  card.appendChild(thumbnail);
-  card.appendChild(info);
-  
-  card.addEventListener('click', () => openLightbox(file));
-  
-  return card;
-}
-
-// Open lightbox with file preview
-function openLightbox(file) {
-  const lightbox = document.getElementById('lightbox');
-  const media = document.getElementById('lightbox-media');
-  const title = document.getElementById('lightbox-title');
-  const download = document.getElementById('lightbox-download');
-  
-  media.innerHTML = '';
-  title.textContent = file.name;
-  download.href = safe(file.path);
-  download.download = file.name;
-  
-  const ext = (file.name.split('.').pop() || '').toLowerCase();
-  
-  if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'].includes(ext)) {
-    const img = document.createElement('img');
-    img.src = safe(file.path);
-    media.appendChild(img);
-  } else if (['mp4', 'webm', 'ogg'].includes(ext)) {
-    const video = document.createElement('video');
-    video.src = safe(file.path);
-    video.controls = true;
-    media.appendChild(video);
-  } else if (ext === 'pdf') {
-    const iframe = document.createElement('iframe');
-    iframe.src = safe(file.path);
-    iframe.style.width = '100%';
-    iframe.style.height = '70vh';
-    media.appendChild(iframe);
-  } else {
-    media.innerHTML = '<div style="color:white;padding:40px;text-align:center">Preview not available. Use download button.</div>';
-  }
-  
-  lightbox.classList.add('show');
-}
-
-// Close lightbox
-document.getElementById('lightbox-close').addEventListener('click', () => {
-  document.getElementById('lightbox').classList.remove('show');
-});
-
-document.getElementById('lightbox').addEventListener('click', (e) => {
-  if (e.target.id === 'lightbox') {
-    document.getElementById('lightbox').classList.remove('show');
-  }
-});
-
-// Search functionality
-document.getElementById('search').addEventListener('input', (e) => {
-  const query = e.target.value.trim().toLowerCase();
-  
-  if (!query) {
-    if (currentFolder) {
-      showFolderFiles(currentFolder);
-    } else {
-      showAllFiles();
+  function renderTreeNode(dir, parentPath) {
+    const dirPath = dir.path || (parentPath ? `${parentPath}/${dir.name}` : dir.name);
+    const fileCount = countFilesInDir(dir);
+    
+    const li = document.createElement('li');
+    li.className = 'folder-item';
+    
+    const hasSubdirs = dir.dirs && dir.dirs.length > 0;
+    
+    li.innerHTML = `
+      <div class="folder-label" data-path="${esc(dirPath)}">
+        ${hasSubdirs ? '<span class="caret"></span>' : ''}
+        <span class="folder-icon">📁</span>
+        <span class="folder-name">${esc(dir.name)}</span>
+        <span class="folder-count">${fileCount}</span>
+      </div>
+    `;
+    
+    if (hasSubdirs) {
+      const sublist = document.createElement('ul');
+      sublist.className = 'subfolder-list';
+      dir.dirs.forEach(subdir => {
+        const subItem = renderTreeNode(subdir, dirPath);
+        sublist.appendChild(subItem);
+      });
+      li.appendChild(sublist);
     }
-    return;
+    
+    return li;
   }
-  
-  const results = allFiles.filter(file => {
-    const searchText = `${file.name} ${file.path} ${file.folder}`.toLowerCase();
-    return searchText.includes(query);
-  });
-  
-  document.getElementById('current-path').textContent = `Search: "${query}"`;
-  document.getElementById('file-count').textContent = `${results.length} results`;
-  renderFiles(results);
-});
 
-// Load manifest on page load
-loadManifest();
+  function showAllFiles() {
+    currentFolder = null;
+    document.getElementById('current-path').textContent = 'All Files';
+    document.getElementById('file-count').textContent = `${allFiles.length} files`;
+    renderFiles(allFiles);
+  }
+
+  function showFolderFiles(folderPath) {
+    currentFolder = folderPath;
+    const files = allFiles.filter(f => f.folder === folderPath);
+    document.getElementById('current-path').textContent = folderPath;
+    document.getElementById('file-count').textContent = `${files.length} files`;
+    renderFiles(files);
+  }
+
+  function renderFiles(files) {
+    const grid = document.getElementById('files-grid');
+    grid.innerHTML = '';
+    
+    if (files.length === 0) {
+      grid.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><p>No files found</p></div>';
+      return;
+    }
+    
+    files.sort((a, b) => a.name.localeCompare(b.name));
+    
+    files.forEach(file => {
+      const card = createFileCard(file);
+      grid.appendChild(card);
+    });
+  }
+
+  function createFileCard(file) {
+    const card = document.createElement('div');
+    card.className = 'file-card';
+    
+    const ext = (file.name.split('.').pop() || '').toLowerCase();
+    const thumbnail = document.createElement('div');
+    thumbnail.className = 'file-thumbnail';
+    
+    if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'].includes(ext)) {
+      const img = document.createElement('img');
+      img.src = safe(file.path);
+      img.alt = file.name;
+      thumbnail.appendChild(img);
+    } else if (['mp4', 'webm', 'ogg'].includes(ext)) {
+      const video = document.createElement('video');
+      video.src = safe(file.path);
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      thumbnail.appendChild(video);
+    } else {
+      thumbnail.textContent = ext.toUpperCase();
+    }
+    
+    const badge = document.createElement('div');
+    badge.className = 'file-ext-badge';
+    badge.textContent = ext.toUpperCase();
+    thumbnail.appendChild(badge);
+    
+    const info = document.createElement('div');
+    info.className = 'file-info';
+    info.innerHTML = `
+      <div class="file-title" title="${esc(file.name)}">${esc(file.name)}</div>
+      <div class="file-path">${esc(file.folder)}</div>
+    `;
+    
+    card.appendChild(thumbnail);
+    card.appendChild(info);
+    
+    card.addEventListener('click', () => openLightbox(file));
+    
+    return card;
+  }
+
+  function openLightbox(file) {
+    const lightbox = document.getElementById('lightbox');
+    const media = document.getElementById('lightbox-media');
+    const title = document.getElementById('lightbox-title');
+    const download = document.getElementById('lightbox-download');
+    
+    media.innerHTML = '';
+    title.textContent = file.name;
+    download.href = safe(file.path);
+    download.download = file.name;
+    
+    const ext = (file.name.split('.').pop() || '').toLowerCase();
+    
+    if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'].includes(ext)) {
+      const img = document.createElement('img');
+      img.src = safe(file.path);
+      media.appendChild(img);
+    } else if (['mp4', 'webm', 'ogg'].includes(ext)) {
+      const video = document.createElement('video');
+      video.src = safe(file.path);
+      video.controls = true;
+      media.appendChild(video);
+    } else if (ext === 'pdf') {
+      const iframe = document.createElement('iframe');
+      iframe.src = safe(file.path);
+      iframe.style.width = '100%';
+      iframe.style.height = '70vh';
+      media.appendChild(iframe);
+    } else {
+      media.innerHTML = '<div style="color:white;padding:40px;text-align:center">Preview not available. Use download button.</div>';
+    }
+    
+    lightbox.classList.add('show');
+  }
+
+  document.getElementById('lightbox-close').addEventListener('click', () => {
+    document.getElementById('lightbox').classList.remove('show');
+  });
+
+  document.getElementById('lightbox').addEventListener('click', (e) => {
+    if (e.target.id === 'lightbox') {
+      document.getElementById('lightbox').classList.remove('show');
+    }
+  });
+
+  document.getElementById('search').addEventListener('input', (e) => {
+    const query = e.target.value.trim().toLowerCase();
+    
+    if (!query) {
+      if (currentFolder) {
+        showFolderFiles(currentFolder);
+      } else {
+        showAllFiles();
+      }
+      return;
+    }
+    
+    const results = allFiles.filter(file => {
+      const searchText = `${file.name} ${file.path} ${file.folder}`.toLowerCase();
+      return searchText.includes(query);
+    });
+    
+    document.getElementById('current-path').textContent = `Search: "${query}"`;
+    document.getElementById('file-count').textContent = `${results.length} results`;
+    renderFiles(results);
+  });
+
+  async function loadManifest() {
+    try {
+      const res = await fetch('manifest.json', {cache: 'no-store'});
+      
+      if (!res.ok) {
+        throw new Error(`Failed to load: ${res.status}`);
+      }
+      
+      manifest = await res.json();
+      allFiles = collectAllFiles(manifest);
+      
+      document.getElementById('total-files-badge').textContent = `${allFiles.length} files`;
+      
+      renderFolderTree();
+      showAllFiles();
+      
+    } catch(e) {
+      console.error('Error loading manifest:', e);
+      document.getElementById('files-grid').innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">⚠️</div>
+          <p style="color: #e53e3e;">Failed to load files</p>
+          <p style="font-size: 12px; margin-top: 8px;">${e.message}</p>
+        </div>
+      `;
+      document.getElementById('total-files-badge').textContent = 'Error';
+    }
+  }
+
+  loadManifest();
+})();
 </script>
 
 </body>
