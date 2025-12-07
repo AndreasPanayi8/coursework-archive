@@ -3,134 +3,80 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Theoretical CS Archive – Andreas Panayi</title>
+<title>Coursework Archive – Andreas Panayi</title>
 <style>
-  :root{
-    --bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  :root {
+    --bg: #f8fafc;
     --card: #ffffff;
-    --card-hover: #f8f9ff;
-    --text: #1a202c;
-    --text-muted: #718096;
-    --accent: #5a67d8;
-    --accent-light: #eef2ff;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --accent: #3b82f6;
+    --accent-light: #dbeafe;
+    --accent-hover: #2563eb;
     --border: #e2e8f0;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
-    --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-    --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
-    --radius: 12px;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --hover: #f1f5f9;
+    --shadow: 0 1px 3px rgba(0,0,0,0.1);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.1);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
   
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
   
   body {
-    margin: 0;
-    padding: 0;
     background: var(--bg);
     color: var(--text);
-    min-height: 100vh;
+    line-height: 1.6;
   }
   
-  .hero {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 60px 24px 40px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1" fill="white" opacity="0.1"/></svg>') repeat;
-    opacity: 0.1;
-  }
-  
-  .hero-content {
-    position: relative;
-    z-index: 1;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-  
-  .hero h1 {
-    margin: 0 0 12px 0;
-    font-size: 42px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-  }
-  
-  .hero p {
-    font-size: 18px;
-    opacity: 0.95;
-    margin: 0 0 32px 0;
-    font-weight: 300;
-  }
-  
-  .stats {
-    display: flex;
-    gap: 32px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .stat {
-    text-align: center;
-  }
-  
-  .stat-number {
-    font-size: 32px;
-    font-weight: 700;
-    display: block;
-  }
-  
-  .stat-label {
-    font-size: 14px;
-    opacity: 0.9;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  
-  .container {
-    max-width: 1400px;
-    margin: -20px auto 40px;
-    padding: 0 24px;
-  }
-  
-  .controls-bar {
-    background: var(--card);
-    padding: 20px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-lg);
-    margin-bottom: 24px;
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  
-  .search-box {
-    flex: 1;
-    min-width: 280px;
-    position: relative;
-  }
-  
-  .search-box input {
-    width: 100%;
-    padding: 12px 16px 12px 44px;
-    border: 2px solid var(--border);
-    border-radius: 10px;
-    font-size: 15px;
-    transition: all 0.2s;
+  /* Header */
+  .header {
     background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow);
   }
   
-  .search-box input:focus {
+  .header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .site-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  
+  .site-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+  
+  .search-container {
+    flex: 1;
+    max-width: 500px;
+    position: relative;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  
+  .search-input:focus {
     outline: none;
     border-color: var(--accent);
     box-shadow: 0 0 0 3px var(--accent-light);
@@ -138,100 +84,92 @@
   
   .search-icon {
     position: absolute;
-    left: 14px;
+    left: 12px;
     top: 50%;
     transform: translateY(-50%);
     color: var(--text-muted);
-    pointer-events: none;
   }
   
-  .view-toggle {
-    display: flex;
-    gap: 8px;
-    background: var(--accent-light);
-    padding: 4px;
-    border-radius: 8px;
-  }
-  
-  .view-btn {
-    padding: 8px 16px;
-    border: none;
-    background: transparent;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    color: var(--text-muted);
-    transition: all 0.2s;
-  }
-  
-  .view-btn.active {
-    background: white;
-    color: var(--accent);
-    box-shadow: var(--shadow-sm);
-  }
-  
-  main {
+  /* Main Layout */
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px;
     display: grid;
-    grid-template-columns: 320px 1fr;
+    grid-template-columns: 280px 1fr;
     gap: 24px;
     align-items: start;
   }
   
+  /* Sidebar */
   .sidebar {
-    position: sticky;
-    top: 24px;
     background: var(--card);
-    padding: 20px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-lg);
-    max-height: calc(100vh - 48px);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 16px;
+    position: sticky;
+    top: 100px;
+    max-height: calc(100vh - 120px);
     overflow-y: auto;
   }
   
-  .sidebar h3 {
-    margin: 0 0 16px 0;
-    font-size: 16px;
-    color: var(--text-muted);
+  .sidebar-header {
+    font-size: 12px;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+  
+  .folder-tree {
+    list-style: none;
   }
   
   .folder-item {
-    padding: 10px 12px;
-    border-radius: 8px;
-    cursor: pointer;
+    margin: 2px 0;
+  }
+  
+  .folder-label {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    transition: all 0.2s;
-    margin-bottom: 4px;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.15s;
+    user-select: none;
   }
   
-  .folder-item:hover {
-    background: var(--card-hover);
-    transform: translateX(4px);
+  .folder-label:hover {
+    background: var(--hover);
   }
   
-  .folder-item.active {
+  .folder-label.active {
     background: var(--accent-light);
     color: var(--accent);
     font-weight: 600;
   }
   
+  .folder-icon {
+    flex-shrink: 0;
+    font-size: 16px;
+  }
+  
   .folder-name {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   
   .folder-count {
-    font-size: 12px;
-    color: var(--text-muted);
+    font-size: 11px;
     background: var(--accent-light);
-    padding: 2px 8px;
-    border-radius: 12px;
+    color: var(--accent);
+    padding: 2px 6px;
+    border-radius: 10px;
     font-weight: 600;
   }
   
@@ -239,34 +177,37 @@
     display: inline-block;
     width: 0;
     height: 0;
-    border-left: 5px solid currentColor;
+    border-left: 5px solid var(--text-muted);
     border-top: 4px solid transparent;
     border-bottom: 4px solid transparent;
     transition: transform 0.2s;
+    margin-right: 2px;
   }
   
   .caret.open {
     transform: rotate(90deg);
   }
   
-  .children {
-    margin-left: 24px;
+  .subfolder-list {
+    list-style: none;
+    margin-left: 20px;
     margin-top: 4px;
-    border-left: 2px solid var(--border);
-    padding-left: 12px;
+    border-left: 1px solid var(--border);
+    padding-left: 8px;
     display: none;
   }
   
-  .children.show {
+  .subfolder-list.open {
     display: block;
   }
   
-  .content-area {
+  /* Main Content */
+  .main-content {
     background: var(--card);
-    padding: 28px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-lg);
-    min-height: 600px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 24px;
+    min-height: calc(100vh - 170px);
   }
   
   .content-header {
@@ -278,22 +219,22 @@
     border-bottom: 2px solid var(--border);
   }
   
-  .content-title {
+  .current-path {
     font-size: 24px;
     font-weight: 700;
     color: var(--text);
-    margin: 0;
   }
   
-  .content-count {
-    color: var(--text-muted);
+  .file-count {
     font-size: 14px;
+    color: var(--text-muted);
   }
   
+  /* Files Grid */
   .files-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
   }
   
   .file-card {
@@ -302,43 +243,56 @@
     border-radius: 10px;
     overflow: hidden;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
+    transition: all 0.2s;
   }
   
   .file-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
     border-color: var(--accent);
   }
   
-  .file-thumb {
-    height: 160px;
+  .file-thumbnail {
+    height: 120px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
     font-weight: 700;
-    font-size: 28px;
+    font-size: 24px;
     color: var(--accent);
     position: relative;
-    overflow: hidden;
   }
   
-  .file-thumb img, .file-thumb video {
+  .file-thumbnail img,
+  .file-thumbnail video {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
   
-  .file-meta {
-    padding: 16px;
+  .file-ext-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(255,255,255,0.95);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--accent);
+    box-shadow: var(--shadow);
+  }
+  
+  .file-info {
+    padding: 12px;
   }
   
   .file-title {
     font-weight: 600;
-    font-size: 14px;
-    margin: 0 0 6px 0;
+    font-size: 13px;
+    margin-bottom: 4px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -346,37 +300,23 @@
   }
   
   .file-path {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-muted);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
   
-  .file-badge {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: rgba(255,255,255,0.95);
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--accent);
-    box-shadow: var(--shadow-sm);
-  }
-  
+  /* Lightbox */
   .lightbox {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.9);
+    background: rgba(0,0,0,0.85);
     display: none;
     align-items: center;
     justify-content: center;
     padding: 40px;
     z-index: 1000;
-    backdrop-filter: blur(4px);
   }
   
   .lightbox.show {
@@ -385,8 +325,9 @@
   
   .lightbox-content {
     max-width: 1200px;
+    width: 100%;
     max-height: 90vh;
-    background: #1a202c;
+    background: #1e293b;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 25px 50px rgba(0,0,0,0.5);
@@ -399,9 +340,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background: #0f172a;
   }
   
-  .lightbox-media img, .lightbox-media video, .lightbox-media iframe {
+  .lightbox-media img,
+  .lightbox-media video,
+  .lightbox-media iframe {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
@@ -409,7 +353,7 @@
   
   .lightbox-footer {
     padding: 20px;
-    background: #2d3748;
+    background: #1e293b;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -418,7 +362,7 @@
   
   .lightbox-title {
     font-weight: 600;
-    font-size: 16px;
+    font-size: 15px;
   }
   
   .lightbox-actions {
@@ -434,6 +378,7 @@
     cursor: pointer;
     transition: all 0.2s;
     text-decoration: none;
+    font-size: 14px;
     display: inline-block;
   }
   
@@ -443,8 +388,7 @@
   }
   
   .btn-primary:hover {
-    background: #4c51bf;
-    transform: translateY(-1px);
+    background: var(--accent-hover);
   }
   
   .btn-secondary {
@@ -453,24 +397,24 @@
   }
   
   .btn-secondary:hover {
-    background: #f7fafc;
+    background: #f1f5f9;
   }
   
   .empty-state {
     text-align: center;
-    padding: 80px 20px;
+    padding: 60px 20px;
     color: var(--text-muted);
   }
   
-  .empty-state svg {
-    width: 120px;
-    height: 120px;
-    margin-bottom: 24px;
+  .empty-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
     opacity: 0.3;
   }
   
+  /* Responsive */
   @media (max-width: 1024px) {
-    main {
+    .container {
       grid-template-columns: 1fr;
     }
     
@@ -479,79 +423,75 @@
       top: 0;
       max-height: 400px;
     }
-    
-    .hero h1 {
-      font-size: 32px;
-    }
   }
   
   @media (max-width: 640px) {
-    .hero {
-      padding: 40px 20px 30px;
+    .header-content {
+      flex-direction: column;
+      align-items: stretch;
     }
     
-    .hero h1 {
-      font-size: 28px;
-    }
-    
-    .stats {
-      gap: 20px;
+    .search-container {
+      max-width: 100%;
     }
     
     .files-grid {
       grid-template-columns: 1fr;
     }
   }
+  
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--bg);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+  }
 </style>
 </head>
 <body>
 
-<div class="hero">
-  <div class="hero-content">
-    <h1>📚 Theoretical Computer Science Archive</h1>
-    <p>A comprehensive collection of coursework, exercises, and research materials</p>
-    <div class="stats">
-      <div class="stat">
-        <span class="stat-number" id="total-files">0</span>
-        <span class="stat-label">Total Files</span>
-      </div>
-      <div class="stat">
-        <span class="stat-number" id="total-courses">0</span>
-        <span class="stat-label">Courses</span>
-      </div>
-      <div class="stat">
-        <span class="stat-number" id="total-categories">0</span>
-        <span class="stat-label">Categories</span>
-      </div>
+<header class="header">
+  <div class="header-content">
+    <div>
+      <div class="site-title">📚 Coursework Archive</div>
+      <div class="site-subtitle">Theoretical Computer Science</div>
+    </div>
+    <div class="search-container">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="search" 
+        id="search" 
+        class="search-input"
+        placeholder="Search files..." 
+      />
     </div>
   </div>
-</div>
+</header>
 
 <div class="container">
-  <div class="controls-bar">
-    <div class="search-box">
-      <span class="search-icon">🔍</span>
-      <input type="search" id="search" placeholder="Search by title, course, or category..." />
-    </div>
-    <div class="view-toggle">
-      <button class="view-btn active" data-view="grid">Grid</button>
-      <button class="view-btn" data-view="list">List</button>
-    </div>
-  </div>
+  <aside class="sidebar">
+    <div class="sidebar-header">Folders</div>
+    <ul class="folder-tree" id="folder-tree"></ul>
+  </aside>
 
-  <main>
-    <aside class="sidebar">
-      <h3>Browse by Folder</h3>
-      <div id="tree"></div>
-    </aside>
-
-    <section class="content-area">
-      <div class="content-header">
-        <h2 class="content-title" id="current-path">All Files</h2>
-        <span class="content-count" id="file-count"></span>
-      </div>
-      <div class="files-grid" id="files-container"></div>
-    </section>
+  <main class="main-content">
+    <div class="content-header">
+      <h1 class="current-path" id="current-path">All Files</h1>
+      <span class="file-count" id="file-count"></span>
+    </div>
+    <div class="files-grid" id="files-grid"></div>
   </main>
 </div>
 
@@ -572,185 +512,237 @@
 const safe = s => encodeURI(s);
 const esc = s => (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
 
-let manifest = [];
-let currentView = 'grid';
+let manifest = null;
+let allFiles = [];
+let currentFolder = null;
 
+// Load manifest
 async function loadManifest() {
   try {
     const res = await fetch('manifest.json', {cache: 'no-store'});
     if (!res.ok) throw new Error('No manifest');
     manifest = await res.json();
+    
+    // Collect all files
+    allFiles = collectAllFiles(manifest);
+    
+    // Build and render tree
+    renderFolderTree();
+    showAllFiles();
   } catch(e) {
-    manifest = [];
+    console.error('Failed to load manifest:', e);
+    document.getElementById('files-grid').innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><p>Failed to load files</p></div>';
+  }
+}
+
+// Recursively collect all files from directory structure
+function collectAllFiles(node, basePath = '') {
+  const files = [];
+  
+  // Add files in current directory
+  if (node.files && Array.isArray(node.files)) {
+    node.files.forEach(filename => {
+      const fullPath = basePath ? `${basePath}/${filename}` : filename;
+      files.push({
+        name: filename,
+        path: fullPath,
+        folder: basePath || 'Root'
+      });
+    });
   }
   
-  manifest.forEach(m => { m.title = m.title || m.src; });
+  // Recursively add files from subdirectories
+  if (node.dirs && Array.isArray(node.dirs)) {
+    node.dirs.forEach(dir => {
+      const dirPath = basePath ? `${basePath}/${dir.name}` : dir.name;
+      const subFiles = collectAllFiles(dir, dirPath);
+      files.push(...subFiles);
+    });
+  }
   
-  // Update stats
-  document.getElementById('total-files').textContent = manifest.length;
-  const courses = new Set(manifest.map(m => m.course).filter(Boolean));
-  document.getElementById('total-courses').textContent = courses.size;
-  const categories = new Set(manifest.map(m => m.category).filter(Boolean));
-  document.getElementById('total-categories').textContent = categories.size;
-  
-  buildTree();
-  showAllFiles();
+  return files;
 }
 
-function buildTree() {
-  const tree = {};
-  
-  manifest.forEach(item => {
-    const parts = item.src.split('/').filter(p => p.length > 0);
-    let current = tree;
-    
-    for (let i = 0; i < parts.length - 1; i++) {
-      const part = parts[i];
-      if (!current[part]) {
-        current[part] = { _files: [], _children: {} };
-      }
-      current = current[part]._children;
-    }
-    
-    const folder = parts[parts.length - 2] || 'root';
-    if (!current[folder]) {
-      current[folder] = { _files: [], _children: {} };
-    }
-    current[folder]._files.push(item);
-  });
-  
-  renderTree(tree, document.getElementById('tree'));
+// Count files in a directory (including subdirectories)
+function countFilesInDir(dir) {
+  let count = dir.files ? dir.files.length : 0;
+  if (dir.dirs) {
+    dir.dirs.forEach(subdir => {
+      count += countFilesInDir(subdir);
+    });
+  }
+  return count;
 }
 
-function renderTree(node, container, path = []) {
-  Object.keys(node).sort().forEach(key => {
-    const folder = node[key];
-    const fullPath = [...path, key];
-    const fileCount = countFiles(folder);
-    
-    const item = document.createElement('div');
-    item.className = 'folder-item';
-    item.innerHTML = `
-      <div class="folder-name">
-        <span class="caret"></span>
-        <span>📁 ${key}</span>
-      </div>
-      <span class="folder-count">${fileCount}</span>
-    `;
-    
-    container.appendChild(item);
-    
-    const children = document.createElement('div');
-    children.className = 'children';
-    container.appendChild(children);
-    
-    item.addEventListener('click', (e) => {
+// Render folder tree in sidebar
+function renderFolderTree() {
+  const tree = document.getElementById('folder-tree');
+  tree.innerHTML = '';
+  
+  // Add "All Files" option
+  const allItem = document.createElement('li');
+  allItem.className = 'folder-item';
+  allItem.innerHTML = `
+    <div class="folder-label active" data-path="">
+      <span class="folder-icon">📂</span>
+      <span class="folder-name">All Files</span>
+      <span class="folder-count">${allFiles.length}</span>
+    </div>
+  `;
+  tree.appendChild(allItem);
+  
+  // Add directory structure
+  if (manifest.dirs) {
+    manifest.dirs.forEach(dir => {
+      const item = renderTreeNode(dir, '');
+      tree.appendChild(item);
+    });
+  }
+  
+  // Add click handlers
+  tree.querySelectorAll('.folder-label').forEach(label => {
+    label.addEventListener('click', (e) => {
       e.stopPropagation();
-      const isOpen = children.classList.contains('show');
-      children.classList.toggle('show');
-      item.querySelector('.caret').classList.toggle('open');
       
-      if (!isOpen && children.childElementCount === 0) {
-        if (Object.keys(folder._children).length > 0) {
-          renderTree(folder._children, children, fullPath);
-        }
+      // Update active state
+      tree.querySelectorAll('.folder-label').forEach(l => l.classList.remove('active'));
+      label.classList.add('active');
+      
+      // Toggle subfolder
+      const parent = label.parentElement;
+      const subfolder = parent.querySelector('.subfolder-list');
+      if (subfolder) {
+        const caret = label.querySelector('.caret');
+        subfolder.classList.toggle('open');
+        if (caret) caret.classList.toggle('open');
       }
       
-      if (folder._files.length > 0) {
-        showFiles(folder._files, fullPath.join('/'));
-        document.querySelectorAll('.folder-item').forEach(f => f.classList.remove('active'));
-        item.classList.add('active');
+      // Show files for this folder
+      const path = label.dataset.path;
+      if (path === '') {
+        showAllFiles();
+      } else {
+        showFolderFiles(path);
       }
     });
   });
 }
 
-function countFiles(node) {
-  let count = node._files.length;
-  Object.values(node._children).forEach(child => {
-    count += countFiles(child);
-  });
-  return count;
+// Render a single tree node
+function renderTreeNode(dir, parentPath) {
+  const dirPath = parentPath ? `${parentPath}/${dir.name}` : dir.name;
+  const fileCount = countFilesInDir(dir);
+  
+  const li = document.createElement('li');
+  li.className = 'folder-item';
+  
+  const hasSubdirs = dir.dirs && dir.dirs.length > 0;
+  
+  li.innerHTML = `
+    <div class="folder-label" data-path="${esc(dirPath)}">
+      ${hasSubdirs ? '<span class="caret"></span>' : ''}
+      <span class="folder-icon">📁</span>
+      <span class="folder-name">${esc(dir.name)}</span>
+      <span class="folder-count">${fileCount}</span>
+    </div>
+  `;
+  
+  // Add subdirectories
+  if (hasSubdirs) {
+    const sublist = document.createElement('ul');
+    sublist.className = 'subfolder-list';
+    dir.dirs.forEach(subdir => {
+      const subItem = renderTreeNode(subdir, dirPath);
+      sublist.appendChild(subItem);
+    });
+    li.appendChild(sublist);
+  }
+  
+  return li;
 }
 
-function showFiles(files, path) {
-  const container = document.getElementById('files-container');
-  const pathEl = document.getElementById('current-path');
-  const countEl = document.getElementById('file-count');
-  
-  pathEl.textContent = path || 'All Files';
-  countEl.textContent = `${files.length} file${files.length !== 1 ? 's' : ''}`;
-  
-  container.innerHTML = '';
+// Show all files
+function showAllFiles() {
+  currentFolder = null;
+  document.getElementById('current-path').textContent = 'All Files';
+  document.getElementById('file-count').textContent = `${allFiles.length} files`;
+  renderFiles(allFiles);
+}
+
+// Show files for a specific folder
+function showFolderFiles(folderPath) {
+  currentFolder = folderPath;
+  const files = allFiles.filter(f => f.folder === folderPath);
+  document.getElementById('current-path').textContent = folderPath;
+  document.getElementById('file-count').textContent = `${files.length} files`;
+  renderFiles(files);
+}
+
+// Render files in grid
+function renderFiles(files) {
+  const grid = document.getElementById('files-grid');
+  grid.innerHTML = '';
   
   if (files.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-        </svg>
-        <p>No files found</p>
-      </div>
-    `;
+    grid.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><p>No files found</p></div>';
     return;
   }
   
-  files.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+  files.sort((a, b) => a.name.localeCompare(b.name));
   
   files.forEach(file => {
     const card = createFileCard(file);
-    container.appendChild(card);
+    grid.appendChild(card);
   });
 }
 
-function showAllFiles() {
-  showFiles(manifest, 'All Files');
-}
-
+// Create file card element
 function createFileCard(file) {
   const card = document.createElement('div');
   card.className = 'file-card';
   
-  const ext = (file.src.split('.').pop() || '').toLowerCase();
-  const thumb = document.createElement('div');
-  thumb.className = 'file-thumb';
+  const ext = (file.name.split('.').pop() || '').toLowerCase();
+  const thumbnail = document.createElement('div');
+  thumbnail.className = 'file-thumbnail';
   
+  // Handle different file types
   if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'].includes(ext)) {
     const img = document.createElement('img');
-    img.src = safe(file.src);
-    img.alt = file.title;
-    thumb.appendChild(img);
+    img.src = safe(file.path);
+    img.alt = file.name;
+    thumbnail.appendChild(img);
   } else if (['mp4', 'webm', 'ogg'].includes(ext)) {
     const video = document.createElement('video');
-    video.src = safe(file.src);
+    video.src = safe(file.path);
     video.muted = true;
     video.loop = true;
     video.playsInline = true;
-    thumb.appendChild(video);
+    thumbnail.appendChild(video);
   } else {
-    thumb.textContent = ext.toUpperCase();
+    thumbnail.textContent = ext.toUpperCase();
   }
   
   const badge = document.createElement('div');
-  badge.className = 'file-badge';
+  badge.className = 'file-ext-badge';
   badge.textContent = ext.toUpperCase();
-  thumb.appendChild(badge);
+  thumbnail.appendChild(badge);
   
-  const meta = document.createElement('div');
-  meta.className = 'file-meta';
-  meta.innerHTML = `
-    <div class="file-title" title="${esc(file.title)}">${esc(file.title)}</div>
-    <div class="file-path">${esc(file.src)}</div>
+  const info = document.createElement('div');
+  info.className = 'file-info';
+  info.innerHTML = `
+    <div class="file-title" title="${esc(file.name)}">${esc(file.name)}</div>
+    <div class="file-path">${esc(file.folder)}</div>
   `;
   
-  card.appendChild(thumb);
-  card.appendChild(meta);
+  card.appendChild(thumbnail);
+  card.appendChild(info);
   
   card.addEventListener('click', () => openLightbox(file));
   
   return card;
 }
 
+// Open lightbox with file preview
 function openLightbox(file) {
   const lightbox = document.getElementById('lightbox');
   const media = document.getElementById('lightbox-media');
@@ -758,34 +750,35 @@ function openLightbox(file) {
   const download = document.getElementById('lightbox-download');
   
   media.innerHTML = '';
-  title.textContent = file.title;
-  download.href = safe(file.src);
-  download.download = file.title;
+  title.textContent = file.name;
+  download.href = safe(file.path);
+  download.download = file.name;
   
-  const ext = (file.src.split('.').pop() || '').toLowerCase();
+  const ext = (file.name.split('.').pop() || '').toLowerCase();
   
   if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'].includes(ext)) {
     const img = document.createElement('img');
-    img.src = safe(file.src);
+    img.src = safe(file.path);
     media.appendChild(img);
   } else if (['mp4', 'webm', 'ogg'].includes(ext)) {
     const video = document.createElement('video');
-    video.src = safe(file.src);
+    video.src = safe(file.path);
     video.controls = true;
     media.appendChild(video);
   } else if (ext === 'pdf') {
     const iframe = document.createElement('iframe');
-    iframe.src = safe(file.src);
+    iframe.src = safe(file.path);
     iframe.style.width = '100%';
     iframe.style.height = '70vh';
     media.appendChild(iframe);
   } else {
-    media.innerHTML = '<div style="color:white;padding:40px">Preview not available. Use download button.</div>';
+    media.innerHTML = '<div style="color:white;padding:40px;text-align:center">Preview not available. Use download button.</div>';
   }
   
   lightbox.classList.add('show');
 }
 
+// Close lightbox
 document.getElementById('lightbox-close').addEventListener('click', () => {
   document.getElementById('lightbox').classList.remove('show');
 });
@@ -796,30 +789,30 @@ document.getElementById('lightbox').addEventListener('click', (e) => {
   }
 });
 
+// Search functionality
 document.getElementById('search').addEventListener('input', (e) => {
   const query = e.target.value.trim().toLowerCase();
   
   if (!query) {
-    showAllFiles();
+    if (currentFolder) {
+      showFolderFiles(currentFolder);
+    } else {
+      showAllFiles();
+    }
     return;
   }
   
-  const results = manifest.filter(file => {
-    const searchText = `${file.title} ${file.src} ${file.course} ${file.category}`.toLowerCase();
+  const results = allFiles.filter(file => {
+    const searchText = `${file.name} ${file.path} ${file.folder}`.toLowerCase();
     return searchText.includes(query);
   });
   
-  showFiles(results, `Search: "${query}"`);
+  document.getElementById('current-path').textContent = `Search: "${query}"`;
+  document.getElementById('file-count').textContent = `${results.length} results`;
+  renderFiles(results);
 });
 
-document.querySelectorAll('.view-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentView = btn.dataset.view;
-  });
-});
-
+// Load manifest on page load
 loadManifest();
 </script>
 
