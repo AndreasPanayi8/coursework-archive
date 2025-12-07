@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Coursework Archive</title>
+  <style>
+    :root{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;sans-serif;--gap:12px}
+    body{margin:0;padding:28px;background:#f7f8fb;color:#111}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+    h1{margin:0;font-size:20px}
+    .controls{display:flex;gap:8px;flex-wrap:wrap}
+    select,input[type=search]{padding:8px;border-radius:8px;border:1px solid #d6d9e6}
+    .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+    .card{background:white;border-radius:10px;overflow:hidden;box-shadow:0 6px 18px rgba(16,24,40,0.06);cursor:pointer;display:flex;flex-direction:column}
+    .thumb{width:100%;height:160px;object-fit:cover;background:#eaeef6}
+    .meta{padding:10px;font-size:13px}
+    .title{font-weight:700;margin-bottom:6px}
+    .small{color:#5b6270;font-size:12px}
+    .badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#eef2ff;margin-right:6px;font-size:12px}
+
+    /* lightbox */
+    .lb{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:none;align-items:center;justify-content:center;padding:20px;z-index:60}
+    .lb.show{display:flex}
+    .lb-box{max-width:1100px;max-height:90vh;background:#111;border-radius:8px;overflow:auto;padding:12px}
+    .lb-content{color:#fff}
+    .lb img{max-width:100%;height:auto;display:block}
+    .lb iframe{width:100%;height:80vh;border:0}
+    .lb video{max-width:100%;height:auto;display:block}
+    .lb .info{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+    .btn{background:#fff;padding:8px 12px;border-radius:8px;text-decoration:none;color:#111;font-weight:600}
+
+    footer{margin-top:18px;color:#666;font-size:13px}
+    @media (max-width:520px){.thumb{height:120px}}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Coursework Archive</h1>
+    <div class="controls" aria-hidden="false">
+      <select id="category"><option value="">All categories</option><option value="Presentations">Presentations</option><option value="Personal Projects">Personal Projects</option><option value="Solved Exercises">Solved Exercises</option></select>
+      <select id="course"><option value="">All courses</option></select>
+      <input id="search" type="search" placeholder="Search title or filename..." />
+    </div>
+  </header>
+
+  <main>
+    <div id="gallery" class="gallery" aria-live="polite"></div>
+  </main>
+
+  <div id="lightbox" class="lb" role="dialog" aria-hidden="true">
+    <div class="lb-box">
+      <div class="lb-content" id="lb-content"></div>
+      <div class="info"><div id="lb-title" style="color:#fff;font-weight:600"></div><div><a id="lb-download" class="btn" href="#" download>Download</a>&nbsp;<a id="lb-close" class="btn">Close</a></div></div>
+    </div>
+  </div>
+
+  <footer>Tip: Place this file at the repository root and generate a <code>manifest.json</code> listing your files (see comments below).</footer>
+
+  <script>
+    /*
+      Usage:
+      - Place this file as index.html at the repository root.
+      - Create a manifest.json with an array of entries like:
+        [
+          {"src":"presentations/sorting_algorithms.pdf","title":"Sorting algorithms","category":"Presentations","course":"Algorithms"},
+          {"src":"personal_uni_projects/graphics_demo.mp4","title":"Graphics demo","category":"Personal Projects","course":"Computer Graphics"},
+          {"src":"solved_exercises/greedy1.pdf","title":"Greedy exercise","category":"Solved Exercises","course":"Algorithms"}
+        ]
+      - The file paths are relative to the repo root. The page will fetch manifest.json automatically.
+
+      Optional: generate manifest.json automatically with a small Python script locally (see README comments in the repository or ask me and I'll provide it).
+    */
+
+    const gallery = document.getElementById('gallery');
+    const courseSel = document.getElementById('course');
+    const categorySel = document.getElementById('category');
+    const search = document.getElementById('search');
+
+    let manifest = [];
+
+    async function loadManifest(){
+      try{
+        const res = await fetch('manifest.json', {cache:'no-store'});
+        if(!res.ok) throw new Error('No manifest');
+        manifest = await res.json();
+      }catch(e){
+        // fallback: empty manifest
+        manifest = [];
+      }
+      populateCourseOptions(); render();
+    }
+
+    function populateCourseOptions(){
+      const courses = Array.from(new Set(manifest.map(x=>x.course||'Unknown'))).sort();
+      courseSel.innerHTML = '<option value="">All courses</option>';
+      courses.forEach(c=>{ const opt=document.createElement('option'); opt.value=c; opt.textContent=c; courseSel.appendChild(opt); });
+    }
+
+    function fileIcon(src){
+      const ext = src.split('.').pop().toLowerCase();
+      if(['png','jpg','jpeg','gif','svg'].includes(ext)) return 'image';
+      if(['mp4','webm','ogg'].includes(ext)) return 'video';
+      if(['pdf'].includes(ext)) return 'pdf';
+      return 'file';
+    }
+
+    function render(){
+      gallery.innerHTML='';
+      const q = search.value.trim().toLowerCase();
+      const cat = categorySel.value;
+      const cr = courseSel.value;
+      const filtered = manifest.filter(item=>{
+        if(cat && item.category !== cat) return false;
+        if(cr && item.course !== cr) return false;
+        if(q){
+          const hay = (item.title+' '+item.src+' '+(item.course||'')).toLowerCase();
+          if(!hay.includes(q)) return false;
+        }
+        return true;
+      });
+
+      if(filtered.length===0){ gallery.innerHTML = '<div style="grid-column:1/-1;padding:24px;color:#666">No items found. Create a manifest.json or check file paths.</div>'; return }
+
+      filtered.forEach(item=>{
+        const card = document.createElement('div'); card.className='card';
+        const thumb = document.createElement('div');
+        const ext = fileIcon(item.src);
+        if(ext==='image'){
+          const img = document.createElement('img'); img.className='thumb'; img.src=item.src; img.alt=item.title; thumb.appendChild(img);
+        }else if(ext==='video'){
+          const v = document.createElement('video'); v.className='thumb'; v.src=item.src; v.muted=true; v.playsInline=true; v.loop=true; v.autoplay=true; thumb.appendChild(v);
+        }else{
+          const ph = document.createElement('div'); ph.className='thumb'; ph.style.display='flex'; ph.style.alignItems='center'; ph.style.justifyContent='center'; ph.style.fontWeight='700'; ph.textContent = ext.toUpperCase(); thumb.appendChild(ph);
+        }
+
+        const meta = document.createElement('div'); meta.className='meta';
+        const title = document.createElement('div'); title.className='title'; title.textContent = item.title || item.src;
+        const small = document.createElement('div'); small.className='small'; small.innerHTML = `<span class="badge">${item.category||''}</span><span class="badge">${item.course||''}</span>`;
+        meta.appendChild(title); meta.appendChild(small);
+        card.appendChild(thumb); card.appendChild(meta);
+        card.addEventListener('click', ()=>openLightbox(item));
+        gallery.appendChild(card);
+      });
+    }
+
+    function openLightbox(item){
+      const lb = document.getElementById('lightbox');
+      const content = document.getElementById('lb-content');
+      const title = document.getElementById('lb-title');
+      const dl = document.getElementById('lb-download');
+      content.innerHTML = '';
+      title.textContent = item.title || item.src;
+      dl.href = item.src; dl.download = item.title || '';
+
+      const ext = fileIcon(item.src);
+      if(ext==='image'){
+        const img = document.createElement('img'); img.src = item.src; content.appendChild(img);
+      }else if(ext==='video'){
+        const v = document.createElement('video'); v.controls=true; v.src=item.src; v.style.maxWidth='100%'; content.appendChild(v);
+      }else if(ext==='pdf'){
+        const iframe = document.createElement('iframe'); iframe.src = item.src; content.appendChild(iframe);
+      }else{
+        const info = document.createElement('div'); info.style.padding='24px'; info.style.color='#fff'; info.textContent = 'Preview not available. Use the download button.'; content.appendChild(info);
+      }
+      lb.classList.add('show'); lb.setAttribute('aria-hidden','false');
+    }
+
+    document.getElementById('lb-close').addEventListener('click', ()=>{ const lb=document.getElementById('lightbox'); lb.classList.remove('show'); lb.setAttribute('aria-hidden','true'); document.getElementById('lb-content').innerHTML=''; });
+    document.getElementById('lightbox').addEventListener('click',(e)=>{ if(e.target.id==='lightbox') { document.getElementById('lightbox').classList.remove('show'); document.getElementById('lb-content').innerHTML=''; } });
+
+    [courseSel,categorySel,search].forEach(el=>el.addEventListener('input', render));
+
+    // Load manifest on start
+    loadManifest();
+  </script>
+</body>
+</html>
