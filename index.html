@@ -472,56 +472,107 @@
   const panelPath = document.getElementById('panel-path');
   const panelCount = document.getElementById('panel-count');
   const search = document.getElementById('search');
-  let manifest = [];
-  let currentFolder = null;
+  let manifestData = null;
+  let allFiles = [];
 
   async function loadManifest(){
     try{
       const res = await fetch('manifest.json', {cache:'no-store'});
       if(!res.ok) throw new Error('no manifest');
-      manifest = await res.json();
+      manifestData = await res.json();
     }catch(e){
-      manifest = [];
+      manifestData = null;
     }
-    manifest.forEach(m => { m.title = m.title || m.src; });
-    buildTreeAndRender();
-    updateSummary();
-    showWelcome();
+    
+    if(manifestData){
+      allFiles = flattenManifest(manifestData);
+      buildTreeAndRender();
+      updateSummary();
+      showWelcome();
+    }
+  }
+
+  function flattenManifest(data){
+    const files = [];
+    
+    function traverse(node, basePath = ''){
+      if(node.files && Array.isArray(node.files)){
+        node.files.forEach(file => {
+          const fullPath = basePath ? `${basePath}/${file}` : file;
+          files.push({
+            src: fullPath,
+            title: file,
+            path: basePath
+          });
+        });
+      }
+      
+      if(node.dirs && Array.isArray(node.dirs)){
+        node.dirs.forEach(dir => {
+          traverse(dir, dir.path);
+        });
+      }
+    }
+    
+    traverse(data);
+    return files;
   }
 
   function updateSummary(){
-    const total = manifest.length;
+    const total = allFiles.length;
     document.getElementById('summary-text').textContent = 'Browse your coursework';
     document.getElementById('summary-badge').textContent = `${total} items`;
   }
 
-  function buildTree(items){
-    const root = { type:'folder', name:'/', children: {} };
-    items.forEach(it => {
-      const parts = it.src.split('/').filter(p=>p.length>0);
-      let node = root;
-      for(let i=0;i<parts.length;i++){
-        const part = parts[i];
-        const isLeaf = (i === parts.length-1);
-        if(isLeaf){
-          node.children.files = node.children.files || [];
-          node.children.files.push(Object.assign({}, it));
-        } else {
-          node.children[part] = node.children[part] || { type:'folder', name:part, children:{} };
-          node = node.children[part];
-        }
-      }
-    });
+  function buildTreeFromManifest(data){
+    const root = { type:'folder', name:'/', children: {}, files: [] };
+    
+    if(data.files && Array.isArray(data.files)){
+      data.files.forEach(file => {
+        root.files.push({ src: file, title: file });
+      });
+    }
+    
+    if(data.dirs && Array.isArray(data.dirs)){
+      data.dirs.forEach(dir => {
+        root.children[dir.name] = convertDirToNode(dir);
+      });
+    }
+    
     return root;
+  }
+
+  function convertDirToNode(dir){
+    const node = {
+      type: 'folder',
+      name: dir.name,
+      path: dir.path,
+      children: {},
+      files: []
+    };
+    
+    if(dir.files && Array.isArray(dir.files)){
+      dir.files.forEach(file => {
+        const fullPath = `${dir.path}/${file}`;
+        node.files.push({ src: fullPath, title: file });
+      });
+    }
+    
+    if(dir.dirs && Array.isArray(dir.dirs)){
+      dir.dirs.forEach(subdir => {
+        node.children[subdir.name] = convertDirToNode(subdir);
+      });
+    }
+    
+    return node;
   }
 
   function renderTree(node, container, pathParts = []){
     Object.keys(node.children).sort((a,b)=>a.localeCompare(b)).forEach(key => {
-      if(key === 'files') return;
       const child = node.children[key];
       const row = document.createElement('div');
       row.className = 'folder';
-      const displayPath = [...pathParts, child.name].join('/');
+      const displayPath = child.path || [...pathParts, child.name].join('/');
       const fileCount = countFilesInNode(child);
       row.innerHTML = `
         <div class="name">
@@ -549,17 +600,19 @@
           renderTree(child, sub, [...pathParts, child.name]);
         }
         
-        showFiles(child, displayPath);
+        if(child.files && child.files.length > 0){
+          showFiles(child.files, displayPath);
+        }
         document.querySelectorAll('.folder').forEach(f => f.classList.remove('active'));
         row.classList.add('active');
       });
     });
 
-    if(node.children.files && node.children.files.length){
+    if(node.files && node.files.length > 0){
       const showBtn = document.createElement('div');
       showBtn.className = 'folder';
       showBtn.style.marginTop='4px';
-      const fileCount = node.children.files.length;
+      const fileCount = node.files.length;
       showBtn.innerHTML = `
         <div class="name">
           <span class="folder-icon">📄</span>
@@ -570,7 +623,7 @@
       container.appendChild(showBtn);
       showBtn.addEventListener('click',(e)=>{ 
         e.stopPropagation(); 
-        showFiles(node, pathParts.join('/'));
+        showFiles(node.files, pathParts.join('/') || '/');
         document.querySelectorAll('.folder').forEach(f => f.classList.remove('active'));
         showBtn.classList.add('active');
       });
@@ -579,9 +632,8 @@
 
   function countFilesInNode(node){
     let c = 0;
-    if(node.children && node.children.files) c += node.children.files.length;
+    if(node.files) c += node.files.length;
     Object.keys(node.children||{}).forEach(k => {
-      if(k === 'files') return;
       c += countFilesInNode(node.children[k]);
     });
     return c;
@@ -599,10 +651,8 @@
     `;
   }
 
-  function showFiles(node, path){
-    currentFolder = node;
-    const files = node.children.files ? node.children.files : [];
-    panelPath.innerHTML = `📁 ${path || 'Files'}`;
+  function showFiles(files, path){
+    panelPath.innerHTML = `📁 ${path}`;
     panelCount.textContent = `${files.length} file${files.length !== 1 ? 's' : ''}`;
     filesEl.innerHTML = '';
     
@@ -667,7 +717,8 @@
       zip: '🗜️', rar: '🗜️', '7z': '🗜️',
       mp3: '🎵', wav: '🎵', ogg: '🎵',
       html: '🌐', css: '🎨', js: '⚙️',
-      py: '🐍', java: '☕', cpp: '⚡'
+      py: '🐍', java: '☕', cpp: '⚡',
+      tex: '📐', ipynb: '📊', csv: '📊'
     };
     return icons[ext] || '📄';
   }
@@ -677,7 +728,8 @@
   }
 
   function buildTreeAndRender(){
-    const root = buildTree(manifest);
+    if(!manifestData) return;
+    const root = buildTreeFromManifest(manifestData);
     treeEl.innerHTML = '';
     renderTree(root, treeEl, []);
   }
@@ -751,8 +803,8 @@
       return; 
     }
     
-    const results = manifest.filter(it => 
-      ((it.title||'') + ' ' + it.src + ' ' + (it.course||'')).toLowerCase().includes(q)
+    const results = allFiles.filter(it => 
+      ((it.title||'') + ' ' + it.src).toLowerCase().includes(q)
     );
     
     panelPath.innerHTML = `🔍 Search: "${q}"`;
