@@ -3,824 +3,778 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Coursework Archive – Andreas Panayi</title>
+<title>Coursework Archive – Enhanced View</title>
 <style>
-  :root {
-    --bg: #f8fafc;
-    --card: #ffffff;
-    --text: #1e293b;
-    --text-muted: #64748b;
-    --accent: #3b82f6;
-    --accent-light: #dbeafe;
-    --accent-hover: #2563eb;
-    --border: #e2e8f0;
-    --hover: #f1f5f9;
-    --shadow: 0 1px 3px rgba(0,0,0,0.1);
-    --shadow-lg: 0 4px 12px rgba(0,0,0,0.1);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  :root{
+    --bg:#f8fafc; 
+    --card:#ffffff; 
+    --muted:#64748b; 
+    --accent:#3b82f6;
+    --accent-hover:#2563eb;
+    --border:#e2e8f0;
+    --text:#0f172a;
+    --text-secondary:#475569;
+    --radius:14px;
+    --shadow-sm:0 1px 3px rgba(0,0,0,0.08);
+    --shadow-md:0 4px 12px rgba(0,0,0,0.08);
+    --shadow-lg:0 10px 30px rgba(0,0,0,0.12);
+    font-family:'Inter',system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   }
   
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; }
   
-  body {
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
+  body{
+    margin:0;
+    padding:24px;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
   }
   
-  .header {
-    background: white;
-    border-bottom: 1px solid var(--border);
-    padding: 20px 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: var(--shadow);
+  header{
+    background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding:28px 32px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-lg);
+    margin-bottom:24px;
+    color:white;
   }
   
-  .header-content {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
+  header h1{
+    margin:0 0 8px 0;
+    font-size:28px;
+    font-weight:700;
+    letter-spacing:-0.02em;
   }
   
-  .site-title {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--text);
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  .header-content{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
   }
   
-  .site-subtitle {
-    font-size: 13px;
-    color: var(--text-muted);
-    font-weight: 400;
-    margin-top: 2px;
+  .summary{
+    opacity:0.95;
+    font-size:14px;
+    display:flex;
+    align-items:center;
+    gap:12px;
   }
   
-  .stats-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    background: var(--accent-light);
-    color: var(--accent);
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 700;
-    margin-left: 8px;
+  .summary-badge{
+    background:rgba(255,255,255,0.2);
+    padding:4px 12px;
+    border-radius:20px;
+    font-weight:600;
+    font-size:13px;
   }
   
-  .search-container {
-    flex: 1;
-    max-width: 500px;
-    position: relative;
+  .search-wrapper{
+    position:relative;
+    min-width:280px;
   }
   
-  .search-input {
-    width: 100%;
-    padding: 10px 16px 10px 40px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    font-size: 14px;
-    transition: all 0.2s;
+  input[type=search]{
+    width:100%;
+    padding:11px 16px 11px 40px;
+    border-radius:10px;
+    border:2px solid rgba(255,255,255,0.3);
+    background:rgba(255,255,255,0.95);
+    font-size:14px;
+    transition:all 0.2s ease;
   }
   
-  .search-input:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px var(--accent-light);
+  input[type=search]:focus{
+    outline:none;
+    border-color:white;
+    background:white;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
   }
   
-  .search-icon {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-muted);
+  .search-icon{
+    position:absolute;
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+    color:var(--muted);
+    pointer-events:none;
   }
   
-  .container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 24px;
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 24px;
-    align-items: start;
+  main{
+    display:grid;
+    grid-template-columns:420px 1fr;
+    gap:24px;
   }
   
-  .sidebar {
-    background: var(--card);
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    padding: 16px;
-    position: sticky;
-    top: 100px;
-    max-height: calc(100vh - 120px);
-    overflow-y: auto;
+  .tree{
+    background:var(--card);
+    padding:16px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-md);
+    height:calc(100vh - 240px);
+    overflow:auto;
+    border:1px solid var(--border);
   }
   
-  .sidebar-header {
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--text-muted);
-    margin-bottom: 12px;
+  .tree::-webkit-scrollbar{width:8px}
+  .tree::-webkit-scrollbar-track{background:#f1f5f9;border-radius:4px}
+  .tree::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
+  .tree::-webkit-scrollbar-thumb:hover{background:#94a3b8}
+  
+  .panel{
+    background:var(--card);
+    padding:20px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-md);
+    min-height:calc(100vh - 240px);
+    overflow:auto;
+    border:1px solid var(--border);
   }
   
-  .folder-tree {
-    list-style: none;
+  .folder {
+    padding:10px 12px;
+    border-radius:10px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:4px;
+    transition:all 0.2s ease;
+    word-wrap:break-word;
   }
   
-  .folder-item {
-    margin: 2px 0;
+  .folder:hover{
+    background:#f1f5f9;
+    transform:translateX(2px);
   }
   
-  .folder-label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.15s;
-    user-select: none;
+  .folder.active{
+    background:#eff6ff;
+    border-left:3px solid var(--accent);
   }
   
-  .folder-label:hover {
-    background: var(--hover);
+  .folder .name{
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex:1;
+    min-width:0;
+    color:var(--text);
   }
   
-  .folder-label.active {
-    background: var(--accent-light);
-    color: var(--accent);
-    font-weight: 600;
+  .folder .name span:last-child{
+    word-break:break-word;
+    overflow-wrap:break-word;
   }
   
-  .folder-icon {
-    flex-shrink: 0;
-    font-size: 16px;
+  .folder-icon{
+    font-size:16px;
+    flex-shrink:0;
   }
   
-  .folder-name {
-    flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  .folder-count{
+    background:#f1f5f9;
+    color:var(--text-secondary);
+    padding:2px 8px;
+    border-radius:12px;
+    font-size:12px;
+    font-weight:600;
+    flex-shrink:0;
   }
   
-  .folder-count {
-    font-size: 11px;
-    background: var(--accent-light);
-    color: var(--accent);
-    padding: 2px 6px;
-    border-radius: 10px;
-    font-weight: 600;
+  .children{
+    margin-left:16px;
+    margin-top:4px;
+    border-left:2px solid #e2e8f0;
+    padding-left:12px;
+    animation:slideDown 0.2s ease;
   }
   
-  .caret {
-    display: inline-block;
-    width: 0;
-    height: 0;
-    border-left: 5px solid var(--text-muted);
-    border-top: 4px solid transparent;
-    border-bottom: 4px solid transparent;
-    transition: transform 0.2s;
-    margin-right: 2px;
+  @keyframes slideDown{
+    from{opacity:0;transform:translateY(-10px)}
+    to{opacity:1;transform:translateY(0)}
   }
   
-  .caret.open {
-    transform: rotate(90deg);
+  .file{
+    display:flex;
+    flex-direction:column;
+    border-radius:12px;
+    overflow:hidden;
+    border:1px solid var(--border);
+    background:white;
+    cursor:pointer;
+    transition:all 0.3s ease;
+    position:relative;
   }
   
-  .subfolder-list {
-    list-style: none;
-    margin-left: 20px;
-    margin-top: 4px;
-    border-left: 1px solid var(--border);
-    padding-left: 8px;
-    display: none;
+  .file:hover{
+    transform:translateY(-4px);
+    box-shadow:var(--shadow-lg);
+    border-color:var(--accent);
   }
   
-  .subfolder-list.open {
-    display: block;
+  .file .thumb{
+    height:160px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+    font-weight:700;
+    color:var(--accent);
+    font-size:18px;
+    position:relative;
+    overflow:hidden;
   }
   
-  .main-content {
-    background: var(--card);
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    padding: 24px;
-    min-height: calc(100vh - 170px);
+  .file .thumb img, .file .thumb video{
+    transition:transform 0.3s ease;
   }
   
-  .content-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-    padding-bottom: 16px;
-    border-bottom: 2px solid var(--border);
+  .file:hover .thumb img, .file:hover .thumb video{
+    transform:scale(1.05);
   }
   
-  .current-path {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--text);
+  .file .meta{
+    padding:12px;
+    font-size:13px;
   }
   
-  .file-count {
-    font-size: 14px;
-    color: var(--text-muted);
+  .title{
+    font-weight:700;
+    margin-bottom:4px;
+    color:var(--text);
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
   }
   
-  .files-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
+  .file-path{
+    color:var(--muted);
+    font-size:11px;
+    display:-webkit-box;
+    -webkit-line-clamp:1;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
   }
   
-  .file-card {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: all 0.2s;
+  .file-type-badge{
+    position:absolute;
+    top:8px;
+    right:8px;
+    background:rgba(255,255,255,0.95);
+    color:var(--accent);
+    padding:4px 10px;
+    border-radius:6px;
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    box-shadow:var(--shadow-sm);
   }
   
-  .file-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--accent);
+  .caret{
+    display:inline-block;
+    width:16px;
+    height:16px;
+    transition:transform 0.2s ease;
+    flex-shrink:0;
   }
   
-  .file-thumbnail {
-    height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
-    font-weight: 700;
-    font-size: 24px;
-    color: var(--accent);
-    position: relative;
+  .caret.open{
+    transform:rotate(90deg);
   }
   
-  .file-thumbnail img,
-  .file-thumbnail video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .lb{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.85);
+    backdrop-filter:blur(8px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:999;
+    animation:fadeIn 0.2s ease;
   }
   
-  .file-ext-badge {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: rgba(255,255,255,0.95);
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--accent);
-    box-shadow: var(--shadow);
+  @keyframes fadeIn{
+    from{opacity:0}
+    to{opacity:1}
   }
   
-  .file-info {
-    padding: 12px;
+  .lb.show{display:flex}
+  
+  .lb-box{
+    max-width:1200px;
+    max-height:90vh;
+    background:#1e293b;
+    border-radius:16px;
+    overflow:auto;
+    padding:20px;
+    box-shadow:0 25px 50px rgba(0,0,0,0.5);
+    animation:slideUp 0.3s ease;
   }
   
-  .file-title {
-    font-weight: 600;
-    font-size: 13px;
-    margin-bottom: 4px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    color: var(--text);
+  @keyframes slideUp{
+    from{opacity:0;transform:translateY(20px)}
+    to{opacity:1;transform:translateY(0)}
   }
   
-  .file-path {
-    font-size: 11px;
-    color: var(--text-muted);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  .lb-content img,.lb-content video,.lb-content iframe{
+    max-width:100%;
+    height:auto;
+    display:block;
+    border-radius:8px;
   }
   
-  .lightbox {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.85);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 40px;
-    z-index: 1000;
+  .lb-info{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:16px;
+    color:#fff;
+    gap:16px;
+    flex-wrap:wrap;
   }
   
-  .lightbox.show {
-    display: flex;
+  .lb-title{
+    font-weight:600;
+    font-size:16px;
   }
   
-  .lightbox-content {
-    max-width: 1200px;
-    width: 100%;
-    max-height: 90vh;
-    background: #1e293b;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+  .lb-buttons{
+    display:flex;
+    gap:8px;
   }
   
-  .lightbox-media {
-    max-height: 70vh;
-    overflow: auto;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #0f172a;
+  .btn{
+    background:white;
+    padding:10px 18px;
+    border-radius:8px;
+    text-decoration:none;
+    color:#111;
+    font-weight:600;
+    border:none;
+    cursor:pointer;
+    font-size:14px;
+    transition:all 0.2s ease;
   }
   
-  .lightbox-media img,
-  .lightbox-media video,
-  .lightbox-media iframe {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
+  .btn:hover{
+    background:#f1f5f9;
+    transform:translateY(-1px);
   }
   
-  .lightbox-footer {
-    padding: 20px;
-    background: #1e293b;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: white;
+  #panel-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+    padding-bottom:16px;
+    border-bottom:2px solid var(--border);
   }
   
-  .lightbox-title {
-    font-weight: 600;
-    font-size: 15px;
+  #panel-path{
+    font-size:18px;
+    font-weight:700;
+    color:var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
   }
   
-  .lightbox-actions {
-    display: flex;
-    gap: 12px;
+  #panel-count{
+    color:var(--muted);
+    font-size:14px;
+    font-weight:600;
   }
   
-  .btn {
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
-    font-size: 14px;
-    display: inline-block;
+  .welcome{
+    text-align:center;
+    padding:60px 20px;
+    color:var(--text-secondary);
   }
   
-  .btn-primary {
-    background: var(--accent);
-    color: white;
+  .welcome-icon{
+    font-size:64px;
+    margin-bottom:20px;
+    opacity:0.5;
   }
   
-  .btn-primary:hover {
-    background: var(--accent-hover);
+  .welcome h2{
+    font-size:24px;
+    margin:0 0 12px 0;
+    color:var(--text);
   }
   
-  .btn-secondary {
-    background: white;
-    color: var(--text);
+  .welcome p{
+    font-size:16px;
+    margin:0;
   }
   
-  .btn-secondary:hover {
-    background: #f1f5f9;
-  }
-  
-  .empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--text-muted);
-  }
-  
-  .empty-icon {
-    font-size: 48px;
-    margin-bottom: 16px;
-    opacity: 0.3;
-  }
-  
-  @media (max-width: 1024px) {
-    .container {
-      grid-template-columns: 1fr;
-    }
-    
-    .sidebar {
-      position: relative;
-      top: 0;
-      max-height: 400px;
-    }
-  }
-  
-  @media (max-width: 640px) {
-    .header-content {
-      flex-direction: column;
-      align-items: stretch;
-    }
-    
-    .search-container {
-      max-width: 100%;
-    }
-    
-    .files-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-  
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-  
-  ::-webkit-scrollbar-track {
-    background: var(--bg);
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 4px;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--text-muted);
+  @media (max-width:900px){
+    main{grid-template-columns:1fr}
+    .tree{height:auto;max-height:300px}
+    .search-wrapper{min-width:auto;width:100%}
+    .header-content{flex-direction:column;align-items:stretch}
   }
 </style>
 </head>
 <body>
-
-<header class="header">
+<header>
+  <h1>📚 Coursework Archive</h1>
   <div class="header-content">
-    <div>
-      <div class="site-title">
-        📚 Coursework Archive
-        <span class="stats-badge" id="total-files-badge">Loading...</span>
-      </div>
-      <div class="site-subtitle">Theoretical Computer Science • Andreas Panayi</div>
+    <div class="summary">
+      <span id="summary-text">Loading…</span>
+      <span class="summary-badge" id="summary-badge">0 items</span>
     </div>
-    <div class="search-container">
+    <div class="search-wrapper">
       <span class="search-icon">🔍</span>
-      <input 
-        type="search" 
-        id="search" 
-        class="search-input"
-        placeholder="Search files..." 
-      />
+      <input id="search" placeholder="Search files and folders..." type="search" />
     </div>
   </div>
 </header>
 
-<div class="container">
-  <aside class="sidebar">
-    <div class="sidebar-header">Folders</div>
-    <ul class="folder-tree" id="folder-tree"></ul>
+<main>
+  <aside class="tree" id="tree" aria-label="Folder tree">
+    <div style="padding:20px;text-align:center;color:var(--muted)">Loading manifest…</div>
   </aside>
-
-  <main class="main-content">
-    <div class="content-header">
-      <h1 class="current-path" id="current-path">All Files</h1>
-      <span class="file-count" id="file-count">0 files</span>
+  
+  <section class="panel" id="panel">
+    <div id="panel-header">
+      <div id="panel-path">Welcome</div>
+      <div><span id="panel-count"></span></div>
     </div>
-    <div class="files-grid" id="files-grid"></div>
-  </main>
-</div>
+    <div id="files" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px"></div>
+  </section>
+</main>
 
-<div class="lightbox" id="lightbox">
-  <div class="lightbox-content">
-    <div class="lightbox-media" id="lightbox-media"></div>
-    <div class="lightbox-footer">
-      <div class="lightbox-title" id="lightbox-title"></div>
-      <div class="lightbox-actions">
-        <a class="btn btn-primary" id="lightbox-download" href="#" download>Download</a>
-        <button class="btn btn-secondary" id="lightbox-close">Close</button>
+<div id="lightbox" class="lb" role="dialog" aria-hidden="true">
+  <div class="lb-box">
+    <div class="lb-content" id="lb-content"></div>
+    <div class="lb-info">
+      <div class="lb-title" id="lb-title"></div>
+      <div class="lb-buttons">
+        <a id="lb-download" class="btn" href="#" download>⬇ Download</a>
+        <button id="lb-close" class="btn">✕ Close</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-(function() {
-  'use strict';
-  
-  // Embedded manifest data
-  const MANIFEST_DATA = {"name":"coursework-archive","path":".","files":["index.html","manifest.json"],"dirs":[{"name":"Exercises and Labs by Course","path":"Exercises and Labs by Course","files":[],"dirs":[{"name":"Algorithmic Data Science","path":"Exercises and Labs by Course/Algorithmic Data Science","files":["Mining of Massive Datasets.pdf"],"dirs":[{"name":"Solved Exercises","path":"Exercises and Labs by Course/Algorithmic Data Science/Solved Exercises","files":["Algorithmic Data Science 1.pdf","Algorithmic Data Science 2.pdf"],"dirs":[]}]},{"name":"Algorithms","path":"Exercises and Labs by Course/Algorithms","files":["Algorithm Design by Jon Kleinberg, Eva Tardos.pdf","Algorithms by  Dasgupta, Papadimitriou and Vazirani.pdf","Introduction to Algorithms - 3rd Edition.pdf"],"dirs":[{"name":"Exercises and SudoCode","path":"Exercises and Labs by Course/Algorithms/Exercises and SudoCode","files":["Algorithms 1.pdf","Algorithms 2.pdf","Algorithms 3.pdf","Algorithms Sudocode 1.pdf","Algorithms Sudocode 3.pdf","Algoritms Sudocode 2.pdf"],"dirs":[]},{"name":"Solved Exercises","path":"Exercises and Labs by Course/Algorithms/Solved Exercises","files":["set01.pdf","set02.pdf","set03.pdf","set04.pdf"],"dirs":[]}]},{"name":"Approximation Algorithms","path":"Exercises and Labs by Course/Approximation Algorithms","files":["Approximation Algorithms by Vazirani.pdf","Approximation Algorthms.pdf"],"dirs":[{"name":"Solved Exercises","path":"Exercises and Labs by Course/Approximation Algorithms/Solved Exercises","files":["Approximation Algorithms 1.pdf","Approximation Algorithms 2.pdf"],"dirs":[]}]},{"name":"Computational Complexity","path":"Exercises and Labs by Course/Computational Complexity","files":["Computational Complexity by Oded Goldreich.pdf","Computers and Intractability.pdf"],"dirs":[{"name":"Solved Exercises","path":"Exercises and Labs by Course/Computational Complexity/Solved Exercises","files":["ΑΛΜΑ___Υπολογιστική_Πολυπλοκότητα_1.pdf","ΑΛΜΑ___Υπολογιστική_Πολυπλοκότητα_2.pdf","ΑΛΜΑ___Υπολογιστική_Πολυπλοκότητα_3.pdf"],"dirs":[]}]},{"name":"Graph Theory","path":"Exercises and Labs by Course/Graph Theory","files":["Graph Theory Noted by Dimitrios Thilikos.pdf","Graph Theory by Diestel.pdf"],"dirs":[{"name":"Solved Exercises","path":"Exercises and Labs by Course/Graph Theory/Solved Exercises","files":["Graph Theory 2.pdf","Graph Theory 3.pdf","Graph Thoery 1.pdf"],"dirs":[]}]},{"name":"Machine Learning","path":"Exercises and Labs by Course/Machine Learning","files":["Elements of Statistical Machine Learning.pdf","Introduction To Statistical Learning (Python).pdf"],"dirs":[{"name":"Python Code Lab","path":"Exercises and Labs by Course/Machine Learning/Python Code Lab","files":["lab_compact.py","labs.ipynb","prob2.Rdata","prob3.Rdata","prob4.Rdata","test.ipynb"],"dirs":[]},{"name":"Solved Exercises","path":"Exercises and Labs by Course/Machine Learning/Solved Exercises","files":["Machine Learning 1.pdf","Machine Learning 2.pdf"],"dirs":[{"name":"Machine Learning 1 files","path":"Exercises and Labs by Course/Machine Learning/Solved Exercises/Machine Learning 1 files","files":["Ergasia1.html","exercise1.ipynb","sa_heart_dataset.csv"],"dirs":[]},{"name":"Machine Learning 2 files","path":"Exercises and Labs by Course/Machine Learning/Solved Exercises/Machine Learning 2 files","files":["Ergasia2.html"],"dirs":[{"name":"dropout_prediction","path":"Exercises and Labs by Course/Machine Learning/Solved Exercises/Machine Learning 2 files/dropout_prediction","files":["data.csv","paper1.pdf"],"dirs":[]}]}]}]},{"name":"Network Algorithms and Complexity ","path":"Exercises and Labs by Course/Network Algorithms and Complexity ","files":["Network Algorithms by Williamson.pdf","Network Flows: Theory, Algorithms, and Applications.pdf"],"dirs":[{"name":"Solved Exercises","path":"Exercises and Labs by Course/Network Algorithms and Complexity /Solved Exercises","files":["Advanced Algorithms 1.pdf","Advanced Algorithms 2.pdf"],"dirs":[]}]},{"name":"Parametrized Complexity and Algorithms","path":"Exercises and Labs by Course/Parametrized Complexity and Algorithms","files":["Parameterized Algorithms Book.pdf"],"dirs":[{"name":"Solved Exercises","path":"Exercises and Labs by Course/Parametrized Complexity and Algorithms/Solved Exercises","files":["Parametrized Algorithms 1.pdf","Parametrized Algorithms 2.pdf"],"dirs":[]}]},{"name":"Randomized Algorithms","path":"Exercises and Labs by Course/Randomized Algorithms","files":["Probablity and Computing by Mitzenmacher and Upfal.pdf","Randomized Algorithmsby Motwani and Raghavan.pdf"],"dirs":[]},{"name":"Reccursion Theory","path":"Exercises and Labs by Course/Reccursion Theory","files":["Reccursion Theory Notes.pdf"],"dirs":[{"name":"Solved Exercises","path":"Exercises and Labs by Course/Reccursion Theory/Solved Exercises","files":["Reccursion Theory 1.pdf","Reccursion Theory 2.pdf","Reccursion Theory 3.pdf","Reccursion Theory 4.pdf"],"dirs":[]}]},{"name":"Structural Complexity ","path":"Exercises and Labs by Course/Structural Complexity ","files":["CC Slides.pdf","Computational Complexity by Arora Barak.pdf","Fine - Grained Complexity.pdf"],"dirs":[]}]},{"name":"LaTeX Intro and Template","path":"LaTeX Intro and Template","files":["(Xe)LaTeX Templates.pdf","(Xe)LaTeX_Introduction.pdf"],"dirs":[{"name":"(Xe)LaTeX Templates","path":"LaTeX Intro and Template/(Xe)LaTeX Templates","files":["MainTemplate.tex","PreambleTemplate.tex"],"dirs":[{"name":"build","path":"LaTeX Intro and Template/(Xe)LaTeX Templates/build","files":["MainTemplate.aux","MainTemplate.log","MainTemplate.out","MainTemplate.synctex.gz","MainTemplate.toc","ekpa_logo.jpg"],"dirs":[]}]},{"name":"Introduction To (Xe)LaTeX files","path":"LaTeX Intro and Template/Introduction To (Xe)LaTeX files","files":["(Xe)LaTeX_Introduction.tex","Preamble.tex"],"dirs":[{"name":"build","path":"LaTeX Intro and Template/Introduction To (Xe)LaTeX files/build","files":["ekpa_logo.jpg"],"dirs":[]}]}]},{"name":"Presentations","path":"Presentations","files":["Exact Edge-Cover in Temporal Graphs.pdf","Lossy Kernelization.pdf","Smoothed Analysis.pdf","The Complexity of Theorem-Proving Procedures.pdf","When Does An Algorithm Halt.pdf"],"dirs":[{"name":"Exact Edge-Cover in Temporal Graphs - More Files","path":"Presentations/Exact Edge-Cover in Temporal Graphs - More Files","files":["34850-Article Text-38917-1-2-20250410.pdf","slides_short.pdf"],"dirs":[]},{"name":"Lossy Kernelization - More Files","path":"Presentations/Lossy Kernelization - More Files","files":["Lossy Kernalization.pdf","Lossy-Kernels-pcss-version.pdf","Lossy_Kernels_LPRS17.pdf","lossy-kernel.pdf"],"dirs":[]},{"name":"Smoothed Analysis - More Files","path":"Presentations/Smoothed Analysis - More Files","files":["[0] bwca.pdf","[1] Smooth Analysis.pdf","[2]TimSmoothAnalysis.pdf","[3] Simplex Smooth Analysis.pdf"],"dirs":[]},{"name":"The Complexity of Theorem-Proving Procedures - More Files","path":"Presentations/The Complexity of Theorem-Proving Procedures - More Files","files":["Cook-1971-NP-completeness-of-SAT.pdf"],"dirs":[]},{"name":"When Does An Algorithm Halt - More Files","path":"Presentations/When Does An Algorithm Halt - More Files","files":["Reccursion Theory by John Moschovakis.pdf"],"dirs":[]}]}]};
-  
   const safe = s => encodeURI(s);
-  const esc = s => (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
-
-  let manifest = null;
-  let allFiles = [];
+  const treeEl = document.getElementById('tree');
+  const filesEl = document.getElementById('files');
+  const panelPath = document.getElementById('panel-path');
+  const panelCount = document.getElementById('panel-count');
+  const search = document.getElementById('search');
+  let manifest = [];
   let currentFolder = null;
 
-  function collectAllFiles(node) {
-    const files = [];
-    const currentPath = node.path || '';
-    
-    if (node.files && Array.isArray(node.files)) {
-      node.files.forEach(filename => {
-        if (filename === 'index.html' || filename === 'manifest.json') return;
-        
-        const fullPath = currentPath && currentPath !== '.' ? `${currentPath}/${filename}` : filename;
-        files.push({
-          name: filename,
-          path: fullPath,
-          folder: currentPath && currentPath !== '.' ? currentPath : 'Root'
-        });
-      });
+  async function loadManifest(){
+    try{
+      const res = await fetch('manifest.json', {cache:'no-store'});
+      if(!res.ok) throw new Error('no manifest');
+      manifest = await res.json();
+    }catch(e){
+      manifest = [];
     }
-    
-    if (node.dirs && Array.isArray(node.dirs)) {
-      node.dirs.forEach(dir => {
-        const subFiles = collectAllFiles(dir);
-        files.push(...subFiles);
-      });
-    }
-    
-    return files;
+    manifest.forEach(m => { m.title = m.title || m.src; });
+    buildTreeAndRender();
+    updateSummary();
+    showWelcome();
   }
 
-  function countFilesInDir(dir) {
-    let count = dir.files ? dir.files.length : 0;
-    if (dir.dirs) {
-      dir.dirs.forEach(subdir => {
-        count += countFilesInDir(subdir);
-      });
-    }
-    return count;
+  function updateSummary(){
+    const total = manifest.length;
+    document.getElementById('summary-text').textContent = 'Browse your coursework';
+    document.getElementById('summary-badge').textContent = `${total} items`;
   }
 
-  function renderFolderTree() {
-    const tree = document.getElementById('folder-tree');
-    tree.innerHTML = '';
-    
-    const allItem = document.createElement('li');
-    allItem.className = 'folder-item';
-    allItem.innerHTML = `
-      <div class="folder-label active" data-path="">
-        <span class="folder-icon">📂</span>
-        <span class="folder-name">All Files</span>
-        <span class="folder-count">${allFiles.length}</span>
-      </div>
-    `;
-    tree.appendChild(allItem);
-    
-    if (manifest.dirs) {
-      manifest.dirs.forEach(dir => {
-        const item = renderTreeNode(dir, '');
-        tree.appendChild(item);
-      });
-    }
-    
-    tree.querySelectorAll('.folder-label').forEach(label => {
-      label.addEventListener('click', (e) => {
-        e.stopPropagation();
-        
-        tree.querySelectorAll('.folder-label').forEach(l => l.classList.remove('active'));
-        label.classList.add('active');
-        
-        const parent = label.parentElement;
-        const subfolder = parent.querySelector('.subfolder-list');
-        if (subfolder) {
-          const caret = label.querySelector('.caret');
-          subfolder.classList.toggle('open');
-          if (caret) caret.classList.toggle('open');
-        }
-        
-        const path = label.dataset.path;
-        if (path === '') {
-          showAllFiles();
+  function buildTree(items){
+    const root = { type:'folder', name:'/', children: {} };
+    items.forEach(it => {
+      const parts = it.src.split('/').filter(p=>p.length>0);
+      let node = root;
+      for(let i=0;i<parts.length;i++){
+        const part = parts[i];
+        const isLeaf = (i === parts.length-1);
+        if(isLeaf){
+          node.children.files = node.children.files || [];
+          node.children.files.push(Object.assign({}, it));
         } else {
-          showFolderFiles(path);
+          node.children[part] = node.children[part] || { type:'folder', name:part, children:{} };
+          node = node.children[part];
         }
-      });
+      }
     });
+    return root;
   }
 
-  function renderTreeNode(dir, parentPath) {
-    const dirPath = dir.path || (parentPath ? `${parentPath}/${dir.name}` : dir.name);
-    const fileCount = countFilesInDir(dir);
-    
-    const li = document.createElement('li');
-    li.className = 'folder-item';
-    
-    const hasSubdirs = dir.dirs && dir.dirs.length > 0;
-    
-    li.innerHTML = `
-      <div class="folder-label" data-path="${esc(dirPath)}">
-        ${hasSubdirs ? '<span class="caret"></span>' : ''}
-        <span class="folder-icon">📁</span>
-        <span class="folder-name">${esc(dir.name)}</span>
-        <span class="folder-count">${fileCount}</span>
+  function renderTree(node, container, pathParts = []){
+    Object.keys(node.children).sort((a,b)=>a.localeCompare(b)).forEach(key => {
+      if(key === 'files') return;
+      const child = node.children[key];
+      const row = document.createElement('div');
+      row.className = 'folder';
+      const displayPath = [...pathParts, child.name].join('/');
+      const fileCount = countFilesInNode(child);
+      row.innerHTML = `
+        <div class="name">
+          <span class="caret">▶</span>
+          <span class="folder-icon">📁</span>
+          <span title="${displayPath}">${child.name}</span>
+        </div>
+        <div class="folder-count">${fileCount}</div>
+      `;
+      container.appendChild(row);
+
+      const sub = document.createElement('div'); 
+      sub.className='children'; 
+      sub.style.display='none';
+      container.appendChild(sub);
+
+      row.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        const open = sub.style.display === 'block';
+        sub.style.display = open ? 'none' : 'block';
+        row.querySelector('.caret').classList.toggle('open', !open);
+        row.querySelector('.folder-icon').textContent = open ? '📁' : '📂';
+        
+        if(!open && sub.childElementCount === 0){
+          renderTree(child, sub, [...pathParts, child.name]);
+        }
+        
+        showFiles(child, displayPath);
+        document.querySelectorAll('.folder').forEach(f => f.classList.remove('active'));
+        row.classList.add('active');
+      });
+    });
+
+    if(node.children.files && node.children.files.length){
+      const showBtn = document.createElement('div');
+      showBtn.className = 'folder';
+      showBtn.style.marginTop='4px';
+      const fileCount = node.children.files.length;
+      showBtn.innerHTML = `
+        <div class="name">
+          <span class="folder-icon">📄</span>
+          <span>Files in this folder</span>
+        </div>
+        <div class="folder-count">${fileCount}</div>
+      `;
+      container.appendChild(showBtn);
+      showBtn.addEventListener('click',(e)=>{ 
+        e.stopPropagation(); 
+        showFiles(node, pathParts.join('/'));
+        document.querySelectorAll('.folder').forEach(f => f.classList.remove('active'));
+        showBtn.classList.add('active');
+      });
+    }
+  }
+
+  function countFilesInNode(node){
+    let c = 0;
+    if(node.children && node.children.files) c += node.children.files.length;
+    Object.keys(node.children||{}).forEach(k => {
+      if(k === 'files') return;
+      c += countFilesInNode(node.children[k]);
+    });
+    return c;
+  }
+
+  function showWelcome(){
+    panelPath.textContent = '👋 Welcome';
+    panelCount.textContent = '';
+    filesEl.innerHTML = `
+      <div class="welcome" style="grid-column:1/-1">
+        <div class="welcome-icon">📂</div>
+        <h2>Welcome to Your Coursework Archive</h2>
+        <p>Select a folder from the navigation to browse your files</p>
       </div>
     `;
-    
-    if (hasSubdirs) {
-      const sublist = document.createElement('ul');
-      sublist.className = 'subfolder-list';
-      dir.dirs.forEach(subdir => {
-        const subItem = renderTreeNode(subdir, dirPath);
-        sublist.appendChild(subItem);
-      });
-      li.appendChild(sublist);
-    }
-    
-    return li;
   }
 
-  function showAllFiles() {
-    currentFolder = null;
-    document.getElementById('current-path').textContent = 'All Files';
-    document.getElementById('file-count').textContent = `${allFiles.length} files`;
-    renderFiles(allFiles);
+  function showFiles(node, path){
+    currentFolder = node;
+    const files = node.children.files ? node.children.files : [];
+    panelPath.innerHTML = `📁 ${path || 'Files'}`;
+    panelCount.textContent = `${files.length} file${files.length !== 1 ? 's' : ''}`;
+    filesEl.innerHTML = '';
+    
+    files.sort((a,b)=> (a.title||'').localeCompare(b.title||''));
+    files.forEach(it => renderFileCard(it));
   }
 
-  function showFolderFiles(folderPath) {
-    currentFolder = folderPath;
-    const files = allFiles.filter(f => f.folder === folderPath);
-    document.getElementById('current-path').textContent = folderPath;
-    document.getElementById('file-count').textContent = `${files.length} files`;
-    renderFiles(files);
-  }
-
-  function renderFiles(files) {
-    const grid = document.getElementById('files-grid');
-    grid.innerHTML = '';
-    
-    if (files.length === 0) {
-      grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🔭</div><p>No files found</p></div>';
-      return;
-    }
-    
-    files.sort((a, b) => a.name.localeCompare(b.name));
-    
-    files.forEach(file => {
-      const card = createFileCard(file);
-      grid.appendChild(card);
-    });
-  }
-
-  function createFileCard(file) {
-    const card = document.createElement('div');
-    card.className = 'file-card';
-    
-    const ext = (file.name.split('.').pop() || '').toLowerCase();
-    const thumbnail = document.createElement('div');
-    thumbnail.className = 'file-thumbnail';
-    
-    if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'].includes(ext)) {
-      const img = document.createElement('img');
-      img.src = safe(file.path);
-      img.alt = file.name;
-      thumbnail.appendChild(img);
-    } else if (['mp4', 'webm', 'ogg'].includes(ext)) {
-      const video = document.createElement('video');
-      video.src = safe(file.path);
-      video.muted = true;
-      video.loop = true;
-      video.playsInline = true;
-      thumbnail.appendChild(video);
-    } else {
-      thumbnail.textContent = ext.toUpperCase();
-    }
+  function renderFileCard(it){
+    const f = document.createElement('div'); 
+    f.className='file';
+    const thumb = document.createElement('div'); 
+    thumb.className='thumb';
+    const ext = (it.src.split('.').pop()||'').toLowerCase();
     
     const badge = document.createElement('div');
-    badge.className = 'file-ext-badge';
-    badge.textContent = ext.toUpperCase();
-    thumbnail.appendChild(badge);
+    badge.className = 'file-type-badge';
+    badge.textContent = ext;
+    thumb.appendChild(badge);
     
-    const info = document.createElement('div');
-    info.className = 'file-info';
-    info.innerHTML = `
-      <div class="file-title" title="${esc(file.name)}">${esc(file.name)}</div>
-      <div class="file-path">${esc(file.folder)}</div>
-    `;
-    
-    card.appendChild(thumbnail);
-    card.appendChild(info);
-    
-    card.addEventListener('click', () => openLightbox(file));
-    
-    return card;
-  }
-
-  function openLightbox(file) {
-    const lightbox = document.getElementById('lightbox');
-    const media = document.getElementById('lightbox-media');
-    const title = document.getElementById('lightbox-title');
-    const download = document.getElementById('lightbox-download');
-    
-    media.innerHTML = '';
-    title.textContent = file.name;
-    download.href = safe(file.path);
-    download.download = file.name;
-    
-    const ext = (file.name.split('.').pop() || '').toLowerCase();
-    
-    if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'].includes(ext)) {
-      const img = document.createElement('img');
-      img.src = safe(file.path);
-      media.appendChild(img);
-    } else if (['mp4', 'webm', 'ogg'].includes(ext)) {
-      const video = document.createElement('video');
-      video.src = safe(file.path);
-      video.controls = true;
-      media.appendChild(video);
-    } else if (ext === 'pdf') {
-      const iframe = document.createElement('iframe');
-      iframe.src = safe(file.path);
-      iframe.style.width = '100%';
-      iframe.style.height = '70vh';
-      media.appendChild(iframe);
+    if(['png','jpg','jpeg','gif','svg','webp'].includes(ext)){
+      const img = document.createElement('img'); 
+      img.src = safe(it.src); 
+      img.alt = it.title; 
+      img.style.width='100%'; 
+      img.style.height='160px'; 
+      img.style.objectFit='cover';
+      thumb.appendChild(img);
+    } else if(['mp4','webm','ogg'].includes(ext)){
+      const v = document.createElement('video'); 
+      v.src = safe(it.src); 
+      v.muted=true; 
+      v.loop=true; 
+      v.playsInline=true; 
+      v.autoplay=true; 
+      v.style.width='100%'; 
+      v.style.height='160px'; 
+      v.style.objectFit='cover';
+      thumb.appendChild(v);
     } else {
-      media.innerHTML = '<div style="color:white;padding:40px;text-align:center">Preview not available. Use download button.</div>';
+      const icon = getFileIcon(ext);
+      const iconEl = document.createElement('div');
+      iconEl.style.fontSize = '48px';
+      iconEl.textContent = icon;
+      thumb.appendChild(iconEl);
     }
     
-    lightbox.classList.add('show');
+    const meta = document.createElement('div'); 
+    meta.className='meta';
+    meta.innerHTML = `
+      <div class="title" title="${escapeHtml(it.title)}">${it.title}</div>
+      <div class="file-path">${it.src}</div>
+    `;
+    f.appendChild(thumb); 
+    f.appendChild(meta);
+    f.addEventListener('click', ()=> openLightbox(it));
+    filesEl.appendChild(f);
   }
 
-  document.getElementById('lightbox-close').addEventListener('click', () => {
-    document.getElementById('lightbox').classList.remove('show');
-  });
+  function getFileIcon(ext){
+    const icons = {
+      pdf: '📄', doc: '📝', docx: '📝', txt: '📝',
+      zip: '🗜️', rar: '🗜️', '7z': '🗜️',
+      mp3: '🎵', wav: '🎵', ogg: '🎵',
+      html: '🌐', css: '🎨', js: '⚙️',
+      py: '🐍', java: '☕', cpp: '⚡'
+    };
+    return icons[ext] || '📄';
+  }
 
-  document.getElementById('lightbox').addEventListener('click', (e) => {
-    if (e.target.id === 'lightbox') {
-      document.getElementById('lightbox').classList.remove('show');
-    }
-  });
+  function escapeHtml(s){ 
+    return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); 
+  }
 
-  document.getElementById('search').addEventListener('input', (e) => {
-    const query = e.target.value.trim().toLowerCase();
+  function buildTreeAndRender(){
+    const root = buildTree(manifest);
+    treeEl.innerHTML = '';
+    renderTree(root, treeEl, []);
+  }
+
+  function openLightbox(item){
+    const lb = document.getElementById('lightbox');
+    const content = document.getElementById('lb-content');
+    const title = document.getElementById('lb-title');
+    const dl = document.getElementById('lb-download');
+    content.innerHTML = ''; 
+    title.textContent = item.title || item.src; 
+    dl.href = safe(item.src); 
+    dl.download = item.title || '';
     
-    if (!query) {
-      if (currentFolder) {
-        showFolderFiles(currentFolder);
-      } else {
-        showAllFiles();
-      }
+    const ext = (item.src.split('.').pop()||'').toLowerCase();
+    
+    if(['png','jpg','jpeg','gif','svg','webp'].includes(ext)){ 
+      const img = document.createElement('img'); 
+      img.src = safe(item.src); 
+      content.appendChild(img); 
+    }
+    else if(['mp4','webm','ogg'].includes(ext)){ 
+      const v = document.createElement('video'); 
+      v.controls=true; 
+      v.src = safe(item.src); 
+      content.appendChild(v); 
+    }
+    else if(ext === 'pdf'){ 
+      const iframe = document.createElement('iframe'); 
+      iframe.src = safe(item.src); 
+      iframe.style.width='100%'; 
+      iframe.style.height='70vh'; 
+      content.appendChild(iframe); 
+    }
+    else{ 
+      const info = document.createElement('div'); 
+      info.style.padding='40px'; 
+      info.style.color='#fff';
+      info.style.textAlign='center';
+      info.innerHTML = `
+        <div style="font-size:64px;margin-bottom:20px">${getFileIcon(ext)}</div>
+        <div style="font-size:18px;font-weight:600;margin-bottom:8px">${item.title}</div>
+        <div style="opacity:0.7">Preview not available for this file type</div>
+      `; 
+      content.appendChild(info); 
+    }
+    
+    lb.classList.add('show'); 
+    lb.setAttribute('aria-hidden','false');
+  }
+
+  document.getElementById('lb-close').addEventListener('click', ()=>{ 
+    const lb=document.getElementById('lightbox'); 
+    lb.classList.remove('show'); 
+    lb.setAttribute('aria-hidden','true'); 
+    document.getElementById('lb-content').innerHTML=''; 
+  });
+  
+  document.getElementById('lightbox').addEventListener('click',(e)=>{ 
+    if(e.target.id==='lightbox') { 
+      document.getElementById('lightbox').classList.remove('show'); 
+      document.getElementById('lb-content').innerHTML=''; 
+    } 
+  });
+
+  search.addEventListener('input', ()=>{
+    const q = search.value.trim().toLowerCase();
+    if(!q){ 
+      buildTreeAndRender(); 
+      showWelcome();
+      return; 
+    }
+    
+    const results = manifest.filter(it => 
+      ((it.title||'') + ' ' + it.src + ' ' + (it.course||'')).toLowerCase().includes(q)
+    );
+    
+    panelPath.innerHTML = `🔍 Search: "${q}"`;
+    panelCount.textContent = `${results.length} result${results.length !== 1 ? 's' : ''}`;
+    filesEl.innerHTML = '';
+    
+    if(results.length === 0){
+      filesEl.innerHTML = `
+        <div class="welcome" style="grid-column:1/-1">
+          <div class="welcome-icon">🔍</div>
+          <h2>No results found</h2>
+          <p>Try a different search term</p>
+        </div>
+      `;
       return;
     }
     
-    const results = allFiles.filter(file => {
-      const searchText = `${file.name} ${file.path} ${file.folder}`.toLowerCase();
-      return searchText.includes(query);
-    });
-    
-    document.getElementById('current-path').textContent = `Search: "${query}"`;
-    document.getElementById('file-count').textContent = `${results.length} results`;
-    renderFiles(results);
+    results.sort((a,b)=> (a.title||'').localeCompare(b.title||''));
+    results.forEach(it=> renderFileCard(it));
   });
 
-  async function loadManifest() {
-    try {
-      // Try to load manifest.json first
-      const res = await fetch('manifest.json', {cache: 'no-store'});
-      
-      if (res.ok) {
-        manifest = await res.json();
-        console.log('Loaded manifest.json successfully');
-      } else {
-        throw new Error('manifest.json not found, using embedded data');
-      }
-    } catch(e) {
-      // Fallback to embedded data
-      console.log('Using embedded manifest data:', e.message);
-      manifest = MANIFEST_DATA;
-    }
-    
-    allFiles = collectAllFiles(manifest);
-    
-    document.getElementById('total-files-badge').textContent = `${allFiles.length} files`;
-    
-    renderFolderTree();
-    showAllFiles();
-  }
-
-  // Start the app
   loadManifest();
-})();
 </script>
-
 </body>
 </html>
