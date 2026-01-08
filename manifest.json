@@ -77,7 +77,8 @@
               "path": "Exercises and Labs by Course/Approximation Algorithms/Solved Exercises",
               "files": [
                 "Approximation Algorithms 1.pdf",
-                "Approximation Algorithms 2.pdf"
+                "Approximation Algorithms 2.pdf",
+                "Approximation Algorithms 3.pdf"
               ],
               "dirs": []
             }
@@ -87,7 +88,7 @@
           "name": "Computational Complexity",
           "path": "Exercises and Labs by Course/Computational Complexity",
           "files": [
-            "Computational Complexity by Oded Goldreich.pdf",
+            "Computational Complexity by Arora Barak.pdf",
             "Computers and Intractability.pdf"
           ],
           "dirs": [
@@ -255,7 +256,8 @@
           "path": "Exercises and Labs by Course/Structural Complexity ",
           "files": [
             "CC Slides.pdf",
-            "Computational Complexity by Arora Barak.pdf",
+            "Complexity by Trevisan.pdf",
+            "Computational Complexity by Oded Goldreich.pdf",
             "Fine - Grained Complexity.pdf"
           ],
           "dirs": []
@@ -317,6 +319,7 @@
       "name": "Presentations",
       "path": "Presentations",
       "files": [
+        "Communication Complexity.pdf",
         "Exact Edge-Cover in Temporal Graphs.pdf",
         "Lossy Kernelization.pdf",
         "Smoothed Analysis.pdf",
@@ -325,10 +328,19 @@
       ],
       "dirs": [
         {
+          "name": "Communication Complexity - More Files",
+          "path": "Presentations/Communication Complexity - More Files",
+          "files": [
+            "Communication Complexity - TR.pdf",
+            "Communication Complexity Book.pdf"
+          ],
+          "dirs": []
+        },
+        {
           "name": "Exact Edge-Cover in Temporal Graphs - More Files",
           "path": "Presentations/Exact Edge-Cover in Temporal Graphs - More Files",
           "files": [
-            "34850-Article Text-38917-1-2-20250410.pdf",
+            "How Many Lines to Paint the City: Exact Edge-Cover in Temporal Graphs.pdf",
             "slides_short.pdf"
           ],
           "dirs": []
@@ -338,9 +350,9 @@
           "path": "Presentations/Lossy Kernelization - More Files",
           "files": [
             "Lossy Kernalization.pdf",
-            "Lossy-Kernels-pcss-version.pdf",
-            "Lossy_Kernels_LPRS17.pdf",
-            "lossy-kernel.pdf"
+            "Lossy Kernels Conference.pdf",
+            "Lossy Kernels presentation.pdf",
+            "lossy kernelization slides.pdf"
           ],
           "dirs": []
         },
@@ -367,7 +379,7 @@
           "name": "When Does An Algorithm Halt - More Files",
           "path": "Presentations/When Does An Algorithm Halt - More Files",
           "files": [
-            "Reccursion Theory by John Moschovakis.pdf"
+            "Reccursion Theory - John Moschovakis.pdf"
           ],
           "dirs": []
         }
