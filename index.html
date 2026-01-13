@@ -638,18 +638,8 @@
 
   function updateSummary(){
     const total = allFiles.length;
-    const stats = getFileTypeStats();
     document.getElementById('summary-text').textContent = 'Browse your coursework';
     document.getElementById('summary-badge').textContent = `${total} items`;
-  }
-
-  function getFileTypeStats(){
-    const types = {};
-    allFiles.forEach(f => {
-      const ext = (f.src.split('.').pop()||'').toLowerCase();
-      types[ext] = (types[ext] || 0) + 1;
-    });
-    return types;
   }
 
   function buildTreeFromManifest(data){
@@ -796,8 +786,7 @@
     const ext = (it.src.split('.').pop()||'').toLowerCase();
     
     const badge = document.createElement('div');
-    badge.className = `file-type-badge badge-${ext} badge-default`;
-    badge.classList.remove('badge-default');
+    badge.className = `file-type-badge badge-${ext}`;
     if(!['pdf','doc','docx','txt','py','js','html','css','java','cpp','jpg','jpeg','png','gif','webp','svg','mp4','webm','ogg','mp3','wav','zip','rar','7z','tex','ipynb','csv'].includes(ext)){
       badge.classList.add('badge-default');
     }
@@ -851,7 +840,8 @@
       html: '🌐', css: '🎨', js: '⚙️',
       py: '🐍', java: '☕', cpp: '⚡',
       tex: '📐', ipynb: '📊', csv: '📊',
-      rdata: '📈', log: '📋', aux: '📋'
+      rdata: '📈', log: '📋', aux: '📋',
+      out: '📋', gz: '🗜️', toc: '📋'
     };
     return icons[ext] || '📄';
   }
@@ -904,7 +894,7 @@
       info.style.textAlign='center';
       info.innerHTML = `
         <div style="font-size:72px;margin-bottom:24px">${getFileIcon(ext)}</div>
-        <div style="font-size:20px;font-weight:600;margin-bottom:10px">${item.title}</div>
+        <div style="font-size:20px;font-weight:600;margin-bottom:10px">${escapeHtml(item.title)}</div>
         <div style="opacity:0.7;font-size:15px">Preview not available for this file type</div>
       `; 
       content.appendChild(info); 
