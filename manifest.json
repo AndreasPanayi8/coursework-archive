@@ -322,6 +322,7 @@
         "Communication Complexity.pdf",
         "Exact Edge-Cover in Temporal Graphs.pdf",
         "Lossy Kernelization.pdf",
+        "Optimal Algorithms and Inapproximability Results for Every CSP.pdf",
         "Smoothed Analysis.pdf",
         "The Complexity of Theorem-Proving Procedures.pdf",
         "When Does An Algorithm Halt.pdf"
@@ -353,6 +354,14 @@
             "Lossy Kernels Conference.pdf",
             "Lossy Kernels presentation.pdf",
             "lossy kernelization slides.pdf"
+          ],
+          "dirs": []
+        },
+        {
+          "name": "Optimal Algorithms and Inapproximability Results for Every CSP - More Files",
+          "path": "Presentations/Optimal Algorithms and Inapproximability Results for Every CSP - More Files",
+          "files": [
+            "present.pdf"
           ],
           "dirs": []
         },
