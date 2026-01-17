@@ -361,7 +361,8 @@
           "name": "Optimal Algorithms and Inapproximability Results for Every CSP - More Files",
           "path": "Presentations/Optimal Algorithms and Inapproximability Results for Every CSP - More Files",
           "files": [
-            "present.pdf"
+            "Critical Summary.pdf",
+            "Paper - Raghavendra STOC 2008.pdf"
           ],
           "dirs": []
         },
