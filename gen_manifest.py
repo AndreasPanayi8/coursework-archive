@@ -4,7 +4,7 @@ import os, json
 ROOT = os.getcwd()
 
 IGNORE_DIRS = {".git", ".github", ".meta", "__pycache__"}
-IGNORE_FILES = set()s
+IGNORE_FILES = set()
 
 
 def walk(path):

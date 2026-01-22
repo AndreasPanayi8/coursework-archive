@@ -2,6 +2,7 @@
   "name": "coursework-archive",
   "path": ".",
   "files": [
+    "gen_manifest.py",
     "index.html",
     "manifest.json"
   ],
