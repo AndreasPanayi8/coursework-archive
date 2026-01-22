@@ -4,7 +4,8 @@ import os, json
 ROOT = os.getcwd()
 
 IGNORE_DIRS = {".git", ".github", ".meta", "__pycache__"}
-IGNORE_FILES = {"gen_manifest.py"}
+IGNORE_FILES = set()s
+
 
 def walk(path):
     items = sorted(os.listdir(path))
