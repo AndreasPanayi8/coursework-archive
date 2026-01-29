@@ -13,6 +13,15 @@
       "files": [],
       "dirs": [
         {
+          "name": "Advanced AI",
+          "path": "Exercises and Labs by Course/Advanced AI",
+          "files": [
+            "Artificial Intelligence - a modern approach.pdf",
+            "Weka Machine Learning.pdf"
+          ],
+          "dirs": []
+        },
+        {
           "name": "Algorithmic Data Science",
           "path": "Exercises and Labs by Course/Algorithmic Data Science",
           "files": [
