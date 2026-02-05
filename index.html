@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Coursework Archive – Enhanced View</title>
+<title>Theoretical Computer Science Repository</title>
+<meta name="description" content="A comprehensive collection of coursework, research, presentations, and resources in theoretical computer science">
 <style>
   :root{
     --bg:#f8fafc; 
@@ -21,6 +22,20 @@
     font-family:'Inter',system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   }
   
+  [data-theme="dark"] {
+    --bg:#0f172a;
+    --card:#1e293b;
+    --muted:#94a3b8;
+    --accent:#60a5fa;
+    --accent-hover:#3b82f6;
+    --border:#334155;
+    --text:#f1f5f9;
+    --text-secondary:#cbd5e1;
+    --shadow-sm:0 1px 3px rgba(0,0,0,0.3);
+    --shadow-md:0 4px 12px rgba(0,0,0,0.3);
+    --shadow-lg:0 10px 30px rgba(0,0,0,0.4);
+  }
+  
   * { box-sizing: border-box; }
   
   body{
@@ -29,6 +44,7 @@
     background:var(--bg);
     color:var(--text);
     line-height:1.6;
+    transition:background-color 0.3s ease, color 0.3s ease;
   }
   
   header{
@@ -59,10 +75,18 @@
   }
   
   header h1{
-    margin:0 0 12px 0;
+    margin:0 0 8px 0;
     font-size:32px;
     font-weight:700;
     letter-spacing:-0.02em;
+    position:relative;
+    z-index:1;
+  }
+  
+  .subtitle {
+    margin:0 0 16px 0;
+    font-size:15px;
+    opacity:0.9;
     position:relative;
     z-index:1;
   }
@@ -82,24 +106,37 @@
     font-size:14px;
     display:flex;
     align-items:center;
-    gap:16px;
+    gap:12px;
     flex-wrap:wrap;
   }
   
   .summary-badge{
     background:rgba(255,255,255,0.25);
-    padding:6px 14px;
+    padding:8px 16px;
     border-radius:20px;
     font-weight:600;
     font-size:13px;
     backdrop-filter:blur(10px);
     border:1px solid rgba(255,255,255,0.3);
     transition:all 0.3s ease;
+    display:flex;
+    align-items:center;
+    gap:6px;
   }
   
   .summary-badge:hover{
     background:rgba(255,255,255,0.35);
     transform:translateY(-2px);
+  }
+  
+  .badge-icon {
+    font-size:16px;
+  }
+  
+  .controls-group {
+    display:flex;
+    gap:12px;
+    align-items:center;
   }
   
   .search-wrapper{
@@ -115,6 +152,7 @@
     background:rgba(255,255,255,0.95);
     font-size:14px;
     transition:all 0.3s ease;
+    color:var(--text);
   }
   
   input[type=search]:focus{
@@ -135,10 +173,87 @@
     font-size:18px;
   }
   
+  .theme-toggle {
+    background:rgba(255,255,255,0.25);
+    border:2px solid rgba(255,255,255,0.3);
+    padding:10px 14px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:20px;
+    transition:all 0.3s ease;
+    backdrop-filter:blur(10px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  
+  .theme-toggle:hover {
+    background:rgba(255,255,255,0.35);
+    transform:translateY(-2px);
+  }
+  
+  .breadcrumb {
+    background:var(--card);
+    padding:14px 20px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-sm);
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:14px;
+    color:var(--text-secondary);
+    border:1px solid var(--border);
+    overflow-x:auto;
+    white-space:nowrap;
+  }
+  
+  .breadcrumb::-webkit-scrollbar {
+    height:6px;
+  }
+  
+  .breadcrumb::-webkit-scrollbar-thumb {
+    background:var(--border);
+    border-radius:3px;
+  }
+  
+  .breadcrumb-item {
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  
+  .breadcrumb-link {
+    color:var(--accent);
+    text-decoration:none;
+    cursor:pointer;
+    transition:color 0.2s;
+  }
+  
+  .breadcrumb-link:hover {
+    color:var(--accent-hover);
+    text-decoration:underline;
+  }
+  
+  .breadcrumb-separator {
+    color:var(--muted);
+  }
+  
   main{
     display:grid;
     grid-template-columns:440px 1fr;
     gap:24px;
+  }
+  
+  @media (max-width: 1024px) {
+    main {
+      grid-template-columns:1fr;
+    }
+    
+    .tree {
+      height:auto !important;
+      max-height:400px;
+    }
   }
   
   .tree{
@@ -146,24 +261,102 @@
     padding:18px;
     border-radius:var(--radius);
     box-shadow:var(--shadow-md);
-    height:calc(100vh - 260px);
+    height:calc(100vh - 300px);
     overflow:auto;
     border:1px solid var(--border);
   }
   
   .tree::-webkit-scrollbar{width:10px}
-  .tree::-webkit-scrollbar-track{background:#f1f5f9;border-radius:5px;margin:4px}
-  .tree::-webkit-scrollbar-thumb{background:linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);border-radius:5px;border:2px solid #f1f5f9}
-  .tree::-webkit-scrollbar-thumb:hover{background:linear-gradient(135deg, #94a3b8 0%, #64748b 100%)}
+  .tree::-webkit-scrollbar-track{background:var(--bg);border-radius:5px;margin:4px}
+  .tree::-webkit-scrollbar-thumb{background:linear-gradient(135deg, var(--muted) 0%, var(--text-secondary) 100%);border-radius:5px;border:2px solid var(--bg)}
+  .tree::-webkit-scrollbar-thumb:hover{background:linear-gradient(135deg, var(--text-secondary) 0%, var(--muted) 100%)}
   
   .panel{
     background:var(--card);
     padding:24px;
     border-radius:var(--radius);
     box-shadow:var(--shadow-md);
-    min-height:calc(100vh - 260px);
+    min-height:calc(100vh - 300px);
     overflow:auto;
     border:1px solid var(--border);
+  }
+  
+  .panel-header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+    padding-bottom:16px;
+    border-bottom:2px solid var(--border);
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  
+  .panel-title {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:20px;
+    font-weight:600;
+    color:var(--text);
+  }
+  
+  .panel-count {
+    background:var(--bg);
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+    color:var(--text-secondary);
+  }
+  
+  .view-options {
+    display:flex;
+    gap:8px;
+  }
+  
+  .view-btn {
+    padding:8px 12px;
+    border-radius:8px;
+    background:var(--bg);
+    border:1px solid var(--border);
+    cursor:pointer;
+    transition:all 0.2s;
+    font-size:18px;
+  }
+  
+  .view-btn:hover {
+    background:var(--border);
+  }
+  
+  .view-btn.active {
+    background:var(--accent);
+    color:white;
+    border-color:var(--accent);
+  }
+  
+  .files{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+    gap:20px;
+  }
+  
+  .files.list-view {
+    grid-template-columns:1fr;
+  }
+  
+  .files.list-view .file {
+    flex-direction:row;
+  }
+  
+  .files.list-view .thumb {
+    width:100px;
+    height:100px;
+    flex-shrink:0;
+  }
+  
+  .files.list-view .meta {
+    flex:1;
   }
   
   .folder {
@@ -193,7 +386,7 @@
   }
   
   .folder:hover{
-    background:linear-gradient(to right, #f1f5f9 0%, transparent 100%);
+    background:var(--bg);
     transform:translateX(4px);
   }
   
@@ -202,7 +395,7 @@
   }
   
   .folder.active{
-    background:linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    background:linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
     border-left:3px solid var(--accent);
     box-shadow:var(--shadow-sm);
   }
@@ -237,7 +430,7 @@
   }
   
   .folder-count{
-    background:linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    background:var(--bg);
     color:var(--text-secondary);
     padding:4px 10px;
     border-radius:14px;
@@ -252,7 +445,7 @@
   .children{
     margin-left:20px;
     margin-top:6px;
-    border-left:2px solid #e2e8f0;
+    border-left:2px solid var(--border);
     padding-left:14px;
     animation:slideDown 0.3s ease;
   }
@@ -262,13 +455,22 @@
     to{opacity:1;transform:translateY(0)}
   }
   
+  .caret{
+    transition:transform 0.3s ease;
+    display:inline-block;
+  }
+  
+  .caret.open{
+    transform:rotate(90deg);
+  }
+  
   .file{
     display:flex;
     flex-direction:column;
     border-radius:14px;
     overflow:hidden;
     border:1px solid var(--border);
-    background:white;
+    background:var(--card);
     cursor:pointer;
     transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position:relative;
@@ -298,111 +500,122 @@
     opacity:1;
   }
   
-  .file .thumb{
+  .thumb{
+    width:100%;
     height:170px;
+    background:linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
     display:flex;
     align-items:center;
     justify-content:center;
-    background:linear-gradient(135deg, #f0f4ff 0%, #e9d5ff 100%);
-    font-weight:700;
-    color:var(--accent);
-    font-size:20px;
     position:relative;
     overflow:hidden;
   }
   
-  .file .thumb::before{
-    content:'';
-    position:absolute;
-    inset:0;
-    background:linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
-    transform:translateX(-100%) skewX(-15deg);
-    transition:transform 0.6s ease;
-  }
-  
-  .file:hover .thumb::before{
-    transform:translateX(200%) skewX(-15deg);
-  }
-  
-  .file .thumb img, .file .thumb video{
-    transition:transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  .file:hover .thumb img, .file:hover .thumb video{
-    transform:scale(1.08);
-  }
-  
-  .file .meta{
-    padding:14px;
-    font-size:13px;
-  }
-  
-  .title{
-    font-weight:700;
-    margin-bottom:6px;
-    color:var(--text);
-    display:-webkit-box;
-    -webkit-line-clamp:2;
-    -webkit-box-orient:vertical;
-    overflow:hidden;
-    line-height:1.4;
-  }
-  
-  .file-path{
-    color:var(--muted);
-    font-size:11px;
-    display:-webkit-box;
-    -webkit-line-clamp:1;
-    -webkit-box-orient:vertical;
-    overflow:hidden;
+  [data-theme="dark"] .thumb {
+    background:linear-gradient(135deg, #1e293b 0%, #334155 100%);
   }
   
   .file-type-badge{
     position:absolute;
-    top:10px;
-    right:10px;
-    padding:5px 12px;
+    top:12px;
+    right:12px;
+    padding:6px 12px;
     border-radius:8px;
-    font-size:10px;
-    font-weight:800;
+    font-weight:700;
+    font-size:11px;
     text-transform:uppercase;
     letter-spacing:0.5px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.12);
-    backdrop-filter:blur(8px);
-    z-index:10;
+    z-index:2;
+    backdrop-filter:blur(10px);
+    box-shadow:0 2px 8px rgba(0,0,0,0.15);
   }
   
-  .badge-pdf{background:linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);color:white}
-  .badge-doc,.badge-docx,.badge-txt{background:linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);color:white}
-  .badge-py,.badge-js,.badge-html,.badge-css,.badge-java,.badge-cpp{background:linear-gradient(135deg, #10b981 0%, #059669 100%);color:white}
-  .badge-jpg,.badge-jpeg,.badge-png,.badge-gif,.badge-webp,.badge-svg{background:linear-gradient(135deg, #ec4899 0%, #db2777 100%);color:white}
-  .badge-mp4,.badge-webm,.badge-ogg,.badge-mp3,.badge-wav{background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%);color:white}
-  .badge-zip,.badge-rar,.badge-7z{background:linear-gradient(135deg, #64748b 0%, #475569 100%);color:white}
-  .badge-tex,.badge-ipynb,.badge-csv{background:linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);color:white}
-  .badge-default{background:linear-gradient(135deg, #94a3b8 0%, #64748b 100%);color:white}
+  .badge-pdf{background:rgba(239, 68, 68, 0.9);color:white}
+  .badge-doc,.badge-docx{background:rgba(59, 130, 246, 0.9);color:white}
+  .badge-txt{background:rgba(107, 114, 128, 0.9);color:white}
+  .badge-py{background:rgba(34, 139, 230, 0.9);color:white}
+  .badge-js{background:rgba(240, 219, 79, 0.9);color:#1a1a1a}
+  .badge-html{background:rgba(227, 79, 38, 0.9);color:white}
+  .badge-css{background:rgba(38, 77, 228, 0.9);color:white}
+  .badge-java{background:rgba(244, 67, 54, 0.9);color:white}
+  .badge-cpp{background:rgba(0, 89, 157, 0.9);color:white}
+  .badge-jpg,.badge-jpeg,.badge-png,.badge-gif,.badge-webp,.badge-svg{background:rgba(16, 185, 129, 0.9);color:white}
+  .badge-mp4,.badge-webm,.badge-ogg{background:rgba(139, 92, 246, 0.9);color:white}
+  .badge-mp3,.badge-wav{background:rgba(236, 72, 153, 0.9);color:white}
+  .badge-zip,.badge-rar,.badge-7z{background:rgba(251, 146, 60, 0.9);color:white}
+  .badge-tex{background:rgba(20, 83, 45, 0.9);color:white}
+  .badge-ipynb{background:rgba(247, 127, 0, 0.9);color:white}
+  .badge-csv{background:rgba(5, 150, 105, 0.9);color:white}
+  .badge-default{background:rgba(100, 116, 139, 0.9);color:white}
   
-  .caret{
-    display:inline-block;
-    width:18px;
-    height:18px;
-    transition:transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    flex-shrink:0;
+  .meta{
+    padding:16px;
+    background:var(--card);
   }
   
-  .caret.open{
-    transform:rotate(90deg);
+  .title{
+    font-weight:600;
+    font-size:14px;
+    color:var(--text);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    margin-bottom:6px;
   }
   
-  .lb{
+  .file-path{
+    font-size:12px;
+    color:var(--text-secondary);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  
+  .welcome{
+    text-align:center;
+    padding:80px 20px;
+  }
+  
+  .welcome-icon{
+    font-size:80px;
+    margin-bottom:24px;
+    animation:float 3s ease-in-out infinite;
+  }
+  
+  @keyframes float{
+    0%, 100%{transform:translateY(0px)}
+    50%{transform:translateY(-20px)}
+  }
+  
+  .welcome h2{
+    font-size:28px;
+    margin:0 0 12px 0;
+    color:var(--text);
+  }
+  
+  .welcome p{
+    font-size:16px;
+    color:var(--text-secondary);
+    margin:0;
+  }
+  
+  #lightbox{
     position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.88);
-    backdrop-filter:blur(12px);
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.95);
+    z-index:9999;
     display:none;
     align-items:center;
     justify-content:center;
     padding:20px;
-    z-index:999;
+    backdrop-filter:blur(10px);
+  }
+  
+  #lightbox.show{
+    display:flex;
     animation:fadeIn 0.3s ease;
   }
   
@@ -411,248 +624,353 @@
     to{opacity:1}
   }
   
-  .lb.show{display:flex}
-  
-  .lb-box{
-    max-width:1200px;
-    max-height:90vh;
-    background:#1e293b;
-    border-radius:20px;
-    overflow:auto;
-    padding:24px;
-    box-shadow:0 25px 50px rgba(0,0,0,0.5);
-    animation:slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  .lb-container{
+    max-width:90%;
+    max-height:90%;
+    position:relative;
+    background:var(--card);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-lg);
+    overflow:hidden;
   }
   
-  @keyframes slideUp{
-    from{opacity:0;transform:translateY(30px) scale(0.95)}
-    to{opacity:1;transform:translateY(0) scale(1)}
-  }
-  
-  .lb-content img,.lb-content video,.lb-content iframe{
-    max-width:100%;
-    height:auto;
-    display:block;
-    border-radius:12px;
-  }
-  
-  .lb-info{
+  .lb-header{
+    padding:20px 24px;
+    border-bottom:1px solid var(--border);
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-top:20px;
-    color:#fff;
-    gap:20px;
-    flex-wrap:wrap;
+    background:var(--card);
   }
   
   .lb-title{
     font-weight:600;
-    font-size:17px;
-    flex:1;
+    font-size:16px;
+    color:var(--text);
   }
   
-  .lb-buttons{
+  .lb-actions{
     display:flex;
-    gap:10px;
+    gap:12px;
   }
   
-  .btn{
-    background:white;
-    padding:11px 20px;
-    border-radius:10px;
-    text-decoration:none;
-    color:#111;
-    font-weight:600;
+  .lb-btn{
+    padding:10px 18px;
+    border-radius:8px;
     border:none;
     cursor:pointer;
-    font-size:14px;
-    transition:all 0.2s ease;
-  }
-  
-  .btn:hover{
-    background:#f8fafc;
-    transform:translateY(-2px);
-    box-shadow:0 4px 12px rgba(255,255,255,0.2);
-  }
-  
-  #panel-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:24px;
-    padding-bottom:20px;
-    border-bottom:2px solid var(--border);
-  }
-  
-  #panel-path{
-    font-size:20px;
-    font-weight:700;
-    color:var(--text);
-    display:flex;
-    align-items:center;
-    gap:10px;
-  }
-  
-  #panel-count{
-    color:var(--muted);
-    font-size:14px;
     font-weight:600;
+    font-size:14px;
+    transition:all 0.2s;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
   }
   
-  .welcome{
-    text-align:center;
-    padding:80px 20px;
-    color:var(--text-secondary);
+  .lb-btn-download{
+    background:var(--accent);
+    color:white;
   }
   
-  .welcome-icon{
-    font-size:72px;
-    margin-bottom:24px;
-    opacity:0.6;
-    animation:float 3s ease-in-out infinite;
+  .lb-btn-download:hover{
+    background:var(--accent-hover);
   }
   
-  @keyframes float{
-    0%, 100%{transform:translateY(0)}
-    50%{transform:translateY(-10px)}
-  }
-  
-  .welcome h2{
-    font-size:28px;
-    margin:0 0 16px 0;
+  .lb-btn-close{
+    background:var(--border);
     color:var(--text);
-    font-weight:700;
   }
   
-  .welcome p{
-    font-size:16px;
-    margin:0;
-    opacity:0.8;
+  .lb-btn-close:hover{
+    background:var(--muted);
+    color:white;
   }
   
-  @media (max-width:900px){
-    main{grid-template-columns:1fr}
-    .tree{height:auto;max-height:350px}
-    .search-wrapper{min-width:auto;width:100%}
-    .header-content{flex-direction:column;align-items:stretch}
-    header{padding:24px 28px}
-    header h1{font-size:26px}
+  #lb-content{
+    padding:24px;
+    max-height:calc(90vh - 100px);
+    overflow:auto;
+    background:var(--bg);
+  }
+  
+  #lb-content img{
+    max-width:100%;
+    max-height:70vh;
+    display:block;
+    margin:0 auto;
+    border-radius:8px;
+  }
+  
+  #lb-content video{
+    max-width:100%;
+    max-height:70vh;
+    display:block;
+    margin:0 auto;
+    border-radius:8px;
+  }
+  
+  #lb-content iframe{
+    width:100%;
+    height:70vh;
+    border:none;
+    border-radius:8px;
   }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>📚 Coursework Archive</h1>
+  <h1>🎓 Theoretical Computer Science Repository</h1>
+  <p class="subtitle">A comprehensive collection of coursework, research projects, presentations, and academic resources</p>
   <div class="header-content">
-    <div class="summary">
-      <span id="summary-text">Loading…</span>
-      <span class="summary-badge" id="summary-badge">0 items</span>
+    <div class="summary" id="stats">
+      <div class="summary-badge">
+        <span class="badge-icon">📁</span>
+        <span id="folderCount">0 folders</span>
+      </div>
+      <div class="summary-badge">
+        <span class="badge-icon">📄</span>
+        <span id="fileCount">0 files</span>
+      </div>
+      <div class="summary-badge">
+        <span class="badge-icon">📚</span>
+        <span id="courseCount">0 courses</span>
+      </div>
     </div>
-    <div class="search-wrapper">
-      <span class="search-icon">🔍</span>
-      <input id="search" placeholder="Search files and folders..." type="search" />
+    <div class="controls-group">
+      <div class="search-wrapper">
+        <span class="search-icon">🔍</span>
+        <input type="search" id="search" placeholder="Search files and folders..." autocomplete="off" />
+      </div>
+      <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">🌙</button>
     </div>
   </div>
 </header>
 
+<div id="breadcrumbContainer"></div>
+
 <main>
-  <aside class="tree" id="tree" aria-label="Folder tree">
-    <div style="padding:20px;text-align:center;color:var(--muted)">Loading manifest…</div>
-  </aside>
-  
-  <section class="panel" id="panel">
-    <div id="panel-header">
-      <div id="panel-path">Welcome</div>
-      <div><span id="panel-count"></span></div>
+  <aside class="tree" id="tree"></aside>
+  <section class="panel">
+    <div class="panel-header">
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;flex:1">
+        <div class="panel-title" id="panelPath">👋 Welcome</div>
+        <div class="panel-count" id="panelCount"></div>
+      </div>
+      <div class="view-options">
+        <button class="view-btn active" id="gridView" title="Grid view">⊞</button>
+        <button class="view-btn" id="listView" title="List view">☰</button>
+      </div>
     </div>
-    <div id="files" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px"></div>
+    <div class="files" id="files"></div>
   </section>
 </main>
 
-<div id="lightbox" class="lb" role="dialog" aria-hidden="true">
-  <div class="lb-box">
-    <div class="lb-content" id="lb-content"></div>
-    <div class="lb-info">
+<div id="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="lb-container">
+    <div class="lb-header">
       <div class="lb-title" id="lb-title"></div>
-      <div class="lb-buttons">
-        <a id="lb-download" class="btn" href="#" download>⬇ Download</a>
-        <button id="lb-close" class="btn">✕ Close</button>
+      <div class="lb-actions">
+        <a href="#" class="lb-btn lb-btn-download" id="lb-download" download>
+          ⬇️ Download
+        </a>
+        <button class="lb-btn lb-btn-close" id="lb-close">✕ Close</button>
       </div>
     </div>
+    <div id="lb-content"></div>
   </div>
 </div>
 
 <script>
-  const safe = s => encodeURI(s);
   const treeEl = document.getElementById('tree');
   const filesEl = document.getElementById('files');
-  const panelPath = document.getElementById('panel-path');
-  const panelCount = document.getElementById('panel-count');
   const search = document.getElementById('search');
+  const panelPath = document.getElementById('panelPath');
+  const panelCount = document.getElementById('panelCount');
+  const breadcrumbContainer = document.getElementById('breadcrumbContainer');
+  const themeToggle = document.getElementById('themeToggle');
+  const gridView = document.getElementById('gridView');
+  const listView = document.getElementById('listView');
+  
   let manifestData = null;
   let allFiles = [];
+  let currentPath = [];
+  
+  // Theme management
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+  
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+  });
+  
+  // View toggle
+  gridView.addEventListener('click', () => {
+    filesEl.classList.remove('list-view');
+    gridView.classList.add('active');
+    listView.classList.remove('active');
+  });
+  
+  listView.addEventListener('click', () => {
+    filesEl.classList.add('list-view');
+    listView.classList.add('active');
+    gridView.classList.remove('active');
+  });
+  
+  function safe(p){ 
+    return encodeURI(p).replace(/#/g,'%23'); 
+  }
 
   async function loadManifest(){
     try{
-      const res = await fetch('manifest.json', {cache:'no-store'});
-      if(!res.ok) throw new Error('no manifest');
-      manifestData = await res.json();
-    }catch(e){
-      manifestData = null;
-    }
-    
-    if(manifestData){
-      allFiles = flattenManifest(manifestData);
+      const res = await fetch('manifest.json');
+      const data = await res.json();
+      manifestData = data;
+      collectAllFiles(data);
       buildTreeAndRender();
-      updateSummary();
+      updateStats();
       showWelcome();
+    } catch(e){ 
+      console.error('Failed to load manifest:', e); 
     }
   }
-
-  function flattenManifest(data){
-    const files = [];
+  
+  function collectAllFiles(manifest){
+    allFiles = [];
     
-    function traverse(node, basePath = ''){
-      if(node.files && Array.isArray(node.files)){
-        node.files.forEach(file => {
-          const fullPath = basePath ? `${basePath}/${file}` : file;
-          files.push({
-            src: fullPath,
-            title: file,
-            path: basePath
-          });
+    if(manifest.files && Array.isArray(manifest.files)){
+      manifest.files.forEach(f => {
+        allFiles.push({ src: f, title: f });
+      });
+    }
+    
+    function traverse(dir){
+      if(dir.files && Array.isArray(dir.files)){
+        dir.files.forEach(f => {
+          const fullPath = `${dir.path}/${f}`;
+          allFiles.push({ src: fullPath, title: f });
         });
       }
       
-      if(node.dirs && Array.isArray(node.dirs)){
-        node.dirs.forEach(dir => {
-          traverse(dir, dir.path);
-        });
+      if(dir.dirs && Array.isArray(dir.dirs)){
+        dir.dirs.forEach(subdir => traverse(subdir));
       }
     }
     
-    traverse(data);
-    return files;
+    if(manifest.dirs && Array.isArray(manifest.dirs)){
+      manifest.dirs.forEach(dir => traverse(dir));
+    }
   }
-
-  function updateSummary(){
-    const total = allFiles.length;
-    document.getElementById('summary-text').textContent = 'Browse your coursework';
-    document.getElementById('summary-badge').textContent = `${total} items`;
-  }
-
-  function buildTreeFromManifest(data){
-    const root = { type:'folder', name:'/', children: {}, files: [] };
+  
+  function updateStats() {
+    if(!manifestData) return;
     
-    if(data.files && Array.isArray(data.files)){
-      data.files.forEach(file => {
+    let folderCount = 0;
+    let courseCount = 0;
+    
+    function countFolders(dir) {
+      folderCount++;
+      if(dir.dirs && Array.isArray(dir.dirs)){
+        dir.dirs.forEach(subdir => countFolders(subdir));
+      }
+    }
+    
+    if(manifestData.dirs && Array.isArray(manifestData.dirs)){
+      manifestData.dirs.forEach(dir => countFolders(dir));
+      
+      // Count courses from "Exercises and Labs by Course" folder
+      const coursesFolder = manifestData.dirs.find(d => d.name === "Exercises and Labs by Course");
+      if(coursesFolder && coursesFolder.dirs) {
+        courseCount = coursesFolder.dirs.length;
+      }
+    }
+    
+    document.getElementById('folderCount').textContent = `${folderCount} folders`;
+    document.getElementById('fileCount').textContent = `${allFiles.length} files`;
+    document.getElementById('courseCount').textContent = `${courseCount} courses`;
+  }
+  
+  function updateBreadcrumb(pathParts) {
+    if(pathParts.length === 0 || !pathParts[0]) {
+      breadcrumbContainer.innerHTML = '';
+      return;
+    }
+    
+    let html = '<div class="breadcrumb">';
+    html += '<span class="breadcrumb-item"><span class="breadcrumb-link" data-path="">🏠 Home</span></span>';
+    
+    let accumulatedPath = '';
+    pathParts.forEach((part, index) => {
+      accumulatedPath += (accumulatedPath ? '/' : '') + part;
+      html += '<span class="breadcrumb-separator">›</span>';
+      html += `<span class="breadcrumb-item">`;
+      if(index === pathParts.length - 1) {
+        html += `<span>${part}</span>`;
+      } else {
+        html += `<span class="breadcrumb-link" data-path="${accumulatedPath}">${part}</span>`;
+      }
+      html += '</span>';
+    });
+    
+    html += '</div>';
+    breadcrumbContainer.innerHTML = html;
+    
+    // Add click handlers
+    breadcrumbContainer.querySelectorAll('.breadcrumb-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const path = link.getAttribute('data-path');
+        if(!path) {
+          showWelcome();
+          currentPath = [];
+          updateBreadcrumb([]);
+        } else {
+          navigateToPath(path);
+        }
+      });
+    });
+  }
+  
+  function navigateToPath(pathStr) {
+    const parts = pathStr.split('/').filter(p => p);
+    let node = buildTreeFromManifest(manifestData);
+    
+    for(const part of parts) {
+      if(node.children && node.children[part]) {
+        node = node.children[part];
+      } else {
+        return;
+      }
+    }
+    
+    if(node.files && node.files.length > 0) {
+      showFiles(node.files, pathStr);
+      currentPath = parts;
+      updateBreadcrumb(parts);
+    }
+  }
+
+  function buildTreeFromManifest(manifest){
+    const root = {
+      type: 'root',
+      children: {},
+      files: []
+    };
+    
+    if(manifest.files && Array.isArray(manifest.files)){
+      manifest.files.forEach(file => {
         root.files.push({ src: file, title: file });
       });
     }
     
-    if(data.dirs && Array.isArray(data.dirs)){
-      data.dirs.forEach(dir => {
+    if(manifest.dirs && Array.isArray(manifest.dirs)){
+      manifest.dirs.forEach(dir => {
         root.children[dir.name] = convertDirToNode(dir);
       });
     }
@@ -720,6 +1038,8 @@
         
         if(child.files && child.files.length > 0){
           showFiles(child.files, displayPath);
+          currentPath = displayPath.split('/');
+          updateBreadcrumb(currentPath);
         }
         document.querySelectorAll('.folder').forEach(f => f.classList.remove('active'));
         row.classList.add('active');
@@ -742,6 +1062,8 @@
       showBtn.addEventListener('click',(e)=>{ 
         e.stopPropagation(); 
         showFiles(node.files, pathParts.join('/') || '/');
+        currentPath = pathParts;
+        updateBreadcrumb(pathParts);
         document.querySelectorAll('.folder').forEach(f => f.classList.remove('active'));
         showBtn.classList.add('active');
       });
@@ -763,10 +1085,11 @@
     filesEl.innerHTML = `
       <div class="welcome" style="grid-column:1/-1">
         <div class="welcome-icon">📂</div>
-        <h2>Browse my coursework</h2>
-        <p>Select a folder from the navigation to browse my files</p>
+        <h2>Explore the Repository</h2>
+        <p>Select a folder from the navigation to browse coursework, research papers, presentations, and code implementations</p>
       </div>
     `;
+    updateBreadcrumb([]);
   }
 
   function showFiles(files, path){
@@ -890,7 +1213,7 @@
     else{ 
       const info = document.createElement('div'); 
       info.style.padding='50px'; 
-      info.style.color='#fff';
+      info.style.color='var(--text)';
       info.style.textAlign='center';
       info.innerHTML = `
         <div style="font-size:72px;margin-bottom:24px">${getFileIcon(ext)}</div>
@@ -933,6 +1256,7 @@
     panelPath.innerHTML = `🔍 Search: "${q}"`;
     panelCount.textContent = `${results.length} result${results.length !== 1 ? 's' : ''}`;
     filesEl.innerHTML = '';
+    updateBreadcrumb([]);
     
     if(results.length === 0){
       filesEl.innerHTML = `
