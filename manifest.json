@@ -2,11 +2,48 @@
   "name": "coursework-archive",
   "path": ".",
   "files": [
+    "Personal CV.pdf",
     "gen_manifest.py",
     "index.html",
     "manifest.json"
   ],
   "dirs": [
+    {
+      "name": "Archimedes Research Unit",
+      "path": "Archimedes Research Unit",
+      "files": [
+        "Advanced Data Structures Report.pdf"
+      ],
+      "dirs": [
+        {
+          "name": "Code Implementations",
+          "path": "Archimedes Research Unit/Code Implementations",
+          "files": [],
+          "dirs": [
+            {
+              "name": "PQA C++",
+              "path": "Archimedes Research Unit/Code Implementations/PQA C++",
+              "files": [
+                "sundar_pqa_amortized.cpp",
+                "sundar_pqa_worstcase.cpp",
+                "sundar_pqa_worstcase2.cpp"
+              ],
+              "dirs": []
+            },
+            {
+              "name": "PQA Python",
+              "path": "Archimedes Research Unit/Code Implementations/PQA Python",
+              "files": [
+                "sundar_pqa_amortized.py",
+                "sundar_pqa_wc_simple.py",
+                "sundar_pqa_worstcase.py"
+              ],
+              "dirs": []
+            }
+          ]
+        }
+      ]
+    },
     {
       "name": "Exercises and Labs by Course",
       "path": "Exercises and Labs by Course",
@@ -371,7 +408,7 @@
           "name": "Optimal Algorithms and Inapproximability Results for Every CSP - More Files",
           "path": "Presentations/Optimal Algorithms and Inapproximability Results for Every CSP - More Files",
           "files": [
-            "Critical Summary.pdf",
+            "Extended Abstract.pdf",
             "Paper - Raghavendra STOC 2008.pdf"
           ],
           "dirs": []
