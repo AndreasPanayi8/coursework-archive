@@ -95,7 +95,7 @@
     display:flex;
     justify-content:space-between;
     align-items:center;
-    gap:24px;
+    gap:16px;
     flex-wrap:wrap;
     position:relative;
     z-index:1;
@@ -103,45 +103,69 @@
   
   .summary{
     opacity:0.95;
-    font-size:14px;
+    font-size:12px;
     display:flex;
     align-items:center;
-    gap:12px;
+    gap:10px;
     flex-wrap:wrap;
   }
   
   .summary-badge{
-    background:rgba(255,255,255,0.25);
-    padding:8px 16px;
-    border-radius:20px;
+    background:rgba(255,255,255,0.2);
+    padding:5px 10px;
+    border-radius:16px;
     font-weight:600;
-    font-size:13px;
+    font-size:11px;
     backdrop-filter:blur(10px);
-    border:1px solid rgba(255,255,255,0.3);
+    border:1px solid rgba(255,255,255,0.25);
     transition:all 0.3s ease;
     display:flex;
     align-items:center;
-    gap:6px;
+    gap:5px;
+    white-space:nowrap;
   }
   
   .summary-badge:hover{
-    background:rgba(255,255,255,0.35);
+    background:rgba(255,255,255,0.3);
     transform:translateY(-2px);
   }
   
+  .summary-badge span:last-child {
+    min-width:20px;
+    text-align:center;
+  }
+  
+  @keyframes countUp {
+    from {
+      opacity:0;
+      transform:translateY(5px);
+    }
+    to {
+      opacity:1;
+      transform:translateY(0);
+    }
+  }
+  
+  .summary-badge.loaded span:last-child {
+    animation:countUp 0.5s ease;
+  }
+  
   .badge-icon {
-    font-size:16px;
+    font-size:13px;
   }
   
   .controls-group {
     display:flex;
     gap:12px;
     align-items:center;
+    flex-wrap:wrap;
   }
   
   .search-wrapper{
     position:relative;
-    min-width:300px;
+    min-width:280px;
+    flex:1;
+    max-width:400px;
   }
   
   input[type=search]{
@@ -174,8 +198,8 @@
   }
   
   .theme-toggle {
-    background:rgba(255,255,255,0.25);
-    border:2px solid rgba(255,255,255,0.3);
+    background:rgba(255,255,255,0.2);
+    border:2px solid rgba(255,255,255,0.25);
     padding:10px 14px;
     border-radius:12px;
     cursor:pointer;
@@ -185,11 +209,79 @@
     display:flex;
     align-items:center;
     justify-content:center;
+    flex-shrink:0;
   }
   
   .theme-toggle:hover {
-    background:rgba(255,255,255,0.35);
+    background:rgba(255,255,255,0.3);
     transform:translateY(-2px);
+  }
+  
+  @media (max-width: 768px) {
+    header {
+      padding:24px 20px;
+    }
+    
+    header h1 {
+      font-size:24px;
+    }
+    
+    .subtitle {
+      font-size:13px;
+    }
+    
+    .header-content {
+      gap:12px;
+    }
+    
+    .summary {
+      order:3;
+      width:100%;
+      justify-content:center;
+    }
+    
+    .summary-badge {
+      font-size:10px;
+      padding:4px 8px;
+    }
+    
+    .controls-group {
+      width:100%;
+      justify-content:center;
+    }
+    
+    .search-wrapper {
+      min-width:0;
+      max-width:none;
+      flex:1;
+    }
+    
+    input[type=search] {
+      font-size:13px;
+    }
+    
+    body {
+      padding:12px;
+    }
+    
+    main {
+      gap:16px;
+    }
+    
+    .breadcrumb {
+      padding:10px 14px;
+      font-size:12px;
+    }
+    
+    .panel-header {
+      flex-direction:column;
+      align-items:flex-start;
+    }
+    
+    .view-options {
+      width:100%;
+      justify-content:flex-end;
+    }
   }
   
   .breadcrumb {
@@ -266,10 +358,10 @@
     border:1px solid var(--border);
   }
   
-  .tree::-webkit-scrollbar{width:10px}
-  .tree::-webkit-scrollbar-track{background:var(--bg);border-radius:5px;margin:4px}
-  .tree::-webkit-scrollbar-thumb{background:linear-gradient(135deg, var(--muted) 0%, var(--text-secondary) 100%);border-radius:5px;border:2px solid var(--bg)}
-  .tree::-webkit-scrollbar-thumb:hover{background:linear-gradient(135deg, var(--text-secondary) 0%, var(--muted) 100%)}
+  #tree::-webkit-scrollbar{width:10px}
+  #tree::-webkit-scrollbar-track{background:var(--bg);border-radius:5px;margin:4px}
+  #tree::-webkit-scrollbar-thumb{background:linear-gradient(135deg, var(--muted) 0%, var(--text-secondary) 100%);border-radius:5px;border:2px solid var(--bg)}
+  #tree::-webkit-scrollbar-thumb:hover{background:linear-gradient(135deg, var(--text-secondary) 0%, var(--muted) 100%)}
   
   .panel{
     background:var(--card);
@@ -322,7 +414,18 @@
     border:1px solid var(--border);
     cursor:pointer;
     transition:all 0.2s;
-    font-size:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  
+  .view-btn svg {
+    width:18px;
+    height:18px;
+    stroke:var(--text);
+    fill:none;
+    stroke-width:2;
+    transition:stroke 0.2s;
   }
   
   .view-btn:hover {
@@ -331,8 +434,11 @@
   
   .view-btn.active {
     background:var(--accent);
-    color:white;
     border-color:var(--accent);
+  }
+  
+  .view-btn.active svg {
+    stroke:white;
   }
   
   .files{
@@ -725,17 +831,17 @@
   <p class="subtitle">A comprehensive collection of coursework, research projects, presentations, and academic resources</p>
   <div class="header-content">
     <div class="summary" id="stats">
-      <div class="summary-badge">
+      <div class="summary-badge" title="Total folders in repository">
         <span class="badge-icon">📁</span>
-        <span id="folderCount">0 folders</span>
+        <span id="folderCount">0</span>
       </div>
-      <div class="summary-badge">
+      <div class="summary-badge" title="Total files in repository">
         <span class="badge-icon">📄</span>
-        <span id="fileCount">0 files</span>
+        <span id="fileCount">0</span>
       </div>
-      <div class="summary-badge">
+      <div class="summary-badge" title="Number of courses covered">
         <span class="badge-icon">📚</span>
-        <span id="courseCount">0 courses</span>
+        <span id="courseCount">0</span>
       </div>
     </div>
     <div class="controls-group">
@@ -759,8 +865,24 @@
         <div class="panel-count" id="panelCount"></div>
       </div>
       <div class="view-options">
-        <button class="view-btn active" id="gridView" title="Grid view">⊞</button>
-        <button class="view-btn" id="listView" title="List view">☰</button>
+        <button class="view-btn active" id="gridView" title="Grid view">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="14" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/>
+          </svg>
+        </button>
+        <button class="view-btn" id="listView" title="List view">
+          <svg viewBox="0 0 24 24">
+            <line x1="8" y1="6" x2="21" y2="6"/>
+            <line x1="8" y1="12" x2="21" y2="12"/>
+            <line x1="8" y1="18" x2="21" y2="18"/>
+            <line x1="3" y1="6" x2="3.01" y2="6"/>
+            <line x1="3" y1="12" x2="3.01" y2="12"/>
+            <line x1="3" y1="18" x2="3.01" y2="18"/>
+          </svg>
+        </button>
       </div>
     </div>
     <div class="files" id="files"></div>
@@ -891,9 +1013,14 @@
       }
     }
     
-    document.getElementById('folderCount').textContent = `${folderCount} folders`;
-    document.getElementById('fileCount').textContent = `${allFiles.length} files`;
-    document.getElementById('courseCount').textContent = `${courseCount} courses`;
+    document.getElementById('folderCount').textContent = folderCount;
+    document.getElementById('fileCount').textContent = allFiles.length;
+    document.getElementById('courseCount').textContent = courseCount;
+    
+    // Add loaded animation class
+    document.querySelectorAll('.summary-badge').forEach(badge => {
+      badge.classList.add('loaded');
+    });
   }
   
   function updateBreadcrumb(pathParts) {
