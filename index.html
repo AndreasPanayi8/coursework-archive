@@ -176,7 +176,23 @@
     background:rgba(255,255,255,0.95);
     font-size:14px;
     transition:all 0.3s ease;
-    color:var(--text);
+    color:#0f172a;
+  }
+  
+  [data-theme="dark"] input[type=search] {
+    background:rgba(30,41,59,0.95);
+    color:#f1f5f9;
+    border-color:rgba(255,255,255,0.2);
+  }
+  
+  input[type=search]::placeholder {
+    color:#64748b;
+    opacity:0.8;
+  }
+  
+  [data-theme="dark"] input[type=search]::placeholder {
+    color:#94a3b8;
+    opacity:0.7;
   }
   
   input[type=search]:focus{
@@ -187,14 +203,24 @@
     transform:translateY(-2px);
   }
   
+  [data-theme="dark"] input[type=search]:focus {
+    background:#1e293b;
+    border-color:#60a5fa;
+    color:#f1f5f9;
+  }
+  
   .search-icon{
     position:absolute;
     left:16px;
     top:50%;
     transform:translateY(-50%);
-    color:var(--muted);
+    color:#64748b;
     pointer-events:none;
     font-size:18px;
+  }
+  
+  [data-theme="dark"] .search-icon {
+    color:#94a3b8;
   }
   
   .theme-toggle {
@@ -298,6 +324,7 @@
     border:1px solid var(--border);
     overflow-x:auto;
     white-space:nowrap;
+    scrollbar-width:thin;
   }
   
   .breadcrumb::-webkit-scrollbar {
@@ -309,26 +336,34 @@
     border-radius:3px;
   }
   
+  .breadcrumb::-webkit-scrollbar-thumb:hover {
+    background:var(--muted);
+  }
+  
   .breadcrumb-item {
     display:flex;
     align-items:center;
     gap:8px;
+    flex-shrink:0;
   }
   
   .breadcrumb-link {
     color:var(--accent);
     text-decoration:none;
     cursor:pointer;
-    transition:color 0.2s;
+    transition:all 0.2s;
+    padding:4px 8px;
+    border-radius:6px;
   }
   
   .breadcrumb-link:hover {
+    background:var(--bg);
     color:var(--accent-hover);
-    text-decoration:underline;
   }
   
   .breadcrumb-separator {
     color:var(--muted);
+    user-select:none;
   }
   
   main{
@@ -597,13 +632,17 @@
   }
   
   .file:hover{
-    transform:translateY(-6px);
+    transform:translateY(-6px) scale(1.02);
     box-shadow:0 12px 28px rgba(59, 130, 246, 0.15), 0 0 40px rgba(118, 75, 162, 0.1);
     border-color:transparent;
   }
   
   .file:hover::before{
     opacity:1;
+  }
+  
+  .file:active {
+    transform:translateY(-4px) scale(1.01);
   }
   
   .thumb{
@@ -731,13 +770,16 @@
   }
   
   .lb-container{
-    max-width:90%;
-    max-height:90%;
+    max-width:95%;
+    max-height:95%;
+    width:1200px;
     position:relative;
     background:var(--card);
     border-radius:var(--radius);
     box-shadow:var(--shadow-lg);
     overflow:hidden;
+    display:flex;
+    flex-direction:column;
   }
   
   .lb-header{
@@ -747,17 +789,42 @@
     justify-content:space-between;
     align-items:center;
     background:var(--card);
+    flex-shrink:0;
+  }
+  
+  .lb-title-section {
+    flex:1;
+    min-width:0;
   }
   
   .lb-title{
     font-weight:600;
     font-size:16px;
     color:var(--text);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    margin-bottom:4px;
+  }
+  
+  .lb-metadata {
+    font-size:12px;
+    color:var(--text-secondary);
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  
+  .lb-metadata-item {
+    display:flex;
+    align-items:center;
+    gap:4px;
   }
   
   .lb-actions{
     display:flex;
     gap:12px;
+    flex-shrink:0;
   }
   
   .lb-btn{
@@ -772,6 +839,7 @@
     display:inline-flex;
     align-items:center;
     gap:6px;
+    white-space:nowrap;
   }
   
   .lb-btn-download{
@@ -793,34 +861,328 @@
     color:white;
   }
   
+  .lb-nav-btn {
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    background:rgba(0,0,0,0.7);
+    color:white;
+    border:none;
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:24px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:all 0.3s;
+    z-index:10;
+  }
+  
+  .lb-nav-btn:hover {
+    background:rgba(0,0,0,0.9);
+    transform:translateY(-50%) scale(1.1);
+  }
+  
+  .lb-nav-btn:disabled {
+    opacity:0.3;
+    cursor:not-allowed;
+  }
+  
+  .lb-nav-btn:disabled:hover {
+    transform:translateY(-50%) scale(1);
+  }
+  
+  .lb-nav-prev {
+    left:20px;
+  }
+  
+  .lb-nav-next {
+    right:20px;
+  }
+  
   #lb-content{
     padding:24px;
-    max-height:calc(90vh - 100px);
+    flex:1;
     overflow:auto;
     background:var(--bg);
+    position:relative;
+  }
+  
+  .lb-loading {
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    color:var(--text);
+    text-align:center;
+  }
+  
+  .lb-spinner {
+    border:4px solid var(--border);
+    border-top:4px solid var(--accent);
+    border-radius:50%;
+    width:50px;
+    height:50px;
+    animation:spin 1s linear infinite;
+    margin:0 auto 16px;
+  }
+  
+  @keyframes spin {
+    0% { transform:rotate(0deg); }
+    100% { transform:rotate(360deg); }
   }
   
   #lb-content img{
     max-width:100%;
-    max-height:70vh;
+    max-height:calc(95vh - 200px);
     display:block;
     margin:0 auto;
     border-radius:8px;
+    cursor:zoom-in;
+  }
+  
+  #lb-content img.zoomed {
+    cursor:zoom-out;
+    max-width:none;
+    max-height:none;
+    width:auto;
   }
   
   #lb-content video{
     max-width:100%;
-    max-height:70vh;
+    max-height:calc(95vh - 200px);
     display:block;
     margin:0 auto;
     border-radius:8px;
   }
   
-  #lb-content iframe{
+  .pdf-viewer {
     width:100%;
-    height:70vh;
-    border:none;
+    height:calc(95vh - 200px);
+    display:flex;
+    flex-direction:column;
+    background:var(--bg);
     border-radius:8px;
+    overflow:hidden;
+  }
+  
+  .pdf-controls {
+    padding:12px;
+    background:var(--card);
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  
+  .pdf-controls button {
+    background:var(--bg);
+    border:1px solid var(--border);
+    color:var(--text);
+    padding:8px 14px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:13px;
+    transition:all 0.2s;
+  }
+  
+  .pdf-controls button:hover {
+    background:var(--border);
+  }
+  
+  .pdf-controls button:disabled {
+    opacity:0.5;
+    cursor:not-allowed;
+  }
+  
+  .pdf-page-info {
+    font-size:13px;
+    color:var(--text-secondary);
+    font-weight:600;
+  }
+  
+  .pdf-iframe-container {
+    flex:1;
+    background:white;
+    position:relative;
+  }
+  
+  .pdf-iframe-container iframe {
+    width:100%;
+    height:100%;
+    border:none;
+  }
+  
+  .code-preview {
+    background:#2d2d2d;
+    border-radius:8px;
+    overflow:hidden;
+  }
+  
+  .code-header {
+    background:#1e1e1e;
+    padding:12px 16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid #3d3d3d;
+  }
+  
+  .code-language {
+    color:#888;
+    font-size:12px;
+    font-weight:600;
+    text-transform:uppercase;
+  }
+  
+  .code-copy-btn {
+    background:#3d3d3d;
+    color:#888;
+    border:none;
+    padding:6px 12px;
+    border-radius:4px;
+    cursor:pointer;
+    font-size:12px;
+    transition:all 0.2s;
+  }
+  
+  .code-copy-btn:hover {
+    background:#4d4d4d;
+    color:#fff;
+  }
+  
+  .code-copy-btn.copied {
+    background:#10b981;
+    color:white;
+  }
+  
+  .code-content {
+    max-height:calc(95vh - 300px);
+    overflow:auto;
+    background:#1e1e1e;
+  }
+  
+  .code-content pre {
+    margin:0 !important;
+    background:transparent !important;
+    padding:20px;
+  }
+  
+  .code-content code {
+    font-family:'Fira Code', 'Courier New', monospace;
+    font-size:13px;
+    line-height:1.6;
+    color:#d4d4d4;
+    display:block;
+  }
+  
+  .code-content::-webkit-scrollbar {
+    width:10px;
+    height:10px;
+  }
+  
+  .code-content::-webkit-scrollbar-track {
+    background:#1e1e1e;
+  }
+  
+  .code-content::-webkit-scrollbar-thumb {
+    background:#3d3d3d;
+    border-radius:5px;
+  }
+  
+  .code-content::-webkit-scrollbar-thumb:hover {
+    background:#4d4d4d;
+  }
+  
+  .csv-preview {
+    overflow:auto;
+    max-height:calc(95vh - 250px);
+  }
+  
+  .csv-preview table {
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    font-size:13px;
+  }
+  
+  .csv-preview th {
+    background:var(--bg);
+    color:var(--text);
+    font-weight:600;
+    text-align:left;
+    padding:12px;
+    position:sticky;
+    top:0;
+    border-bottom:2px solid var(--border);
+  }
+  
+  .csv-preview td {
+    padding:10px 12px;
+    border-bottom:1px solid var(--border);
+    color:var(--text);
+  }
+  
+  .csv-preview tr:hover {
+    background:var(--bg);
+  }
+  
+  .markdown-preview {
+    max-height:calc(95vh - 250px);
+    overflow:auto;
+    padding:24px;
+    background:var(--card);
+    border-radius:8px;
+  }
+  
+  .markdown-preview h1,
+  .markdown-preview h2,
+  .markdown-preview h3 {
+    color:var(--text);
+    margin-top:24px;
+    margin-bottom:12px;
+  }
+  
+  .markdown-preview p {
+    color:var(--text);
+    line-height:1.7;
+    margin-bottom:16px;
+  }
+  
+  .markdown-preview code {
+    background:var(--bg);
+    padding:2px 6px;
+    border-radius:4px;
+    font-size:13px;
+  }
+  
+  .markdown-preview pre {
+    background:var(--bg);
+    padding:16px;
+    border-radius:8px;
+    overflow-x:auto;
+  }
+  
+  .text-preview {
+    background:var(--card);
+    padding:24px;
+    border-radius:8px;
+    max-height:calc(95vh - 250px);
+    overflow:auto;
+  }
+  
+  .text-preview pre {
+    color:var(--text);
+    font-family:'Courier New', monospace;
+    font-size:13px;
+    line-height:1.6;
+    white-space:pre-wrap;
+    word-wrap:break-word;
+    margin:0;
   }
 </style>
 </head>
@@ -890,9 +1252,14 @@
 </main>
 
 <div id="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+  <button class="lb-nav-btn lb-nav-prev" id="lb-prev" aria-label="Previous file">‹</button>
+  <button class="lb-nav-btn lb-nav-next" id="lb-next" aria-label="Next file">›</button>
   <div class="lb-container">
     <div class="lb-header">
-      <div class="lb-title" id="lb-title"></div>
+      <div class="lb-title-section">
+        <div class="lb-title" id="lb-title"></div>
+        <div class="lb-metadata" id="lb-metadata"></div>
+      </div>
       <div class="lb-actions">
         <a href="#" class="lb-btn lb-btn-download" id="lb-download" download>
           ⬇️ Download
@@ -905,6 +1272,18 @@
 </div>
 
 <script>
+  // Global error handler to prevent "Script error" messages
+  window.addEventListener('error', function(e) {
+    console.error('Error caught:', e.message, e.filename, e.lineno);
+    e.preventDefault();
+    return true;
+  });
+  
+  window.addEventListener('unhandledrejection', function(e) {
+    console.error('Unhandled promise rejection:', e.reason);
+    e.preventDefault();
+  });
+  
   const treeEl = document.getElementById('tree');
   const filesEl = document.getElementById('files');
   const search = document.getElementById('search');
@@ -914,13 +1293,17 @@
   const themeToggle = document.getElementById('themeToggle');
   const gridView = document.getElementById('gridView');
   const listView = document.getElementById('listView');
+  const lbPrev = document.getElementById('lb-prev');
+  const lbNext = document.getElementById('lb-next');
   
   let manifestData = null;
   let allFiles = [];
   let currentPath = [];
+  let currentFiles = [];
+  let currentFileIndex = -1;
   
   // Theme management
-  const savedTheme = localStorage.getItem('theme') || 'light';
+  const savedTheme = localStorage.getItem('theme') || 'dark';
   document.documentElement.setAttribute('data-theme', savedTheme);
   themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
   
@@ -1209,11 +1592,26 @@
   function showWelcome(){
     panelPath.textContent = '👋 Welcome';
     panelCount.textContent = '';
+    currentFiles = [];
     filesEl.innerHTML = `
       <div class="welcome" style="grid-column:1/-1">
         <div class="welcome-icon">📂</div>
         <h2>Explore the Repository</h2>
         <p>Select a folder from the navigation to browse coursework, research papers, presentations, and code implementations</p>
+        <div style="margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <div style="background:var(--bg);padding:12px 20px;border-radius:12px;border:1px solid var(--border);">
+            <div style="font-size:24px;font-weight:700;color:var(--accent);">${allFiles.length}</div>
+            <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">Total Files</div>
+          </div>
+          <div style="background:var(--bg);padding:12px 20px;border-radius:12px;border:1px solid var(--border);">
+            <div style="font-size:24px;font-weight:700;color:var(--accent);">📚</div>
+            <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">Academic Content</div>
+          </div>
+          <div style="background:var(--bg);padding:12px 20px;border-radius:12px;border:1px solid var(--border);">
+            <div style="font-size:24px;font-weight:700;color:var(--accent);">🔍</div>
+            <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">Searchable</div>
+          </div>
+        </div>
       </div>
     `;
     updateBreadcrumb([]);
@@ -1224,11 +1622,13 @@
     panelCount.textContent = `${files.length} file${files.length !== 1 ? 's' : ''}`;
     filesEl.innerHTML = '';
     
+    currentFiles = files;
+    
     files.sort((a,b)=> (a.title||'').localeCompare(b.title||''));
-    files.forEach(it => renderFileCard(it));
+    files.forEach((it, index) => renderFileCard(it, index));
   }
 
-  function renderFileCard(it){
+  function renderFileCard(it, index){
     const f = document.createElement('div'); 
     f.className='file';
     const thumb = document.createElement('div'); 
@@ -1278,7 +1678,7 @@
     `;
     f.appendChild(thumb); 
     f.appendChild(meta);
-    f.addEventListener('click', ()=> openLightbox(it));
+    f.addEventListener('click', ()=> openLightbox(index));
     filesEl.appendChild(f);
   }
 
@@ -1307,64 +1707,337 @@
     renderTree(root, treeEl, []);
   }
 
-  function openLightbox(item){
+  function openLightbox(index){
+    if(!currentFiles || currentFiles.length === 0) return;
+    
+    currentFileIndex = index;
+    const item = currentFiles[index];
+    
     const lb = document.getElementById('lightbox');
     const content = document.getElementById('lb-content');
     const title = document.getElementById('lb-title');
+    const metadata = document.getElementById('lb-metadata');
     const dl = document.getElementById('lb-download');
-    content.innerHTML = ''; 
+    
+    content.innerHTML = '<div class="lb-loading"><div class="lb-spinner"></div><div>Loading...</div></div>'; 
     title.textContent = item.title || item.src; 
     dl.href = safe(item.src); 
     dl.download = item.title || '';
     
     const ext = (item.src.split('.').pop()||'').toLowerCase();
     
-    if(['png','jpg','jpeg','gif','svg','webp'].includes(ext)){ 
-      const img = document.createElement('img'); 
-      img.src = safe(item.src); 
-      content.appendChild(img); 
+    // Update metadata
+    metadata.innerHTML = `
+      <div class="lb-metadata-item">📄 ${ext.toUpperCase()}</div>
+      <div class="lb-metadata-item">📊 ${index + 1} of ${currentFiles.length}</div>
+    `;
+    
+    // Update navigation buttons
+    lbPrev.disabled = index === 0;
+    lbNext.disabled = index === currentFiles.length - 1;
+    
+    lb.classList.add('show'); 
+    lb.setAttribute('aria-hidden','false');
+    
+    // Render based on file type
+    setTimeout(() => {
+      renderFilePreview(item, ext, content);
+    }, 100);
+  }
+  
+  function renderFilePreview(item, ext, container) {
+    container.innerHTML = '';
+    
+    // Images
+    if(['png','jpg','jpeg','gif','svg','webp'].includes(ext)){
+      const img = document.createElement('img');
+      img.src = safe(item.src);
+      img.alt = item.title;
+      img.addEventListener('click', () => {
+        img.classList.toggle('zoomed');
+      });
+      container.appendChild(img);
     }
-    else if(['mp4','webm','ogg'].includes(ext)){ 
-      const v = document.createElement('video'); 
-      v.controls=true; 
-      v.src = safe(item.src); 
-      content.appendChild(v); 
+    // Videos
+    else if(['mp4','webm','ogg'].includes(ext)){
+      const v = document.createElement('video');
+      v.controls = true;
+      v.src = safe(item.src);
+      container.appendChild(v);
     }
-    else if(ext === 'pdf'){ 
-      const iframe = document.createElement('iframe'); 
-      iframe.src = safe(item.src); 
-      iframe.style.width='100%'; 
-      iframe.style.height='70vh'; 
-      content.appendChild(iframe); 
+    // PDFs
+    else if(ext === 'pdf'){
+      const pdfViewer = document.createElement('div');
+      pdfViewer.className = 'pdf-viewer';
+      pdfViewer.innerHTML = `
+        <div class="pdf-controls">
+          <button id="pdf-print-btn">🖨️ Print</button>
+          <span class="pdf-page-info">PDF Document</span>
+          <button id="pdf-newtab-btn">🔍 Open in New Tab</button>
+        </div>
+        <div class="pdf-iframe-container">
+          <iframe id="pdf-iframe" src="${safe(item.src)}"></iframe>
+        </div>
+      `;
+      container.appendChild(pdfViewer);
+      
+      // Add event listeners safely
+      setTimeout(() => {
+        const printBtn = document.getElementById('pdf-print-btn');
+        const newTabBtn = document.getElementById('pdf-newtab-btn');
+        
+        if(printBtn) {
+          printBtn.addEventListener('click', () => {
+            try {
+              const iframe = document.getElementById('pdf-iframe');
+              if(iframe && iframe.contentWindow) {
+                iframe.contentWindow.print();
+              }
+            } catch(e) {
+              console.log('Print not available for this PDF');
+            }
+          });
+        }
+        
+        if(newTabBtn) {
+          newTabBtn.addEventListener('click', () => {
+            window.open(safe(item.src), '_blank');
+          });
+        }
+      }, 100);
     }
-    else{ 
-      const info = document.createElement('div'); 
-      info.style.padding='50px'; 
-      info.style.color='var(--text)';
-      info.style.textAlign='center';
+    // Code files
+    else if(['py','js','html','css','java','cpp','c','h','jsx','tsx','ts','php','rb','go','rs','swift','kt','sh','bash','sql','r','scala','dart'].includes(ext)){
+      fetch(safe(item.src))
+        .then(res => res.text())
+        .then(code => {
+          const codePreview = document.createElement('div');
+          codePreview.className = 'code-preview';
+          
+          const languageMap = {
+            'py': 'Python', 'js': 'JavaScript', 'jsx': 'JavaScript', 'tsx': 'TypeScript',
+            'ts': 'TypeScript', 'html': 'HTML', 'cpp': 'C++', 'c': 'C', 'java': 'Java',
+            'css': 'CSS', 'php': 'PHP', 'rb': 'Ruby', 'go': 'Go', 'rs': 'Rust',
+            'swift': 'Swift', 'kt': 'Kotlin', 'sh': 'Bash', 'bash': 'Bash', 'sql': 'SQL',
+            'r': 'R', 'scala': 'Scala', 'dart': 'Dart', 'h': 'C Header'
+          };
+          
+          const language = languageMap[ext] || 'Code';
+          const codeId = 'code-' + Date.now();
+          
+          codePreview.innerHTML = `
+            <div class="code-header">
+              <span class="code-language">${language}</span>
+              <button class="code-copy-btn" onclick="copyCode('${codeId}')">📋 Copy</button>
+            </div>
+            <div class="code-content">
+              <pre><code id="${codeId}">${escapeHtml(code)}</code></pre>
+            </div>
+          `;
+          container.appendChild(codePreview);
+        })
+        .catch((err) => {
+          console.error('Error loading code file:', err);
+          container.innerHTML = '<div class="text-preview"><p>Error loading file</p></div>';
+        });
+    }
+    // CSV files
+    else if(ext === 'csv'){
+      fetch(safe(item.src))
+        .then(res => res.text())
+        .then(csvText => {
+          try {
+            const lines = csvText.split('\n').filter(line => line.trim());
+            if(lines.length === 0) {
+              container.innerHTML = '<div class="text-preview"><p>Empty CSV file</p></div>';
+              return;
+            }
+            
+            const csvPreview = document.createElement('div');
+            csvPreview.className = 'csv-preview';
+            
+            let html = '<table>';
+            lines.forEach((line, i) => {
+              const cells = line.split(',').map(cell => cell.trim());
+              html += '<tr>';
+              cells.forEach(cell => {
+                if(i === 0) {
+                  html += `<th>${escapeHtml(cell)}</th>`;
+                } else {
+                  html += `<td>${escapeHtml(cell)}</td>`;
+                }
+              });
+              html += '</tr>';
+            });
+            html += '</table>';
+            
+            csvPreview.innerHTML = html;
+            container.appendChild(csvPreview);
+          } catch(e) {
+            console.error('Error parsing CSV:', e);
+            container.innerHTML = '<div class="text-preview"><pre>' + escapeHtml(csvText) + '</pre></div>';
+          }
+        })
+        .catch((err) => {
+          console.error('Error loading CSV file:', err);
+          container.innerHTML = '<div class="text-preview"><p>Error loading CSV file</p></div>';
+        });
+    }
+    // Markdown files
+    else if(ext === 'md'){
+      fetch(safe(item.src))
+        .then(res => res.text())
+        .then(markdown => {
+          try {
+            const mdPreview = document.createElement('div');
+            mdPreview.className = 'markdown-preview';
+            // Basic markdown rendering (you could use marked.js for better rendering)
+            const html = markdown
+              .replace(/\n/g, '<br>')
+              .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+              .replace(/\*(.*?)\*/g, '<em>$1</em>')
+              .replace(/`(.*?)`/g, '<code>$1</code>')
+              .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+              .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+              .replace(/^### (.*$)/gm, '<h3>$1</h3>');
+            mdPreview.innerHTML = html;
+            container.appendChild(mdPreview);
+          } catch(e) {
+            console.error('Error parsing markdown:', e);
+            container.innerHTML = '<div class="text-preview"><pre>' + escapeHtml(markdown) + '</pre></div>';
+          }
+        })
+        .catch((err) => {
+          console.error('Error loading markdown file:', err);
+          container.innerHTML = '<div class="text-preview"><p>Error loading markdown file</p></div>';
+        });
+    }
+    // Text files
+    else if(['txt','log','tex'].includes(ext)){
+      fetch(safe(item.src))
+        .then(res => res.text())
+        .then(text => {
+          try {
+            const textPreview = document.createElement('div');
+            textPreview.className = 'text-preview';
+            textPreview.innerHTML = `<pre>${escapeHtml(text)}</pre>`;
+            container.appendChild(textPreview);
+          } catch(e) {
+            console.error('Error displaying text:', e);
+            container.innerHTML = '<div class="text-preview"><p>Error displaying file</p></div>';
+          }
+        })
+        .catch((err) => {
+          console.error('Error loading text file:', err);
+          container.innerHTML = '<div class="text-preview"><p>Error loading text file</p></div>';
+        });
+    }
+    // Default - no preview
+    else{
+      const info = document.createElement('div');
+      info.style.padding = '50px';
+      info.style.color = 'var(--text)';
+      info.style.textAlign = 'center';
       info.innerHTML = `
         <div style="font-size:72px;margin-bottom:24px">${getFileIcon(ext)}</div>
         <div style="font-size:20px;font-weight:600;margin-bottom:10px">${escapeHtml(item.title)}</div>
         <div style="opacity:0.7;font-size:15px">Preview not available for this file type</div>
-      `; 
-      content.appendChild(info); 
+        <div style="margin-top:20px">
+          <a href="${safe(item.src)}" download="${item.title}" class="lb-btn lb-btn-download">⬇️ Download to view</a>
+        </div>
+      `;
+      container.appendChild(info);
     }
-    
-    lb.classList.add('show'); 
-    lb.setAttribute('aria-hidden','false');
   }
-
-  document.getElementById('lb-close').addEventListener('click', ()=>{ 
-    const lb=document.getElementById('lightbox'); 
-    lb.classList.remove('show'); 
-    lb.setAttribute('aria-hidden','true'); 
-    document.getElementById('lb-content').innerHTML=''; 
+  
+  // Copy code function
+  window.copyCode = function(codeId) {
+    try {
+      const code = document.getElementById(codeId);
+      if(!code) return;
+      
+      const text = code.textContent;
+      const btn = event.target;
+      
+      if(navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          btn.textContent = '✓ Copied!';
+          btn.classList.add('copied');
+          setTimeout(() => {
+            btn.textContent = '📋 Copy';
+            btn.classList.remove('copied');
+          }, 2000);
+        }).catch((err) => {
+          console.error('Copy failed:', err);
+          btn.textContent = '❌ Failed';
+          setTimeout(() => {
+            btn.textContent = '📋 Copy';
+          }, 2000);
+        });
+      } else {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        btn.textContent = '✓ Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = '📋 Copy';
+          btn.classList.remove('copied');
+        }, 2000);
+      }
+    } catch(e) {
+      console.error('Copy error:', e);
+    }
+  };
+  
+  // Navigation functions
+  function navigateLightbox(direction) {
+    const newIndex = currentFileIndex + direction;
+    if(newIndex >= 0 && newIndex < currentFiles.length) {
+      openLightbox(newIndex);
+    }
+  }
+  
+  lbPrev.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navigateLightbox(-1);
   });
   
+  lbNext.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navigateLightbox(1);
+  });
+  
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    const lb = document.getElementById('lightbox');
+    if(!lb.classList.contains('show')) return;
+    
+    if(e.key === 'Escape') {
+      closeLightbox();
+    } else if(e.key === 'ArrowLeft') {
+      navigateLightbox(-1);
+    } else if(e.key === 'ArrowRight') {
+      navigateLightbox(1);
+    }
+  });
+  
+  function closeLightbox() {
+    const lb = document.getElementById('lightbox');
+    lb.classList.remove('show');
+    lb.setAttribute('aria-hidden', 'true');
+    document.getElementById('lb-content').innerHTML = '';
+  }
+
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  
   document.getElementById('lightbox').addEventListener('click',(e)=>{ 
-    if(e.target.id==='lightbox') { 
-      document.getElementById('lightbox').classList.remove('show'); 
-      document.getElementById('lb-content').innerHTML=''; 
+    if(e.target.id==='lightbox' || e.target.classList.contains('lb-nav-btn')) { 
+      if(e.target.id === 'lightbox') closeLightbox();
     } 
   });
 
@@ -1373,6 +2046,7 @@
     if(!q){ 
       buildTreeAndRender(); 
       showWelcome();
+      currentFiles = [];
       return; 
     }
     
@@ -1384,6 +2058,8 @@
     panelCount.textContent = `${results.length} result${results.length !== 1 ? 's' : ''}`;
     filesEl.innerHTML = '';
     updateBreadcrumb([]);
+    
+    currentFiles = results;
     
     if(results.length === 0){
       filesEl.innerHTML = `
@@ -1397,7 +2073,7 @@
     }
   
     results.sort((a,b)=> (a.title||'').localeCompare(b.title||''));
-    results.forEach(it=> renderFileCard(it));
+    results.forEach((it, index) => renderFileCard(it, index));
   });
 
   loadManifest();
