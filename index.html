@@ -388,7 +388,7 @@
     padding:18px;
     border-radius:var(--radius);
     box-shadow:var(--shadow-md);
-    height:calc(100vh - 300px);
+    max-height:calc(100vh - 560px);min-height:200px;
     overflow:auto;
     border:1px solid var(--border);
   }
@@ -1183,6 +1183,115 @@
     word-wrap:break-word;
     margin:0;
   }
+
+  /* ── Sidebar column wrapper ── */
+  .sidebar-col {
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    min-width:0;
+  }
+
+  /* ── Currently Working On card ── */
+  .wip-card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-md);
+    padding:18px;
+    flex-shrink:0;
+  }
+
+  .wip-heading {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:0 0 14px 0;
+    padding-bottom:12px;
+    border-bottom:2px solid var(--border);
+    font-size:15px;
+    font-weight:700;
+    color:var(--text);
+    letter-spacing:-0.01em;
+  }
+
+  /* Animated "live" dot */
+  .wip-dot {
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:#22c55e;
+    flex-shrink:0;
+    animation:wip-ping 2s ease-in-out infinite;
+  }
+
+  @keyframes wip-ping {
+    0%, 100% { box-shadow:0 0 0 0 rgba(34,197,94,0.5); }
+    50%       { box-shadow:0 0 0 6px rgba(34,197,94,0); }
+  }
+
+  .wip-list {
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+
+  .wip-item {
+    padding:10px 12px;
+    border-radius:10px;
+    background:var(--bg);
+    border:1px solid var(--border);
+    transition:all 0.2s ease;
+  }
+
+  .wip-item:hover {
+    border-color:var(--accent);
+    box-shadow:var(--shadow-sm);
+    transform:translateX(3px);
+  }
+
+  .wip-item-title {
+    font-size:13px;
+    font-weight:600;
+    color:var(--text);
+    line-height:1.4;
+    margin-bottom:4px;
+  }
+
+  .wip-item-desc {
+    font-size:11.5px;
+    color:var(--text-secondary);
+    line-height:1.45;
+  }
+
+  .wip-item-link {
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    font-size:11px;
+    font-weight:600;
+    color:var(--accent);
+    text-decoration:none;
+    margin-top:6px;
+    transition:color 0.2s;
+  }
+
+  .wip-item-link:hover { color:var(--accent-hover); text-decoration:underline; }
+
+  /* "Completed Coursework" label */
+  .tree-section-label {
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--muted);
+    padding:0 4px 10px 4px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:6px;
+  }
 </style>
 </head>
 <body>
@@ -1218,7 +1327,41 @@
 <div id="breadcrumbContainer"></div>
 
 <main>
-  <aside class="tree" id="tree"></aside>
+  <div class="sidebar-col">
+    <!-- Currently Working On -->
+    <div class="wip-card">
+      <h2 class="wip-heading">
+        <span class="wip-dot"></span>
+        Currently Working On
+      </h2>
+      <ul class="wip-list">
+        <li class="wip-item">
+          <div class="wip-item-title">🔗 Blockchain Theory &amp; Implementation</div>
+          <div class="wip-item-desc">Studying blockchain fundamentals and building a full blockchain from scratch in TypeScript.</div>
+        </li>
+        <li class="wip-item">
+          <div class="wip-item-title">📐 Extremal Graph Theory &amp; Fine-Grained Algorithms</div>
+          <div class="wip-item-desc">Research on extremal graph theory and its implications for fine-grained algorithms in even cycle listing.</div>
+          <a class="wip-item-link" href="https://drops.dagstuhl.de/storage/00lipics/lipics-vol325-itcs2025/LIPIcs.ITCS.2025.92/LIPIcs.ITCS.2025.92.pdf" target="_blank" rel="noopener">
+            📄 ITCS 2025 Paper ↗
+          </a>
+        </li>
+        <li class="wip-item">
+          <div class="wip-item-title">🔍 Graph Pattern Listing</div>
+          <div class="wip-item-desc">Research into efficient algorithms for listing graph patterns.</div>
+        </li>
+        <li class="wip-item">
+          <div class="wip-item-title">🎤 Combinatorial Optimization Presentation</div>
+          <div class="wip-item-desc">Preparing a course presentation on a topic in combinatorial optimization.</div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Completed Coursework Tree -->
+    <aside class="tree" id="tree">
+      <div class="tree-section-label">📚 Completed Coursework</div>
+    </aside>
+  </div>
   <section class="panel">
     <div class="panel-header">
       <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;flex:1">
@@ -1702,7 +1845,7 @@
   function buildTreeAndRender(){
     if(!manifestData) return;
     const root = buildTreeFromManifest(manifestData);
-    treeEl.innerHTML = '';
+    treeEl.innerHTML = '<div class="tree-section-label">📚 Completed Coursework</div>';
     renderTree(root, treeEl, []);
   }
 
