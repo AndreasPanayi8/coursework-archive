@@ -372,16 +372,6 @@
     gap:24px;
   }
   
-  @media (max-width: 1024px) {
-    main {
-      grid-template-columns:1fr;
-    }
-    
-    .tree {
-      height:auto !important;
-    }
-  }
-  
   .tree{
     background:var(--card);
     padding:18px;
@@ -396,10 +386,10 @@
     align-self:start;
   }
   
-  #tree::-webkit-scrollbar{width:10px}
-  #tree::-webkit-scrollbar-track{background:var(--bg);border-radius:5px;margin:4px}
-  #tree::-webkit-scrollbar-thumb{background:linear-gradient(135deg, var(--muted) 0%, var(--text-secondary) 100%);border-radius:5px;border:2px solid var(--bg)}
-  #tree::-webkit-scrollbar-thumb:hover{background:linear-gradient(135deg, var(--text-secondary) 0%, var(--muted) 100%)}
+  #tree::-webkit-scrollbar{width:6px}
+  #tree::-webkit-scrollbar-track{background:var(--bg);border-radius:5px}
+  #tree::-webkit-scrollbar-thumb{background:var(--border);border-radius:5px}
+  #tree::-webkit-scrollbar-thumb:hover{background:var(--muted)}
   
   .panel{
     background:var(--card);
@@ -409,6 +399,20 @@
     min-height:calc(100vh - 140px);
     overflow:auto;
     border:1px solid var(--border);
+  }
+
+  @media (max-width: 1024px) {
+    main {
+      grid-template-columns:1fr;
+    }
+    .tree {
+      position:static !important;
+      height:auto !important;
+      max-height:280px;
+    }
+    .panel {
+      min-height:0;
+    }
   }
   
   .panel-header {
@@ -1799,7 +1803,15 @@
     return c;
   }
 
+  // On mobile the panel is below the tree — scroll it into view after any navigation
+  function scrollToPanel() {
+    if(window.innerWidth <= 1024) {
+      document.querySelector('.panel').scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+  }
+
   function showWelcome(){
+    document.querySelectorAll('.folder').forEach(function(f){ f.classList.remove('active'); });
     const wipRow = document.getElementById('wipFolderRow');
     if(wipRow) wipRow.classList.remove('active');
     panelPath.textContent = '👋 Welcome';
@@ -1830,14 +1842,13 @@
   }
 
   function showFiles(files, path){
-    panelPath.innerHTML = `📁 ${path}`;
-    panelCount.textContent = `${files.length} file${files.length !== 1 ? 's' : ''}`;
+    panelPath.innerHTML = '📁 ' + path;
+    panelCount.textContent = files.length + ' file' + (files.length !== 1 ? 's' : '');
     filesEl.innerHTML = '';
-    
     currentFiles = files;
-    
     files.sort((a,b)=> (a.title||'').localeCompare(b.title||''));
     files.forEach((it, index) => renderFileCard(it, index));
+    scrollToPanel();
   }
 
   function renderFileCard(it, index){
@@ -2008,6 +2019,7 @@
     });
 
     filesEl.appendChild(list);
+    scrollToPanel();
   }
 
   function openLightbox(index){
@@ -2344,7 +2356,7 @@
     } 
   });
 
-  search.addEventListener('input', ()=>{
+  search.addEventListener('input', function(){
     const q = search.value.trim().toLowerCase();
     if(!q){ 
       buildTreeAndRender(); 
@@ -2352,31 +2364,31 @@
       currentFiles = [];
       return; 
     }
+
+    // Deactivate any active sidebar selection
+    document.querySelectorAll('.folder').forEach(function(f){ f.classList.remove('active'); });
+    const wipRow = document.getElementById('wipFolderRow');
+    if(wipRow) wipRow.classList.remove('active');
     
-    const results = allFiles.filter(it => 
-      ((it.title||'') + ' ' + it.src).toLowerCase().includes(q)
-    );
+    const results = allFiles.filter(function(it){
+      return ((it.title||'') + ' ' + it.src).toLowerCase().includes(q);
+    });
     
-    panelPath.innerHTML = `🔍 Search: "${q}"`;
-    panelCount.textContent = `${results.length} result${results.length !== 1 ? 's' : ''}`;
+    panelPath.innerHTML = '🔍 Search: "' + q + '"';
+    panelCount.textContent = results.length + ' result' + (results.length !== 1 ? 's' : '');
     filesEl.innerHTML = '';
     updateBreadcrumb([]);
-    
     currentFiles = results;
     
     if(results.length === 0){
-      filesEl.innerHTML = `
-        <div class="welcome" style="grid-column:1/-1">
-          <div class="welcome-icon">🔍</div>
-          <h2>No results found</h2>
-          <p>Try a different search term</p>
-        </div>
-      `;
+      filesEl.innerHTML = '<div class="welcome" style="grid-column:1/-1"><div class="welcome-icon">🔍</div><h2>No results found</h2><p>Try a different search term</p></div>';
+      scrollToPanel();
       return;
     }
   
-    results.sort((a,b)=> (a.title||'').localeCompare(b.title||''));
-    results.forEach((it, index) => renderFileCard(it, index));
+    results.sort(function(a,b){ return (a.title||'').localeCompare(b.title||''); });
+    results.forEach(function(it, index){ renderFileCard(it, index); });
+    scrollToPanel();
   });
 
   loadManifest();
