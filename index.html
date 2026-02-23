@@ -387,8 +387,13 @@
     padding:18px;
     border-radius:var(--radius);
     box-shadow:var(--shadow-md);
-    overflow:visible;
+    height:calc(100vh - 140px);
+    overflow-y:auto;
+    overflow-x:hidden;
     border:1px solid var(--border);
+    position:sticky;
+    top:24px;
+    align-self:start;
   }
   
   #tree::-webkit-scrollbar{width:10px}
@@ -401,10 +406,9 @@
     padding:24px;
     border-radius:var(--radius);
     box-shadow:var(--shadow-md);
-    min-height:400px;
+    min-height:calc(100vh - 140px);
     overflow:auto;
     border:1px solid var(--border);
-    align-self:start;
   }
   
   .panel-header {
@@ -1183,41 +1187,64 @@
     margin:0;
   }
 
-  /* ── Sidebar column wrapper ── */
-  .sidebar-col {
+  /* ── WIP folder row inside the tree ── */
+  .wip-folder-row {
+    padding:12px 14px;
+    border-radius:11px;
+    cursor:pointer;
     display:flex;
-    flex-direction:column;
-    gap:14px;
-    min-width:0;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:10px;
+    transition:all 0.3s ease;
+    background:linear-gradient(135deg, rgba(99,102,241,0.10) 0%, rgba(139,92,246,0.06) 100%);
+    border:1px solid rgba(99,102,241,0.18);
+    position:relative;
   }
 
-  /* ── Currently Working On card ── */
-  .wip-card {
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    box-shadow:var(--shadow-md);
-    padding:18px;
-    flex-shrink:0;
+  .wip-folder-row::before {
+    content:'';
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width:3px;
+    background:linear-gradient(180deg,#6366f1,#8b5cf6);
+    border-radius:0 3px 3px 0;
+    opacity:0;
+    transition:opacity 0.3s;
   }
 
-  .wip-heading {
+  .wip-folder-row:hover,
+  .wip-folder-row.active {
+    transform:translateX(4px);
+    background:linear-gradient(135deg, rgba(99,102,241,0.18) 0%, rgba(139,92,246,0.12) 100%);
+    border-color:rgba(99,102,241,0.35);
+  }
+
+  .wip-folder-row:hover::before,
+  .wip-folder-row.active::before { opacity:1; }
+
+  .wip-folder-row .name {
+    font-weight:600;
+    font-size:14px;
     display:flex;
     align-items:center;
     gap:10px;
-    margin:0 0 14px 0;
-    padding-bottom:12px;
-    border-bottom:2px solid var(--border);
-    font-size:15px;
-    font-weight:700;
     color:var(--text);
-    letter-spacing:-0.01em;
   }
 
-  /* Animated "live" dot */
-  .wip-dot {
-    width:9px;
-    height:9px;
+  .wip-folder-row .wip-badge {
+    font-size:10px;
+    font-weight:700;
+    background:linear-gradient(135deg,#6366f1,#8b5cf6);
+    color:white;
+    padding:3px 8px;
+    border-radius:10px;
+    letter-spacing:0.03em;
+    flex-shrink:0;
+  }
+
+  .wip-live-dot {
+    width:8px; height:8px;
     border-radius:50%;
     background:#22c55e;
     flex-shrink:0;
@@ -1225,71 +1252,99 @@
   }
 
   @keyframes wip-ping {
-    0%, 100% { box-shadow:0 0 0 0 rgba(34,197,94,0.5); }
-    50%       { box-shadow:0 0 0 6px rgba(34,197,94,0); }
+    0%,100%{ box-shadow:0 0 0 0 rgba(34,197,94,0.5); }
+    50%    { box-shadow:0 0 0 6px rgba(34,197,94,0); }
   }
 
-  .wip-list {
-    list-style:none;
-    margin:0;
-    padding:0;
+  /* divider between WIP row and coursework tree */
+  .tree-divider {
+    border:none;
+    border-top:1px solid var(--border);
+    margin:10px 0 12px 0;
+  }
+
+  /* ── WIP panel rendered in #files area ── */
+  .wip-panel {
+    grid-column:1/-1;
     display:flex;
     flex-direction:column;
-    gap:8px;
+    gap:16px;
   }
 
-  .wip-item {
-    padding:10px 12px;
-    border-radius:10px;
-    background:var(--bg);
-    border:1px solid var(--border);
-    transition:all 0.2s ease;
-  }
-
-  .wip-item:hover {
-    border-color:var(--accent);
-    box-shadow:var(--shadow-sm);
-    transform:translateX(3px);
-  }
-
-  .wip-item-title {
-    font-size:13px;
-    font-weight:600;
+  .wip-panel-heading {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:18px;
+    font-weight:700;
     color:var(--text);
-    line-height:1.4;
+    padding-bottom:16px;
+    border-bottom:2px solid var(--border);
     margin-bottom:4px;
   }
 
-  .wip-item-desc {
-    font-size:11.5px;
-    color:var(--text-secondary);
-    line-height:1.45;
+  .wip-card-item {
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px 20px;
+    transition:all 0.2s ease;
+    position:relative;
+    overflow:hidden;
   }
 
-  .wip-item-link {
+  .wip-card-item::before {
+    content:'';
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width:4px;
+    background:linear-gradient(180deg,#6366f1,#8b5cf6);
+    border-radius:0 4px 4px 0;
+  }
+
+  .wip-card-item:hover {
+    border-color:rgba(99,102,241,0.4);
+    box-shadow:var(--shadow-md);
+    transform:translateY(-2px);
+  }
+
+  .wip-card-item-title {
+    font-size:15px;
+    font-weight:700;
+    color:var(--text);
+    margin-bottom:6px;
+    padding-left:12px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .wip-card-item-desc {
+    font-size:13px;
+    color:var(--text-secondary);
+    line-height:1.6;
+    padding-left:12px;
+  }
+
+  .wip-card-item-link {
     display:inline-flex;
     align-items:center;
-    gap:4px;
-    font-size:11px;
+    gap:5px;
+    margin-top:10px;
+    margin-left:12px;
+    font-size:12px;
     font-weight:600;
     color:var(--accent);
     text-decoration:none;
-    margin-top:6px;
-    transition:color 0.2s;
+    padding:5px 12px;
+    border:1px solid var(--accent);
+    border-radius:8px;
+    transition:all 0.2s;
   }
 
-  .wip-item-link:hover { color:var(--accent-hover); text-decoration:underline; }
-
-  /* "Completed Coursework" label */
-  .tree-section-label {
-    font-size:11px;
-    font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:0.08em;
-    color:var(--muted);
-    padding:0 4px 10px 4px;
-    border-bottom:1px solid var(--border);
-    margin-bottom:6px;
+  .wip-card-item-link:hover {
+    background:var(--accent);
+    color:white;
   }
 </style>
 </head>
@@ -1326,41 +1381,22 @@
 <div id="breadcrumbContainer"></div>
 
 <main>
-  <div class="sidebar-col">
-    <!-- Currently Working On -->
-    <div class="wip-card">
-      <h2 class="wip-heading">
-        <span class="wip-dot"></span>
+  <aside class="tree" id="tree">
+
+    <!-- Currently Working On — clickable row -->
+    <div class="wip-folder-row" id="wipFolderRow" role="button" tabindex="0" title="View ongoing projects">
+      <span class="name">
+        <span class="wip-live-dot"></span>
         Currently Working On
-      </h2>
-      <ul class="wip-list">
-        <li class="wip-item">
-          <div class="wip-item-title">🔗 Blockchain Theory &amp; Implementation</div>
-          <div class="wip-item-desc">Studying blockchain fundamentals and building a full blockchain from scratch in TypeScript.</div>
-        </li>
-        <li class="wip-item">
-          <div class="wip-item-title">📐 Extremal Graph Theory &amp; Fine-Grained Algorithms</div>
-          <div class="wip-item-desc">Research on extremal graph theory and its implications for fine-grained algorithms in even cycle listing.</div>
-          <a class="wip-item-link" href="https://drops.dagstuhl.de/storage/00lipics/lipics-vol325-itcs2025/LIPIcs.ITCS.2025.92/LIPIcs.ITCS.2025.92.pdf" target="_blank" rel="noopener">
-            📄 ITCS 2025 Paper ↗
-          </a>
-        </li>
-        <li class="wip-item">
-          <div class="wip-item-title">🔍 Graph Pattern Listing</div>
-          <div class="wip-item-desc">Research into efficient algorithms for listing graph patterns.</div>
-        </li>
-        <li class="wip-item">
-          <div class="wip-item-title">🎤 Combinatorial Optimization Presentation</div>
-          <div class="wip-item-desc">Preparing a course presentation on a topic in combinatorial optimization.</div>
-        </li>
-      </ul>
+      </span>
+      <span class="wip-badge">4</span>
     </div>
 
-    <!-- Completed Coursework Tree -->
-    <aside class="tree" id="tree">
-      <div class="tree-section-label">📚 Completed Coursework</div>
-    </aside>
-  </div>
+    <hr class="tree-divider">
+
+    <!-- Completed coursework injected here by JS -->
+  </aside>
+
   <section class="panel">
     <div class="panel-header">
       <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;flex:1">
@@ -1694,6 +1730,8 @@
         }
         document.querySelectorAll('.folder').forEach(f => f.classList.remove('active'));
         row.classList.add('active');
+        const wipRow = document.getElementById('wipFolderRow');
+        if(wipRow) wipRow.classList.remove('active');
       });
     });
 
@@ -1717,6 +1755,8 @@
         updateBreadcrumb(pathParts);
         document.querySelectorAll('.folder').forEach(f => f.classList.remove('active'));
         showBtn.classList.add('active');
+        const wipRow2 = document.getElementById('wipFolderRow');
+        if(wipRow2) wipRow2.classList.remove('active');
       });
     }
   }
@@ -1731,6 +1771,8 @@
   }
 
   function showWelcome(){
+    const wipRow = document.getElementById('wipFolderRow');
+    if(wipRow) wipRow.classList.remove('active');
     panelPath.textContent = '👋 Welcome';
     panelCount.textContent = '';
     currentFiles = [];
@@ -1844,8 +1886,82 @@
   function buildTreeAndRender(){
     if(!manifestData) return;
     const root = buildTreeFromManifest(manifestData);
-    treeEl.innerHTML = '<div class="tree-section-label">📚 Completed Coursework</div>';
+    // Preserve the WIP row and divider, only replace everything after the <hr>
+    const hr = treeEl.querySelector('.tree-divider');
+    // Remove everything after the hr
+    let node = hr ? hr.nextSibling : null;
+    while(node){ const next = node.nextSibling; treeEl.removeChild(node); node = next; }
+    // Inject the coursework label and tree
+    const label = document.createElement('div');
+    label.className = 'tree-section-label';
+    label.textContent = '📚 Completed Coursework';
+    treeEl.appendChild(label);
     renderTree(root, treeEl, []);
+    // Re-attach active state on WIP row if active
+    const wipRow = document.getElementById('wipFolderRow');
+    if(wipRow && !wipRow._wipBound) {
+      wipRow._wipBound = true;
+      wipRow.addEventListener('click', showWipPanel);
+      wipRow.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' ') showWipPanel(); });
+    }
+  }
+
+  const WIP_ITEMS = [
+    {
+      icon:'⛓️',
+      title:'Blockchain Theory & TypeScript Implementation',
+      desc:'Studying blockchain fundamentals — consensus mechanisms, cryptographic hashing, Merkle trees — and building a full blockchain from scratch in TypeScript.',
+      link: null
+    },
+    {
+      icon:'📐',
+      title:'Extremal Graph Theory & Fine-Grained Algorithms',
+      desc:'Research on extremal graph theory and its implications for fine-grained complexity in even cycle listing algorithms.',
+      link: { href:'https://drops.dagstuhl.de/storage/00lipics/lipics-vol325-itcs2025/LIPIcs.ITCS.2025.92/LIPIcs.ITCS.2025.92.pdf', label:'📄 ITCS 2025 Paper ↗' }
+    },
+    {
+      icon:'🔍',
+      title:'Graph Pattern Listing Research',
+      desc:'Investigating efficient combinatorial algorithms for listing graph patterns, focusing on subgraph isomorphism and enumeration complexity.',
+      link: null
+    },
+    {
+      icon:'🎤',
+      title:'Combinatorial Optimization — Course Presentation',
+      desc:'Preparing a course presentation covering a key topic in combinatorial optimization, including problem formulation, algorithmic approaches, and open questions.',
+      link: null
+    }
+  ];
+
+  function showWipPanel(){
+    // Mark WIP row active, deactivate coursework folders
+    document.querySelectorAll('.folder').forEach(f => f.classList.remove('active'));
+    const wipRow = document.getElementById('wipFolderRow');
+    if(wipRow) wipRow.classList.add('active');
+
+    panelPath.innerHTML = '🟢 Currently Working On';
+    panelCount.textContent = `${WIP_ITEMS.length} projects`;
+    currentFiles = [];
+    updateBreadcrumb([]);
+
+    filesEl.innerHTML = '';
+    const wrap = document.createElement('div');
+    wrap.className = 'wip-panel';
+
+    WIP_ITEMS.forEach(function(item) {
+      var linkHtml = '';
+      if(item.link) {
+        linkHtml = '<a class="wip-card-item-link" href="' + item.link.href + '" target="_blank" rel="noopener">' + item.link.label + '</a>';
+      }
+      var card = document.createElement('div');
+      card.className = 'wip-card-item';
+      card.innerHTML = '<div class="wip-card-item-title"><span>' + item.icon + '</span>' + item.title + '</div>'
+        + '<div class="wip-card-item-desc">' + item.desc + '</div>'
+        + linkHtml;
+      wrap.appendChild(card);
+    });
+
+    filesEl.appendChild(wrap);
   }
 
   function openLightbox(index){
