@@ -379,7 +379,6 @@
     
     .tree {
       height:auto !important;
-      max-height:400px;
     }
   }
   
@@ -388,8 +387,7 @@
     padding:18px;
     border-radius:var(--radius);
     box-shadow:var(--shadow-md);
-    max-height:calc(100vh - 560px);min-height:200px;
-    overflow:auto;
+    overflow:visible;
     border:1px solid var(--border);
   }
   
@@ -403,9 +401,10 @@
     padding:24px;
     border-radius:var(--radius);
     box-shadow:var(--shadow-md);
-    min-height:calc(100vh - 300px);
+    min-height:400px;
     overflow:auto;
     border:1px solid var(--border);
+    align-self:start;
   }
   
   .panel-header {
