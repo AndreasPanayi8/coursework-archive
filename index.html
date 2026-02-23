@@ -1298,85 +1298,80 @@
     100% { transform:scale(2);   opacity:0; }
   }
 
-  /* divider */
-  .tree-divider {
-    border:none;
-    border-top:1px solid var(--border);
-    margin:8px 0 10px 0;
-  }
-
-  /* ── WIP panel in the files area ── */
-  .wip-panel {
+  /* ── WIP list panel ── */
+  .wip-list-panel {
     grid-column:1/-1;
-    display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(280px,1fr));
-    gap:16px;
+    max-width:640px;
   }
 
-  .wip-card-item {
-    background:var(--card);
+  .wip-list-item {
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    padding:12px 14px;
+    border-radius:10px;
     border:1px solid var(--border);
-    border-radius:var(--radius);
-    padding:20px 20px 20px 24px;
-    transition:all 0.25s ease;
+    background:var(--card);
+    margin-bottom:8px;
+    transition:all 0.2s ease;
     position:relative;
     overflow:hidden;
-    box-shadow:var(--shadow-sm);
-    display:flex;
-    flex-direction:column;
-    gap:8px;
   }
 
-  .wip-card-item::before {
+  .wip-list-item::before {
     content:'';
     position:absolute;
     left:0; top:0; bottom:0;
-    width:4px;
+    width:3px;
     background:var(--accent);
-    border-radius:0;
+    opacity:0;
+    transition:opacity 0.2s;
   }
 
-  .wip-card-item:hover {
+  .wip-list-item:hover {
+    background:var(--bg);
     border-color:var(--accent);
-    box-shadow:var(--shadow-md);
-    transform:translateY(-3px);
+    transform:translateX(4px);
   }
 
-  .wip-card-item-icon {
-    font-size:28px;
+  .wip-list-item:hover::before { opacity:1; }
+
+  .wip-list-icon {
+    font-size:18px;
+    flex-shrink:0;
+    margin-top:1px;
     line-height:1;
   }
 
-  .wip-card-item-title {
-    font-size:14px;
-    font-weight:700;
+  .wip-list-body { min-width:0; }
+
+  .wip-list-title {
+    font-size:13px;
+    font-weight:600;
     color:var(--text);
     line-height:1.4;
+    margin-bottom:3px;
   }
 
-  .wip-card-item-desc {
+  .wip-list-desc {
     font-size:12px;
     color:var(--text-secondary);
-    line-height:1.6;
-    flex:1;
+    line-height:1.5;
   }
 
-  .wip-card-item-link {
+  .wip-list-link {
     display:inline-flex;
     align-items:center;
-    gap:5px;
-    margin-top:4px;
-    font-size:12px;
+    gap:3px;
+    margin-top:5px;
+    font-size:11.5px;
     font-weight:600;
     color:var(--accent);
     text-decoration:none;
-    transition:color 0.2s;
   }
 
-  .wip-card-item-link:hover {
-    color:var(--accent-hover);
-    text-decoration:underline;
-  }
+  .wip-list-link:hover { text-decoration:underline; color:var(--accent-hover); }
+
 </style>
 </head>
 <body>
@@ -1970,26 +1965,49 @@
     panelCount.textContent = WIP_ITEMS.length + ' projects';
     currentFiles = [];
     updateBreadcrumb([]);
-
     filesEl.innerHTML = '';
-    var wrap = document.createElement('div');
-    wrap.className = 'wip-panel';
+
+    var list = document.createElement('div');
+    list.className = 'wip-list-panel';
 
     WIP_ITEMS.forEach(function(item) {
-      var linkHtml = '';
+      var row = document.createElement('div');
+      row.className = 'wip-list-item';
+
+      var icon = document.createElement('span');
+      icon.className = 'wip-list-icon';
+      icon.textContent = item.icon;
+
+      var body = document.createElement('div');
+      body.className = 'wip-list-body';
+
+      var titleEl = document.createElement('div');
+      titleEl.className = 'wip-list-title';
+      titleEl.textContent = item.title;
+
+      var descEl = document.createElement('div');
+      descEl.className = 'wip-list-desc';
+      descEl.textContent = item.desc;
+
+      body.appendChild(titleEl);
+      body.appendChild(descEl);
+
       if(item.link) {
-        linkHtml = '<a class="wip-card-item-link" href="' + item.link.href + '" target="_blank" rel="noopener">↗ ' + item.link.label + '</a>';
+        var linkEl = document.createElement('a');
+        linkEl.className = 'wip-list-link';
+        linkEl.href = item.link.href;
+        linkEl.target = '_blank';
+        linkEl.rel = 'noopener';
+        linkEl.textContent = '↗ ' + item.link.label;
+        body.appendChild(linkEl);
       }
-      var card = document.createElement('div');
-      card.className = 'wip-card-item';
-      card.innerHTML = '<div class="wip-card-item-icon">' + item.icon + '</div>'
-        + '<div class="wip-card-item-title">' + item.title + '</div>'
-        + '<div class="wip-card-item-desc">' + item.desc + '</div>'
-        + linkHtml;
-      wrap.appendChild(card);
+
+      row.appendChild(icon);
+      row.appendChild(body);
+      list.appendChild(row);
     });
 
-    filesEl.appendChild(wrap);
+    filesEl.appendChild(list);
   }
 
   function openLightbox(index){
