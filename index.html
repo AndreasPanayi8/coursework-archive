@@ -19,6 +19,7 @@
     --shadow-sm:0 1px 3px rgba(0,0,0,0.08);
     --shadow-md:0 4px 12px rgba(0,0,0,0.08);
     --shadow-lg:0 10px 30px rgba(0,0,0,0.12);
+    font-size:17px;
     font-family:'Inter',system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   }
   
@@ -38,6 +39,11 @@
   
   * { box-sizing: border-box; }
   
+  button, [role="button"], .folder, .wip-folder-row, .file, .breadcrumb-link {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  
   body{
     margin:0;
     padding:24px;
@@ -48,7 +54,7 @@
   }
   
   header{
-    background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background:linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
     padding:32px 36px;
     border-radius:var(--radius);
     box-shadow:var(--shadow-lg);
@@ -125,11 +131,6 @@
     white-space:nowrap;
   }
   
-  .summary-badge:hover{
-    background:rgba(255,255,255,0.3);
-    transform:translateY(-2px);
-  }
-  
   .summary-badge span:last-child {
     min-width:20px;
     text-align:center;
@@ -174,7 +175,7 @@
     border-radius:12px;
     border:2px solid rgba(255,255,255,0.3);
     background:rgba(255,255,255,0.95);
-    font-size:14px;
+    font-size:15px;
     transition:all 0.3s ease;
     color:#0f172a;
   }
@@ -238,18 +239,14 @@
     flex-shrink:0;
   }
   
-  .theme-toggle:hover {
-    background:rgba(255,255,255,0.3);
-    transform:translateY(-2px);
-  }
   
   @media (max-width: 768px) {
     header {
-      padding:24px 20px;
+      padding:20px 18px;
     }
     
     header h1 {
-      font-size:24px;
+      font-size:22px;
     }
     
     .subtitle {
@@ -273,7 +270,7 @@
     
     .controls-group {
       width:100%;
-      justify-content:center;
+      justify-content:flex-end;
     }
     
     .search-wrapper {
@@ -283,7 +280,7 @@
     }
     
     input[type=search] {
-      font-size:13px;
+      font-size:14px;
     }
     
     body {
@@ -319,10 +316,7 @@
     display:flex;
     align-items:center;
     gap:8px;
-    font-size:14px;
-    color:var(--text-secondary);
-    border:1px solid var(--border);
-    overflow-x:auto;
+    font-size:15px;
     white-space:nowrap;
     scrollbar-width:thin;
   }
@@ -377,13 +371,15 @@
     padding:18px;
     border-radius:var(--radius);
     box-shadow:var(--shadow-md);
-    height:calc(100vh - 140px);
+    height:calc(100vh - 160px);
     overflow-y:auto;
     overflow-x:hidden;
+    overflow-anchor:none;
     border:1px solid var(--border);
     position:sticky;
     top:24px;
     align-self:start;
+    scrollbar-gutter:stable;
   }
   
   #tree::-webkit-scrollbar{width:6px}
@@ -396,8 +392,9 @@
     padding:24px;
     border-radius:var(--radius);
     box-shadow:var(--shadow-md);
-    min-height:calc(100vh - 140px);
+    min-height:calc(100vh - 160px);
     overflow:auto;
+    overflow-anchor:none;
     border:1px solid var(--border);
   }
 
@@ -408,10 +405,11 @@
     .tree {
       position:static !important;
       height:auto !important;
-      max-height:280px;
+      max-height:360px;
+      scrollbar-gutter:auto;
     }
     .panel {
-      min-height:0;
+      min-height:50vh;
     }
   }
   
@@ -430,7 +428,7 @@
     display:flex;
     align-items:center;
     gap:12px;
-    font-size:20px;
+    font-size:22px;
     font-weight:600;
     color:var(--text);
   }
@@ -439,7 +437,7 @@
     background:var(--bg);
     padding:6px 14px;
     border-radius:20px;
-    font-size:13px;
+    font-size:14px;
     font-weight:600;
     color:var(--text-secondary);
   }
@@ -533,15 +531,6 @@
     transition:opacity 0.3s ease;
   }
   
-  .folder:hover{
-    background:var(--bg);
-    transform:translateX(4px);
-  }
-  
-  .folder:hover::before{
-    opacity:0.3;
-  }
-  
   .folder.active{
     background:linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
     box-shadow:var(--shadow-sm);
@@ -570,10 +559,6 @@
     font-size:18px;
     flex-shrink:0;
     transition:transform 0.3s ease;
-  }
-  
-  .folder:hover .folder-icon{
-    transform:scale(1.15);
   }
   
   .folder-count{
@@ -637,18 +622,55 @@
     transition:opacity 0.3s ease;
   }
   
-  .file:hover{
-    transform:translateY(-6px) scale(1.02);
-    box-shadow:0 12px 28px rgba(59, 130, 246, 0.15), 0 0 40px rgba(118, 75, 162, 0.1);
-    border-color:transparent;
-  }
-  
-  .file:hover::before{
-    opacity:1;
+  @media (hover: hover) {
+    .file:hover{
+      transform:translateY(-6px) scale(1.02);
+      box-shadow:0 12px 28px rgba(59, 130, 246, 0.15), 0 0 40px rgba(118, 75, 162, 0.1);
+      border-color:transparent;
+    }
+    
+    .file:hover::before{
+      opacity:1;
+    }
+    
+    .folder:hover{
+      background:var(--bg);
+      transform:translateX(4px);
+    }
+    
+    .folder:hover::before{
+      opacity:0.3;
+    }
+    
+    .folder:hover .folder-icon{
+      transform:scale(1.15);
+    }
+    
+    .wip-folder-row:hover {
+      background:var(--bg);
+      transform:translateX(4px);
+    }
+    
+    .wip-folder-row:hover::before { opacity:0.3; }
+    
+    .summary-badge:hover{
+      background:rgba(255,255,255,0.3);
+      transform:translateY(-2px);
+    }
+    
+    .theme-toggle:hover {
+      background:rgba(255,255,255,0.3);
+      transform:translateY(-2px);
+    }
   }
   
   .file:active {
     transform:translateY(-4px) scale(1.01);
+  }
+  
+  .folder:active, .wip-folder-row:active {
+    background:var(--bg);
+    transform:translateX(2px);
   }
   
   .thumb{
@@ -706,7 +728,7 @@
   
   .title{
     font-weight:600;
-    font-size:14px;
+    font-size:15px;
     color:var(--text);
     overflow:hidden;
     text-overflow:ellipsis;
@@ -715,7 +737,7 @@
   }
   
   .file-path{
-    font-size:12px;
+    font-size:13px;
     color:var(--text-secondary);
     overflow:hidden;
     text-overflow:ellipsis;
@@ -839,7 +861,7 @@
     border:none;
     cursor:pointer;
     font-weight:600;
-    font-size:14px;
+    font-size:15px;
     transition:all 0.2s;
     text-decoration:none;
     display:inline-flex;
@@ -1194,10 +1216,10 @@
 
   /* ── Sidebar section labels ── */
   .tree-section-label {
-    font-size:11.5px;
+    font-size:11px;
     font-weight:800;
     text-transform:uppercase;
-    letter-spacing:0.10em;
+    letter-spacing:0.12em;
     color:var(--text-secondary);
     padding:6px 4px 9px 4px;
     margin-bottom:2px;
@@ -1206,13 +1228,13 @@
     gap:7px;
   }
 
-  /* Shrink folder rows and text under section labels */
-  .wip-folder-row { padding:9px 12px; }
-  .wip-folder-row .name { font-size:12.5px; }
-  .wip-badge { font-size:10px; padding:3px 8px; }
-  .folder { padding:9px 12px !important; }
-  .folder .name { font-size:12.5px !important; }
-  .folder-count { font-size:10px !important; padding:3px 8px !important; }
+  /* Folder rows and text */
+  .wip-folder-row { padding:10px 12px; }
+  .wip-folder-row .name { font-size:15px; }
+  .wip-badge { font-size:12px; padding:3px 9px; }
+  .folder { padding:10px 12px !important; }
+  .folder .name { font-size:15px !important; }
+  .folder-count { font-size:12px !important; padding:3px 9px !important; }
 
   /* ── WIP row — same base as .folder, with accent tint ── */
   .wip-folder-row {
@@ -1238,13 +1260,6 @@
     transition:opacity 0.3s ease;
   }
 
-  .wip-folder-row:hover {
-    background:var(--bg);
-    transform:translateX(4px);
-  }
-
-  .wip-folder-row:hover::before { opacity:0.3; }
-
   .wip-folder-row.active {
     background:linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(59,130,246,0.05) 100%);
     box-shadow:var(--shadow-sm);
@@ -1255,7 +1270,7 @@
 
   .wip-folder-row .name {
     font-weight:600;
-    font-size:14px;
+    font-size:15px;
     display:flex;
     align-items:center;
     gap:12px;
@@ -1305,7 +1320,8 @@
   /* ── WIP list panel ── */
   .wip-list-panel {
     grid-column:1/-1;
-    max-width:640px;
+    max-width:680px;
+    width:100%;
   }
 
   .wip-list-item {
@@ -1368,13 +1384,25 @@
     align-items:center;
     gap:3px;
     margin-top:5px;
-    font-size:11.5px;
+    font-size:12px;
     font-weight:600;
     color:var(--accent);
     text-decoration:none;
   }
 
   .wip-list-link:hover { text-decoration:underline; color:var(--accent-hover); }
+
+  /* Tree divider */
+  .tree-divider {
+    border:none;
+    border-top:1px solid var(--border);
+    margin:10px 0 12px 0;
+    opacity:0.7;
+  }
+
+  /* WIP list item text */
+  .wip-list-title { font-size:15px; }
+  .wip-list-desc  { font-size:14px; }
 
 </style>
 </head>
@@ -1524,7 +1552,7 @@
     localStorage.setItem('theme', newTheme);
     themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
   });
-  
+
   // View toggle
   gridView.addEventListener('click', () => {
     filesEl.classList.remove('list-view');
@@ -1545,6 +1573,7 @@
   async function loadManifest(){
     try{
       const res = await fetch('manifest.json');
+      if(!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       manifestData = data;
       collectAllFiles(data);
@@ -1552,7 +1581,8 @@
       updateStats();
       showWelcome();
     } catch(e){ 
-      console.error('Failed to load manifest:', e); 
+      console.error('Failed to load manifest:', e);
+      treeEl.innerHTML += `<div style="padding:12px;color:var(--muted);font-size:13px;">⚠️ Could not load repository data</div>`;
     }
   }
   
@@ -1920,16 +1950,20 @@
   }
 
   function escapeHtml(s){ 
-    return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); 
+    return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); 
   }
 
   function buildTreeAndRender(){
     if(!manifestData) return;
     const root = buildTreeFromManifest(manifestData);
-    // Keep static WIP row, divider, and section label — only clear old folder nodes
-    const label = treeEl.querySelector('.tree-section-label:last-of-type');
-    let node = label ? label.nextSibling : null;
-    while(node){ const next = node.nextSibling; treeEl.removeChild(node); node = next; }
+    // Remove all dynamically-injected folder nodes (everything after the last .tree-section-label)
+    const labels = treeEl.querySelectorAll('.tree-section-label');
+    const lastLabel = labels[labels.length - 1];
+    if(lastLabel) {
+      while(lastLabel.nextSibling) {
+        treeEl.removeChild(lastLabel.nextSibling);
+      }
+    }
     renderTree(root, treeEl, []);
     // Wire up WIP row click once
     const wipRow = document.getElementById('wipFolderRow');
@@ -1944,7 +1978,7 @@
     {
       icon:'⛓️',
       title:'Blockchain Theory & TypeScript Implementation',
-      desc:'Studying blockchain fundamentals — consensus mechanisms, cryptographic hashing, Merkle trees — and building a full blockchain from scratch in TypeScript.',
+      desc:'Studying blockchain foundations theory and building a full blockchain — Marabu — from scratch in TypeScript.',
       link: null
     },
     {
@@ -1956,7 +1990,7 @@
     {
       icon:'🔍',
       title:'Graph Pattern Listing Research',
-      desc:'Investigating efficient combinatorial algorithms for listing graph patterns, focusing on subgraph isomorphism and enumeration complexity.',
+      desc:'Designing efficient combinatorial algorithms for listing patterns in various graph models (static, temporal, hypergraphs and more).',
       link: null
     },
     {
