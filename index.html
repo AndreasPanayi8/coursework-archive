@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>Theoretical Computer Science Repository</title>
 <meta name="description" content="A comprehensive collection of coursework, research, presentations, and resources in theoretical computer science">
 <style>
@@ -242,19 +242,21 @@
   
   @media (max-width: 768px) {
     header {
-      padding:20px 18px;
+      padding:16px;
     }
     
     header h1 {
-      font-size:22px;
+      font-size:20px;
+      line-height:1.3;
     }
     
     .subtitle {
       font-size:13px;
+      margin-bottom:12px;
     }
     
     .header-content {
-      gap:12px;
+      gap:10px;
     }
     
     .summary {
@@ -280,20 +282,22 @@
     }
     
     input[type=search] {
-      font-size:14px;
+      font-size:16px; /* prevent iOS zoom */
+      padding:10px 14px 10px 40px;
     }
     
     body {
-      padding:12px;
+      padding:10px;
     }
     
     main {
-      gap:16px;
+      gap:12px;
     }
     
     .breadcrumb {
-      padding:10px 14px;
+      padding:10px 12px;
       font-size:12px;
+      overflow-x:auto;
     }
     
     .panel-header {
@@ -301,10 +305,70 @@
       align-items:flex-start;
     }
     
+    .panel-title {
+      font-size:17px;
+    }
+    
     .view-options {
       width:100%;
       justify-content:flex-end;
     }
+    
+    .files {
+      grid-template-columns:repeat(auto-fill, minmax(min(240px, 100%), 1fr));
+      gap:12px;
+    }
+    
+    .panel {
+      padding:14px;
+    }
+    
+    .lb-header {
+      padding:12px 14px;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    
+    .lb-actions {
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    
+    .lb-btn {
+      padding:8px 14px;
+      font-size:13px;
+    }
+    
+    .lb-nav-btn {
+      width:40px;
+      height:40px;
+      font-size:20px;
+    }
+    
+    .lb-nav-prev { left:6px; }
+    .lb-nav-next { right:6px; }
+    
+    .lb-container {
+      max-width:100%;
+      max-height:100%;
+      border-radius:12px;
+    }
+    
+    #lb-content {
+      padding:14px;
+    }
+  }
+  
+  /* Extra small screens */
+  @media (max-width: 400px) {
+    header h1 { font-size:17px; }
+    .summary-badge { font-size:9px; padding:3px 6px; }
+    .summary { gap:6px; }
+    .files {
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    .thumb { height:130px; }
   }
   
   .breadcrumb {
@@ -405,11 +469,70 @@
     .tree {
       position:static !important;
       height:auto !important;
-      max-height:360px;
+      max-height:none;
       scrollbar-gutter:auto;
+    }
+    .tree.collapsed {
+      max-height:52px;
+      overflow:hidden;
     }
     .panel {
       min-height:50vh;
+    }
+  }
+  
+  /* Mobile sidebar toggle button */
+  .tree-toggle-btn {
+    display:none;
+    width:100%;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:14px 18px;
+    font-size:15px;
+    font-weight:600;
+    color:var(--text);
+    cursor:pointer;
+    text-align:left;
+    margin-bottom:0;
+    box-shadow:var(--shadow-sm);
+    transition:background 0.2s;
+    display:none;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+  }
+  
+  .tree-toggle-btn:hover {
+    background:var(--bg);
+  }
+  
+  .tree-toggle-chevron {
+    transition:transform 0.3s ease;
+    font-style:normal;
+    font-size:12px;
+  }
+  
+  .tree-toggle-btn.open .tree-toggle-chevron {
+    transform:rotate(180deg);
+  }
+  
+  @media (max-width: 1024px) {
+    .tree-toggle-btn {
+      display:flex;
+    }
+    .tree {
+      border-radius:0 0 var(--radius) var(--radius);
+      box-shadow:none;
+      border-top:none;
+      margin-top:0;
+    }
+    .tree.collapsed {
+      display:none;
+    }
+    .tree-toggle-btn.open {
+      border-radius:var(--radius) var(--radius) 0 0;
+      border-bottom-color:var(--bg);
     }
   }
   
@@ -787,6 +910,13 @@
     backdrop-filter:blur(10px);
   }
   
+  @media (max-width: 768px) {
+    #lightbox {
+      padding:0;
+      align-items:flex-end;
+    }
+  }
+  
   #lightbox.show{
     display:flex;
     animation:fadeIn 0.3s ease;
@@ -808,6 +938,67 @@
     overflow:hidden;
     display:flex;
     flex-direction:column;
+  }
+  
+  @media (max-width: 768px) {
+    .lb-container {
+      max-width:100%;
+      max-height:96dvh;
+      width:100%;
+      border-radius:20px 20px 0 0;
+      box-shadow:0 -8px 40px rgba(0,0,0,0.4);
+    }
+    
+    #lb-content {
+      padding:12px;
+    }
+    
+    .lb-header {
+      padding:12px 14px;
+    }
+    
+    .lb-title {
+      font-size:14px;
+    }
+    
+    .lb-actions {
+      gap:6px;
+    }
+    
+    .lb-btn {
+      padding:8px 12px;
+      font-size:13px;
+    }
+    
+    .lb-nav-btn {
+      width:38px;
+      height:38px;
+      font-size:18px;
+      background:rgba(0,0,0,0.6);
+    }
+    
+    .lb-nav-prev { left:4px; }
+    .lb-nav-next { right:4px; }
+    
+    .pdf-viewer {
+      height:calc(96dvh - 140px);
+    }
+    
+    .code-content {
+      max-height:calc(96dvh - 260px);
+    }
+    
+    .csv-preview {
+      max-height:calc(96dvh - 200px);
+    }
+    
+    .markdown-preview {
+      max-height:calc(96dvh - 200px);
+    }
+    
+    .text-preview {
+      max-height:calc(96dvh - 200px);
+    }
   }
   
   .lb-header{
@@ -1392,7 +1583,20 @@
 
   .wip-list-link:hover { text-decoration:underline; color:var(--accent-hover); }
 
-  /* Tree divider */
+  /* Mobile drag handle for bottom-sheet lightbox */
+  .lb-drag-handle {
+    display:none;
+    width:40px;
+    height:4px;
+    background:var(--border);
+    border-radius:2px;
+    margin:10px auto 0;
+    flex-shrink:0;
+  }
+  
+  @media (max-width: 768px) {
+    .lb-drag-handle { display:block; }
+  }
   .tree-divider {
     border:none;
     border-top:1px solid var(--border);
@@ -1439,7 +1643,12 @@
 <div id="breadcrumbContainer"></div>
 
 <main>
-  <aside class="tree" id="tree">
+  <div id="sidebarWrapper">
+    <button class="tree-toggle-btn" id="treeToggle" aria-expanded="true" aria-controls="tree">
+      <span>📂 Browse Repository</span>
+      <i class="tree-toggle-chevron">▼</i>
+    </button>
+    <aside class="tree" id="tree">
 
     <div class="tree-section-label"><span class="wip-live-dot"></span> Active</div>
 
@@ -1449,6 +1658,7 @@
         <span>Currently Working On</span>
       </span>
       <span class="wip-badge">4</span>
+
     </div>
 
     <hr class="tree-divider">
@@ -1457,6 +1667,7 @@
 
     <!-- Coursework folders injected by JS -->
   </aside>
+  </div>
 
   <section class="panel">
     <div class="panel-header">
@@ -1493,6 +1704,7 @@
   <button class="lb-nav-btn lb-nav-prev" id="lb-prev" aria-label="Previous file">‹</button>
   <button class="lb-nav-btn lb-nav-next" id="lb-next" aria-label="Next file">›</button>
   <div class="lb-container">
+    <div class="lb-drag-handle"></div>
     <div class="lb-header">
       <div class="lb-title-section">
         <div class="lb-title" id="lb-title"></div>
@@ -1552,6 +1764,36 @@
     localStorage.setItem('theme', newTheme);
     themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
   });
+  
+  // Mobile sidebar toggle
+  const treeToggle = document.getElementById('treeToggle');
+  const treeEl2 = document.getElementById('tree');
+  let sidebarOpen = true;
+  
+  function updateToggleState() {
+    if (window.innerWidth > 1024) {
+      treeEl2.classList.remove('collapsed');
+      treeToggle.classList.add('open');
+      treeToggle.setAttribute('aria-expanded', 'true');
+      return;
+    }
+    if (sidebarOpen) {
+      treeEl2.classList.remove('collapsed');
+      treeToggle.classList.add('open');
+      treeToggle.setAttribute('aria-expanded', 'true');
+    } else {
+      treeEl2.classList.add('collapsed');
+      treeToggle.classList.remove('open');
+      treeToggle.setAttribute('aria-expanded', 'false');
+    }
+  }
+  
+  treeToggle.addEventListener('click', () => {
+    sidebarOpen = !sidebarOpen;
+    updateToggleState();
+  });
+  
+  window.addEventListener('resize', updateToggleState);
 
   // View toggle
   gridView.addEventListener('click', () => {
@@ -1836,7 +2078,12 @@
   // On mobile the panel is below the tree — scroll it into view after any navigation
   function scrollToPanel() {
     if(window.innerWidth <= 1024) {
-      document.querySelector('.panel').scrollIntoView({ behavior:'smooth', block:'start' });
+      // Auto-collapse sidebar on mobile when browsing
+      sidebarOpen = false;
+      updateToggleState();
+      setTimeout(() => {
+        document.querySelector('.panel').scrollIntoView({ behavior:'smooth', block:'start' });
+      }, 50);
     }
   }
 
@@ -1956,6 +2203,9 @@
   function buildTreeAndRender(){
     if(!manifestData) return;
     const root = buildTreeFromManifest(manifestData);
+    // Update WIP badge count to match actual items
+    const wipBadge = document.querySelector('#wipFolderRow .wip-badge');
+    if(wipBadge) wipBadge.textContent = WIP_ITEMS.length;
     // Remove all dynamically-injected folder nodes (everything after the last .tree-section-label)
     const labels = treeEl.querySelectorAll('.tree-section-label');
     const lastLabel = labels[labels.length - 1];
@@ -1982,21 +2232,21 @@
       link: null
     },
     {
-      icon:'📐',
-      title:'Extremal Graph Theory & Fine-Grained Algorithms',
-      desc:'Research on extremal graph theory and its implications for fine-grained complexity in even cycle listing algorithms.',
-      link: { href:'https://drops.dagstuhl.de/storage/00lipics/lipics-vol325-itcs2025/LIPIcs.ITCS.2025.92/LIPIcs.ITCS.2025.92.pdf', label:'📄 ITCS 2025 Paper ↗' }
+      icon:'⚡',
+      title:'Fine Grained Algorithms',
+      desc:'Fine Grained Algorithm for problems on simple graphs and hypergraphs and various other graph models.',
+      link: null
     },
     {
-      icon:'🔍',
-      title:'Graph Pattern Listing Research',
-      desc:'Designing efficient combinatorial algorithms for listing patterns in various graph models (static, temporal, hypergraphs and more).',
+      icon:'📐',
+      title:'Extremal Graph Theory',
+      desc:'Examine the number of distinct even length cycles in simple and bipartite graphs when the number of edges exceeds a certain threshold.',
       link: null
     },
     {
       icon:'🎤',
-      title:'Combinatorial Optimization — Course Presentation',
-      desc:'Preparing a course presentation covering a key topic in combinatorial optimization, including problem formulation, algorithmic approaches, and open questions.',
+      title:'Lecture in Combinatorial Optimization',
+      desc:'Preparing a presentation for a lecture in the post graduate course Combinatorial Optimization on Blocking flows and the Goldberg-Rao algorithm for the max flow problem.',
       link: null
     }
   ];
@@ -2177,7 +2427,7 @@
           codePreview.innerHTML = `
             <div class="code-header">
               <span class="code-language">${language}</span>
-              <button class="code-copy-btn" onclick="copyCode('${codeId}')">📋 Copy</button>
+              <button class="code-copy-btn" onclick="copyCode('${codeId}', event)">📋 Copy</button>
             </div>
             <div class="code-content">
               <pre><code id="${codeId}">${escapeHtml(code)}</code></pre>
@@ -2300,7 +2550,7 @@
   }
   
   // Copy code function
-  window.copyCode = function(codeId) {
+  window.copyCode = function(codeId, event) {
     try {
       const code = document.getElementById(codeId);
       if(!code) return;
@@ -2375,6 +2625,39 @@
     }
   });
   
+  // Touch swipe support for lightbox
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchStartTime = 0;
+  
+  document.getElementById('lightbox').addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchStartTime = Date.now();
+  }, { passive: true });
+  
+  document.getElementById('lightbox').addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    const dt = Date.now() - touchStartTime;
+    const absDx = Math.abs(dx);
+    const absDy = Math.abs(dy);
+    
+    // Quick swipe only
+    if(dt > 400) return;
+    
+    // Swipe down to close (more vertical than horizontal, downward)
+    if(absDy > absDx && dy > 60) {
+      closeLightbox();
+      return;
+    }
+    
+    // Horizontal swipe to navigate files
+    if(absDx > absDy && absDx > 50) {
+      navigateLightbox(dx < 0 ? 1 : -1);
+    }
+  }, { passive: true });
+
   function closeLightbox() {
     const lb = document.getElementById('lightbox');
     lb.classList.remove('show');
@@ -2426,6 +2709,7 @@
   });
 
   loadManifest();
+  updateToggleState();
 </script>
 </body>
 </html>
