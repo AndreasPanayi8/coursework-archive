@@ -2,7 +2,8 @@
   "name": "coursework-archive",
   "path": ".",
   "files": [
-    "Personal CV.pdf",
+    "Academic CV.pdf",
+    "Tech CV.pdf",
     "gen_manifest.py",
     "index.html",
     "manifest.json"
@@ -12,7 +13,8 @@
       "name": "Archimedes Research Unit",
       "path": "Archimedes Research Unit",
       "files": [
-        "Advanced Data Structures Report.pdf"
+        "Advanced Data Structures Report.pdf",
+        "Computational Geometry.pdf"
       ],
       "dirs": [
         {
@@ -132,6 +134,32 @@
           ]
         },
         {
+          "name": "Blockchain Foundations",
+          "path": "Exercises and Labs by Course/Blockchain Foundations",
+          "files": [
+            "Blockchain Foundations.pdf"
+          ],
+          "dirs": [
+            {
+              "name": "Theory Exercises",
+              "path": "Exercises and Labs by Course/Blockchain Foundations/Theory Exercises",
+              "files": [
+                "Theory Exercises 1.pdf",
+                "Theory Exercises 2.pdf"
+              ],
+              "dirs": []
+            }
+          ]
+        },
+        {
+          "name": "Combinatorial Optimization",
+          "path": "Exercises and Labs by Course/Combinatorial Optimization",
+          "files": [
+            "Network Algorithms by Williamson.pdf"
+          ],
+          "dirs": []
+        },
+        {
           "name": "Computational Complexity",
           "path": "Exercises and Labs by Course/Computational Complexity",
           "files": [
@@ -236,7 +264,6 @@
           "name": "Network Algorithms and Complexity ",
           "path": "Exercises and Labs by Course/Network Algorithms and Complexity ",
           "files": [
-            "Network Algorithms by Williamson.pdf",
             "Network Flows: Theory, Algorithms, and Applications.pdf"
           ],
           "dirs": [
@@ -279,15 +306,15 @@
           "dirs": []
         },
         {
-          "name": "Reccursion Theory",
-          "path": "Exercises and Labs by Course/Reccursion Theory",
+          "name": "Recursion Theory",
+          "path": "Exercises and Labs by Course/Recursion Theory",
           "files": [
-            "Reccursion Theory Notes.pdf"
+            "Recursion Theory Notes.pdf"
           ],
           "dirs": [
             {
               "name": "Solved Exercises",
-              "path": "Exercises and Labs by Course/Reccursion Theory/Solved Exercises",
+              "path": "Exercises and Labs by Course/Recursion Theory/Solved Exercises",
               "files": [
                 "Reccursion Theory 1.pdf",
                 "Reccursion Theory 2.pdf",
