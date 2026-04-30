@@ -6,35 +6,39 @@
 <title>Theoretical Computer Science Repository</title>
 <meta name="description" content="A comprehensive collection of coursework, research, presentations, and resources in theoretical computer science">
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&display=swap');
+
   :root{
-    --bg:#f8fafc; 
+    --bg:#f0f2f7; 
     --card:#ffffff; 
     --muted:#64748b; 
-    --accent:#3b82f6;
-    --accent-hover:#2563eb;
-    --border:#e2e8f0;
-    --text:#0f172a;
-    --text-secondary:#475569;
+    --accent:#4f6ef7;
+    --accent-hover:#3a57e8;
+    --accent-soft:rgba(79,110,247,0.1);
+    --border:#e0e4ef;
+    --text:#0d1117;
+    --text-secondary:#4a5568;
     --radius:14px;
-    --shadow-sm:0 1px 3px rgba(0,0,0,0.08);
-    --shadow-md:0 4px 12px rgba(0,0,0,0.08);
-    --shadow-lg:0 10px 30px rgba(0,0,0,0.12);
-    font-size:17px;
-    font-family:'Inter',system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --shadow-sm:0 1px 4px rgba(15,20,50,0.06);
+    --shadow-md:0 4px 16px rgba(15,20,50,0.08);
+    --shadow-lg:0 12px 36px rgba(15,20,50,0.14);
+    font-size:16px;
+    font-family:'DM Sans',system-ui,-apple-system,sans-serif;
   }
   
   [data-theme="dark"] {
-    --bg:#0f172a;
-    --card:#1e293b;
-    --muted:#94a3b8;
-    --accent:#60a5fa;
-    --accent-hover:#3b82f6;
-    --border:#334155;
-    --text:#f1f5f9;
-    --text-secondary:#cbd5e1;
-    --shadow-sm:0 1px 3px rgba(0,0,0,0.3);
-    --shadow-md:0 4px 12px rgba(0,0,0,0.3);
-    --shadow-lg:0 10px 30px rgba(0,0,0,0.4);
+    --bg:#0c0f1a;
+    --card:#131929;
+    --muted:#8892aa;
+    --accent:#6c8aff;
+    --accent-hover:#5a78ff;
+    --accent-soft:rgba(108,138,255,0.12);
+    --border:#1f2d44;
+    --text:#e8edf5;
+    --text-secondary:#9aabc2;
+    --shadow-sm:0 1px 4px rgba(0,0,0,0.35);
+    --shadow-md:0 4px 16px rgba(0,0,0,0.4);
+    --shadow-lg:0 12px 36px rgba(0,0,0,0.55);
   }
   
   * { box-sizing: border-box; }
@@ -54,10 +58,10 @@
   }
   
   header{
-    background:linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
-    padding:32px 36px;
+    background:linear-gradient(135deg, #1a237e 0%, #283593 40%, #3949ab 75%, #4f6ef7 100%);
+    padding:36px 40px;
     border-radius:var(--radius);
-    box-shadow:var(--shadow-lg);
+    box-shadow:0 16px 48px rgba(26,35,126,0.35);
     margin-bottom:24px;
     color:white;
     position:relative;
@@ -67,12 +71,23 @@
   header::before{
     content:'';
     position:absolute;
-    top:-50%;
-    right:-50%;
-    width:200%;
+    top:-60%;
+    right:-30%;
+    width:70%;
     height:200%;
-    background:radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-    animation:pulse 4s ease-in-out infinite;
+    background:radial-gradient(ellipse, rgba(255,255,255,0.08) 0%, transparent 65%);
+    animation:pulse 6s ease-in-out infinite;
+  }
+  
+  header::after{
+    content:'';
+    position:absolute;
+    bottom:-40%;
+    left:-10%;
+    width:50%;
+    height:160%;
+    background:radial-gradient(ellipse, rgba(108,138,255,0.15) 0%, transparent 65%);
+    animation:pulse 8s ease-in-out infinite reverse;
   }
   
   @keyframes pulse{
@@ -81,20 +96,24 @@
   }
   
   header h1{
-    margin:0 0 8px 0;
-    font-size:32px;
-    font-weight:700;
-    letter-spacing:-0.02em;
+    margin:0 0 6px 0;
+    font-size:30px;
+    font-weight:600;
+    letter-spacing:-0.01em;
     position:relative;
     z-index:1;
+    font-family:'Fraunces',Georgia,serif;
+    text-shadow:0 2px 12px rgba(0,0,0,0.2);
   }
   
   .subtitle {
-    margin:0 0 16px 0;
-    font-size:15px;
-    opacity:0.9;
+    margin:0 0 20px 0;
+    font-size:14px;
+    opacity:0.75;
     position:relative;
     z-index:1;
+    font-weight:400;
+    letter-spacing:0.01em;
   }
   
   .header-content{
@@ -181,9 +200,9 @@
   }
   
   [data-theme="dark"] input[type=search] {
-    background:rgba(30,41,59,0.95);
-    color:#f1f5f9;
-    border-color:rgba(255,255,255,0.2);
+    background:rgba(19,25,41,0.95);
+    color:#e8edf5;
+    border-color:rgba(255,255,255,0.15);
   }
   
   input[type=search]::placeholder {
@@ -205,9 +224,9 @@
   }
   
   [data-theme="dark"] input[type=search]:focus {
-    background:#1e293b;
-    border-color:#60a5fa;
-    color:#f1f5f9;
+    background:#131929;
+    border-color:#6c8aff;
+    color:#e8edf5;
   }
   
   .search-icon{
@@ -483,7 +502,6 @@
   
   /* Mobile sidebar toggle button */
   .tree-toggle-btn {
-    display:none;
     width:100%;
     background:var(--card);
     border:1px solid var(--border);
@@ -551,18 +569,20 @@
     display:flex;
     align-items:center;
     gap:12px;
-    font-size:22px;
-    font-weight:600;
+    font-size:20px;
+    font-weight:700;
     color:var(--text);
+    font-family:'Fraunces',Georgia,serif;
   }
   
   .panel-count {
-    background:var(--bg);
-    padding:6px 14px;
+    background:var(--accent-soft);
+    padding:5px 14px;
     border-radius:20px;
-    font-size:14px;
+    font-size:13px;
     font-weight:600;
-    color:var(--text-secondary);
+    color:var(--accent);
+    border:1px solid rgba(79,110,247,0.15);
   }
   
   .view-options {
@@ -655,7 +675,7 @@
   }
   
   .folder.active{
-    background:linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+    background:linear-gradient(135deg, rgba(79,110,247,0.1) 0%, rgba(79,110,247,0.04) 100%);
     box-shadow:var(--shadow-sm);
   }
   
@@ -737,7 +757,7 @@
     inset:0;
     border-radius:14px;
     padding:2px;
-    background:linear-gradient(135deg, var(--accent), #764ba2);
+    background:linear-gradient(135deg, var(--accent), #818cf8);
     -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite:xor;
     mask-composite:exclude;
@@ -747,8 +767,8 @@
   
   @media (hover: hover) {
     .file:hover{
-      transform:translateY(-6px) scale(1.02);
-      box-shadow:0 12px 28px rgba(59, 130, 246, 0.15), 0 0 40px rgba(118, 75, 162, 0.1);
+      transform:translateY(-5px) scale(1.015);
+      box-shadow:0 16px 32px rgba(79,110,247,0.18), 0 0 0 1px rgba(79,110,247,0.15);
       border-color:transparent;
     }
     
@@ -808,7 +828,7 @@
   }
   
   [data-theme="dark"] .thumb {
-    background:linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    background:linear-gradient(135deg, #131929 0%, #1f2d44 100%);
   }
   
   .file-type-badge{
@@ -884,9 +904,11 @@
   }
   
   .welcome h2{
-    font-size:28px;
+    font-size:26px;
     margin:0 0 12px 0;
     color:var(--text);
+    font-family:'Fraunces',Georgia,serif;
+    font-weight:600;
   }
   
   .welcome p{
@@ -1292,7 +1314,7 @@
   }
   
   .code-content code {
-    font-family:'Fira Code', 'Courier New', monospace;
+    font-family:'DM Mono', 'Fira Code', 'Courier New', monospace;
     font-size:13px;
     line-height:1.6;
     color:#d4d4d4;
@@ -1452,7 +1474,7 @@
   }
 
   .wip-folder-row.active {
-    background:linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(59,130,246,0.05) 100%);
+    background:linear-gradient(135deg, rgba(79,110,247,0.1) 0%, rgba(79,110,247,0.04) 100%);
     box-shadow:var(--shadow-sm);
     transform:translateX(4px);
   }
@@ -1604,9 +1626,51 @@
     opacity:0.7;
   }
 
-  /* WIP list item text */
-  .wip-list-title { font-size:15px; }
-  .wip-list-desc  { font-size:14px; }
+  .wip-list-title { font-size:15px; font-weight:700; }
+  .wip-list-desc  { font-size:13.5px; line-height:1.6; }
+
+  .wip-status-badge {
+    display:inline-block;
+    font-size:10px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    padding:3px 8px;
+    border-radius:20px;
+    background:var(--accent-soft);
+    color:var(--accent);
+    border:1px solid rgba(79,110,247,0.2);
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+
+  .wip-collaborators {
+    margin-top:8px;
+    font-size:12.5px;
+    color:var(--text-secondary);
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex-wrap:wrap;
+  }
+
+  .wip-collab-label {
+    font-weight:600;
+    color:var(--muted);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+  }
+
+  .wip-collab-name {
+    background:var(--bg);
+    border:1px solid var(--border);
+    padding:2px 8px;
+    border-radius:20px;
+    font-weight:500;
+    color:var(--text-secondary);
+    font-size:12px;
+  }
 
 </style>
 </head>
@@ -1657,7 +1721,7 @@
         <span style="font-size:16px;flex-shrink:0">🔬</span>
         <span>Currently Working On</span>
       </span>
-      <span class="wip-badge">4</span>
+      <span class="wip-badge">3</span>
 
     </div>
 
@@ -2229,24 +2293,24 @@
       icon:'⛓️',
       title:'Blockchain Theory & TypeScript Implementation',
       desc:'Studying blockchain foundations theory and building a full blockchain — Marabu — from scratch in TypeScript.',
+      collaborators: null,
+      status: 'In Progress',
       link: null
     },
     {
       icon:'⚡',
-      title:'Fine Grained Algorithms',
-      desc:'Fine Grained Algorithm for problems on simple graphs and hypergraphs and various other graph models.',
-      link: null
-    },
-    {
-      icon:'📐',
-      title:'Extremal Graph Theory',
-      desc:'Examine the number of distinct even length cycles in simple and bipartite graphs when the number of edges exceeds a certain threshold.',
+      title:'Faster Even-Cycle Listing via Unbalanced Supersaturation',
+      desc:'Design and analysis of an output-sensitive algorithm for listing even length cycles in simple graphs and hypergraphs, improving upon the current state of the art. Currently being prepared for publication.',
+      collaborators: ['Dr. Vasilis Nakos', 'Dr. Hung Q. Ngo'],
+      status: 'Preparing for Publication',
       link: null
     },
     {
       icon:'🎤',
       title:'Lecture in Combinatorial Optimization',
-      desc:'Preparing a presentation for a lecture in the post graduate course Combinatorial Optimization on Blocking flows and the Goldberg-Rao algorithm for the max flow problem.',
+      desc:'Preparing a presentation for a lecture in the post-graduate course Combinatorial Optimization on Blocking flows and the Goldberg-Rao algorithm for the max flow problem.',
+      collaborators: null,
+      status: 'In Progress',
       link: null
     }
   ];
@@ -2256,7 +2320,7 @@
     var wipRow = document.getElementById('wipFolderRow');
     if(wipRow) wipRow.classList.add('active');
 
-    panelPath.innerHTML = 'Currently Working On';
+    panelPath.innerHTML = '🔬 Currently Working On';
     panelCount.textContent = WIP_ITEMS.length + ' projects';
     currentFiles = [];
     updateBreadcrumb([]);
@@ -2276,16 +2340,33 @@
       var body = document.createElement('div');
       body.className = 'wip-list-body';
 
+      var topRow = document.createElement('div');
+      topRow.style.cssText = 'display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px;';
+
       var titleEl = document.createElement('div');
       titleEl.className = 'wip-list-title';
       titleEl.textContent = item.title;
+
+      var statusEl = document.createElement('span');
+      statusEl.className = 'wip-status-badge';
+      statusEl.textContent = item.status || 'In Progress';
+      topRow.appendChild(titleEl);
+      topRow.appendChild(statusEl);
 
       var descEl = document.createElement('div');
       descEl.className = 'wip-list-desc';
       descEl.textContent = item.desc;
 
-      body.appendChild(titleEl);
+      body.appendChild(topRow);
       body.appendChild(descEl);
+
+      if(item.collaborators && item.collaborators.length > 0) {
+        var collabEl = document.createElement('div');
+        collabEl.className = 'wip-collaborators';
+        collabEl.innerHTML = '<span class="wip-collab-label">With</span> ' +
+          item.collaborators.map(function(c){ return '<span class="wip-collab-name">' + escapeHtml(c) + '</span>'; }).join(', ');
+        body.appendChild(collabEl);
+      }
 
       if(item.link) {
         var linkEl = document.createElement('a');
