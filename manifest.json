@@ -395,6 +395,7 @@
       "files": [
         "Communication Complexity.pdf",
         "Exact Edge-Cover in Temporal Graphs.pdf",
+        "Goldberg Rao - Max Flow.pdf",
         "Lossy Kernelization.pdf",
         "Optimal Algorithms and Inapproximability Results for Every CSP.pdf",
         "Smoothed Analysis.pdf",
@@ -417,6 +418,15 @@
           "files": [
             "How Many Lines to Paint the City: Exact Edge-Cover in Temporal Graphs.pdf",
             "slides_short.pdf"
+          ],
+          "dirs": []
+        },
+        {
+          "name": "Goldberg Rao - Max Flow",
+          "path": "Presentations/Goldberg Rao - Max Flow",
+          "files": [
+            "Goldber Rao paper.pdf",
+            "Size-Bounded Dynamic Trees.pdf"
           ],
           "dirs": []
         },

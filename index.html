@@ -1804,18 +1804,43 @@
     pointer-events:none;
   }
   .hero-inner {
-    max-width:1100px;
+    max-width:900px;
     margin:0 auto;
     position:relative;
     z-index:1;
-    display:grid;
-    grid-template-columns:1fr 260px;
-    gap:48px;
-    align-items:center;
   }
   @media (max-width:860px) {
-    .hero { padding:52px 24px 48px; }
-    .hero-inner { grid-template-columns:1fr; gap:32px; }
+    .hero { padding:44px 20px 40px; }
+  }
+  @media (max-width:480px) {
+    .hero { padding:32px 16px 32px; }
+  }
+
+  /* Subtle institution row */
+  .hero-inst-row {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+  }
+  .hero-inst-badge {
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-size:11.5px;
+    color:rgba(255,255,255,0.48);
+    font-family:'DM Mono',monospace;
+    letter-spacing:0.03em;
+    padding:4px 10px;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:6px;
+    white-space:nowrap;
+  }
+  .hero-inst-sep {
+    font-size:11px;
+    color:rgba(255,255,255,0.2);
   }
   .hero-eyebrow {
     display:inline-flex;
@@ -1834,28 +1859,28 @@
   }
   .hero-name {
     font-family:'Fraunces',Georgia,serif;
-    font-size:58px;
+    font-size:52px;
     font-weight:600;
     line-height:1.02;
     letter-spacing:-0.025em;
-    margin-bottom:14px;
+    margin-bottom:10px;
   }
-  @media (max-width:860px) { .hero-name { font-size:40px; } }
-  @media (max-width:480px) { .hero-name { font-size:34px; } }
+  @media (max-width:860px) { .hero-name { font-size:38px; } }
+  @media (max-width:480px) { .hero-name { font-size:30px; } }
   .hero-subtitle {
-    font-size:15.5px;
-    color:rgba(255,255,255,0.72);
+    font-size:15px;
+    color:rgba(255,255,255,0.65);
     line-height:1.5;
-    margin-bottom:20px;
+    margin-bottom:14px;
     font-weight:400;
     letter-spacing:0.01em;
   }
   .hero-bio {
     font-size:15px;
-    color:rgba(255,255,255,0.65);
+    color:rgba(255,255,255,0.62);
     line-height:1.8;
-    max-width:560px;
-    margin-bottom:32px;
+    max-width:680px;
+    margin-bottom:28px;
   }
   .hero-links {
     display:flex;
@@ -2243,6 +2268,38 @@
     line-height:1.6;
   }
 
+  /* Selected Coursework */
+  .coursework-grid {
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .coursework-chip {
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:6px 13px;
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:7px;
+    font-size:12.5px;
+    font-weight:500;
+    color:var(--text-secondary);
+    transition:all 0.18s;
+    cursor:default;
+    line-height:1.2;
+  }
+  .coursework-chip:hover {
+    border-color:var(--accent);
+    color:var(--accent);
+    background:var(--accent-soft);
+  }
+  .coursework-chip.highlight {
+    border-color:rgba(79,110,247,0.28);
+    background:var(--accent-soft);
+    color:var(--accent);
+  }
+
   /* Explore CTAs */
   .hp-explore-row {
     display:grid;
@@ -2331,8 +2388,13 @@
     <div class="hero-inner">
       <div class="hero-text">
         <div class="hero-eyebrow">Athens, Greece · Limassol, Cyprus</div>
-        <div class="hero-name">Andreas Panayi</div>
+        <div class="hero-name">Andreas Panagi</div>
         <div class="hero-subtitle">MSc Theoretical Computer Science &nbsp;·&nbsp; Algorithms &amp; Computational Complexity</div>
+        <div class="hero-inst-row">
+          <span class="hero-inst-badge">NTUA · NKUA — MSc ALMA Programme</span>
+          <span class="hero-inst-sep">·</span>
+          <span class="hero-inst-badge">NKUA — BSc Mathematics</span>
+        </div>
         <div class="hero-bio">
           I'm a theoretical computer science graduate student from the National Technical University of Athens
           and the National &amp; Kapodistrian University of Athens. My studies specialise in algorithms,
@@ -2353,17 +2415,6 @@
         <div class="hero-actions">
           <button class="hero-btn hero-btn-primary" onclick="showView('archive')">📂 Coursework Archive →</button>
           <button class="hero-btn hero-btn-secondary" onclick="goToWip()">🔬 Currently Working On</button>
-        </div>
-      </div>
-      <div class="hero-card">
-        <div class="hero-stat">
-          <div class="hero-stat-value" style="font-size:15px;font-family:'DM Sans',sans-serif;font-weight:600;letter-spacing:-0.01em">NTUA &amp; NKUA</div>
-          <div class="hero-stat-label">MSc · ALMA Programme</div>
-        </div>
-        <div class="hero-stat-divider"></div>
-        <div class="hero-stat">
-          <div class="hero-stat-value" style="font-size:15px;font-family:'DM Sans',sans-serif;font-weight:600">NKUA</div>
-          <div class="hero-stat-label">BSc Mathematics</div>
         </div>
       </div>
     </div>
