@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>Andreas Panagi</title>
 <meta name="description" content="Andreas Panagi – MSc Theoretical Computer Science, algorithms and data structures researcher at NKUA/NTUA, Athens">
+<script>
+  MathJax = {
+    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+    options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&display=swap');
 
@@ -1426,6 +1433,203 @@
     white-space:pre-wrap;
     word-wrap:break-word;
     margin:0;
+  }
+
+  /* ── Abstract button ── */
+  .wip-abstract-btn {
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:10px;
+    padding:7px 14px;
+    border-radius:8px;
+    border:1.5px solid var(--accent);
+    background:var(--accent-soft);
+    color:var(--accent);
+    font-size:12.5px;
+    font-weight:600;
+    cursor:pointer;
+    transition:all 0.2s;
+    font-family:'DM Sans',sans-serif;
+  }
+  .wip-abstract-btn:hover {
+    background:var(--accent);
+    color:white;
+    transform:translateY(-1px);
+    box-shadow:0 4px 12px rgba(79,110,247,0.3);
+  }
+
+  /* ── Abstract Modal ── */
+  .abstract-overlay {
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.75);
+    z-index:10000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    backdrop-filter:blur(8px);
+    animation:fadeIn 0.2s ease;
+  }
+  @media (max-width:600px) {
+    .abstract-overlay {
+      padding:0;
+      align-items:flex-end;
+    }
+  }
+  .abstract-modal {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    max-width:700px;
+    width:100%;
+    max-height:88vh;
+    display:flex;
+    flex-direction:column;
+    box-shadow:0 24px 64px rgba(0,0,0,0.5);
+    overflow:hidden;
+  }
+  @media (max-width:600px) {
+    .abstract-modal {
+      border-radius:20px 20px 0 0;
+      max-height:90dvh;
+    }
+  }
+  .abstract-modal-handle {
+    display:none;
+    width:36px;
+    height:4px;
+    background:var(--border);
+    border-radius:2px;
+    margin:12px auto 0;
+    flex-shrink:0;
+  }
+  @media (max-width:600px) { .abstract-modal-handle { display:block; } }
+  .abstract-modal-header {
+    padding:20px 24px 16px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+    flex-shrink:0;
+  }
+  .abstract-modal-title {
+    font-family:'Fraunces',Georgia,serif;
+    font-size:16px;
+    font-weight:600;
+    color:var(--text);
+    line-height:1.4;
+  }
+  .abstract-modal-subtitle {
+    font-size:12px;
+    color:var(--text-secondary);
+    margin-top:4px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex-wrap:wrap;
+  }
+  .abstract-close-btn {
+    background:var(--bg);
+    border:1px solid var(--border);
+    color:var(--text);
+    width:32px;
+    height:32px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    transition:all 0.2s;
+  }
+  .abstract-close-btn:hover {
+    background:var(--border);
+  }
+  .abstract-modal-body {
+    padding:24px;
+    overflow-y:auto;
+    flex:1;
+    font-size:14.5px;
+    line-height:1.85;
+    color:var(--text-secondary);
+  }
+  .abstract-modal-body p {
+    margin:0 0 16px;
+  }
+  .abstract-modal-body p:last-child { margin-bottom:0; }
+  .abstract-label {
+    display:inline-block;
+    font-size:10px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:var(--accent);
+    background:var(--accent-soft);
+    border:1px solid rgba(79,110,247,0.2);
+    padding:3px 10px;
+    border-radius:20px;
+    margin-bottom:16px;
+  }
+
+  /* ── Thesis Defense item special styling ── */
+  .wip-thesis-badge {
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    background:rgba(139,92,246,0.1);
+    color:#7c3aed;
+    border:1px solid rgba(139,92,246,0.25);
+    padding:3px 10px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+  }
+  [data-theme="dark"] .wip-thesis-badge {
+    background:rgba(167,139,250,0.12);
+    color:#a78bfa;
+    border-color:rgba(167,139,250,0.25);
+  }
+  .wip-date-badge {
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    background:var(--bg);
+    border:1px solid var(--border);
+    padding:3px 10px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:600;
+    color:var(--muted);
+    font-family:'DM Mono',monospace;
+  }
+
+  /* ── Mobile layout improvements ── */
+  @media (max-width:600px) {
+    .wip-list-item {
+      padding:14px 12px;
+      gap:10px;
+    }
+    .wip-list-title { font-size:14px; }
+    .wip-list-desc  { font-size:13px; line-height:1.55; }
+    .wip-abstract-btn { font-size:12px; padding:6px 12px; }
+    .wip-collaborators { font-size:12px; }
+  }
+  @media (max-width:600px) {
+    .hp-card { padding:20px 16px; }
+    .hp-card-title { font-size:15px; }
+    .hero-bio { font-size:14px; }
+    .hero-links { gap:12px; }
+    .hero-btn { padding:10px 18px; font-size:13px; }
+    .edu-degree, .exp-role { font-size:14px; }
+  }
+  @media (max-width:400px) {
+    .wip-list-item { padding:12px 10px; }
   }
 
 
@@ -3255,7 +3459,9 @@
       desc:'Studying blockchain foundations theory and building a full blockchain — Marabu — from scratch in TypeScript.',
       collaborators: null,
       status: 'In Progress',
-      link: null
+      link: null,
+      abstract: null,
+      isThesis: false
     },
     {
       icon:'⚡',
@@ -3263,15 +3469,26 @@
       desc:'Design and analysis of an output-sensitive algorithm for listing even length cycles in simple graphs and hypergraphs, improving upon the current state of the art. Currently being prepared for publication.',
       collaborators: ['Dr. Vasilis Nakos', 'Dr. Hung Q. Ngo'],
       status: 'Preparing for Publication',
-      link: null
+      link: null,
+      abstract: null,
+      isThesis: false
     },
     {
-      icon:'🎤',
-      title:'Lecture in Combinatorial Optimization',
-      desc:'Preparing a presentation for a lecture in the post-graduate course Combinatorial Optimization on Blocking flows and the Goldberg-Rao algorithm for the max flow problem.',
+      icon:'🎓',
+      title:'Thesis Defense',
+      desc:'Presenting the current research publication at the National and Kapodistrian University of Athens.',
       collaborators: null,
-      status: 'In Progress',
-      link: null
+      status: 'Thesis Defense',
+      date: '28 May 2025 · 12:00',
+      venue: 'National & Kapodistrian University of Athens · Department of Informatics and Telecommunications',
+      link: null,
+      isThesis: true,
+      abstract: [
+        `This thesis studies the fundamental problem of listing even-length cycles through the lens of extremal graph theory. A central theme is that structural information on the number of even-length cycles in bipartite graphs can be converted into running-time bounds for cycle-listing algorithms.`,
+        `The main result is a weak form of the Unbalanced Supersaturation Conjecture for even cycles. We prove that a bipartite graph \\(G=(A\\cup B,E)\\) with sufficiently many edges relative to the threshold \\( \\max\\{|A|,|B|\\}\\cdot\\min\\{|A|,|B|\\}^{1/k} \\) must contain many copies of \\(C_{2k}\\). Although this result constitutes a step toward the full conjecture, it already provides sufficient information for the algorithmic applications considered in this work.`,
+        `Using this extremal bound, we revisit the analysis framework of Williams and Westover for listing even cycles. This yields a refined running-time analysis that matches the state of the art for listing \\(C_6\\), while avoiding the computer-assisted analysis used in their work. Moreover, it improves the previously known state-of-the-art bound for listing \\(C_{2k}\\) for every \\(k\\ge 4\\), due to Alon, Yuster, and Zwick.`,
+        `We also extend the discussion to hypergraphs in two ways. The incidence graph gives a global reduction from listing Berge cycles of fixed length \\(\\ell\\) to listing graph cycles of length \\(2\\ell\\). In addition, a direct labelled-\\(2\\)-shadow reduction lists all Berge cycles of length \\(\\ell\\) passing through a prescribed hypergraph vertex.`
+      ]
     }
   ];
 
@@ -3308,17 +3525,40 @@
       titleEl.textContent = item.title;
 
       var statusEl = document.createElement('span');
-      statusEl.className = 'wip-status-badge';
-      statusEl.textContent = item.status || 'In Progress';
+      if(item.isThesis) {
+        statusEl.className = 'wip-thesis-badge';
+        statusEl.textContent = '🎓 ' + (item.status || 'Thesis Defense');
+      } else {
+        statusEl.className = 'wip-status-badge';
+        statusEl.textContent = item.status || 'In Progress';
+      }
       topRow.appendChild(titleEl);
       topRow.appendChild(statusEl);
+
+      // Date badge for thesis
+      if(item.date) {
+        var dateBadge = document.createElement('span');
+        dateBadge.className = 'wip-date-badge';
+        dateBadge.textContent = '📅 ' + item.date;
+        topRow.appendChild(dateBadge);
+      }
 
       var descEl = document.createElement('div');
       descEl.className = 'wip-list-desc';
       descEl.textContent = item.desc;
 
-      body.appendChild(topRow);
-      body.appendChild(descEl);
+      // Venue
+      if(item.venue) {
+        var venueEl = document.createElement('div');
+        venueEl.style.cssText = 'font-size:12px;color:var(--text-secondary);margin-top:5px;display:flex;align-items:center;gap:5px;';
+        venueEl.innerHTML = '<span>📍</span><span>' + escapeHtml(item.venue) + '</span>';
+        body.appendChild(topRow);
+        body.appendChild(descEl);
+        body.appendChild(venueEl);
+      } else {
+        body.appendChild(topRow);
+        body.appendChild(descEl);
+      }
 
       if(item.collaborators && item.collaborators.length > 0) {
         var collabEl = document.createElement('div');
@@ -3326,6 +3566,18 @@
         collabEl.innerHTML = '<span class="wip-collab-label">With</span> ' +
           item.collaborators.map(function(c){ return '<span class="wip-collab-name">' + escapeHtml(c) + '</span>'; }).join(', ');
         body.appendChild(collabEl);
+      }
+
+      // Abstract button
+      if(item.abstract && item.abstract.length > 0) {
+        var abstractBtn = document.createElement('button');
+        abstractBtn.className = 'wip-abstract-btn';
+        abstractBtn.innerHTML = '📄 Abstract';
+        abstractBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          showAbstractModal(item);
+        });
+        body.appendChild(abstractBtn);
       }
 
       if(item.link) {
@@ -3345,6 +3597,78 @@
 
     filesEl.appendChild(list);
     scrollToPanel();
+  }
+
+  function showAbstractModal(item) {
+    // Remove any existing modal
+    var existing = document.getElementById('abstractModal');
+    if(existing) existing.remove();
+
+    var overlay = document.createElement('div');
+    overlay.className = 'abstract-overlay';
+    overlay.id = 'abstractModal';
+
+    var modal = document.createElement('div');
+    modal.className = 'abstract-modal';
+
+    // Handle bar (mobile)
+    var handle = document.createElement('div');
+    handle.className = 'abstract-modal-handle';
+    modal.appendChild(handle);
+
+    // Header
+    var header = document.createElement('div');
+    header.className = 'abstract-modal-header';
+
+    var titleSection = document.createElement('div');
+    var titleEl = document.createElement('div');
+    titleEl.className = 'abstract-modal-title';
+    titleEl.textContent = item.title;
+    var subEl = document.createElement('div');
+    subEl.className = 'abstract-modal-subtitle';
+    if(item.date) subEl.innerHTML += '<span>📅 ' + escapeHtml(item.date) + '</span>';
+    if(item.venue) subEl.innerHTML += '<span>· 📍 ' + escapeHtml(item.venue) + '</span>';
+    titleSection.appendChild(titleEl);
+    if(item.date || item.venue) titleSection.appendChild(subEl);
+
+    var closeBtn = document.createElement('button');
+    closeBtn.className = 'abstract-close-btn';
+    closeBtn.innerHTML = '✕';
+    closeBtn.addEventListener('click', function() { overlay.remove(); });
+
+    header.appendChild(titleSection);
+    header.appendChild(closeBtn);
+    modal.appendChild(header);
+
+    // Body
+    var body = document.createElement('div');
+    body.className = 'abstract-modal-body';
+
+    var label = document.createElement('span');
+    label.className = 'abstract-label';
+    label.textContent = 'Abstract';
+    body.appendChild(label);
+
+    var paragraphs = Array.isArray(item.abstract) ? item.abstract : [item.abstract];
+    paragraphs.forEach(function(text) {
+      var p = document.createElement('p');
+      p.textContent = text;
+      body.appendChild(p);
+    });
+
+    modal.appendChild(body);
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    // Close on overlay click
+    overlay.addEventListener('click', function(e) {
+      if(e.target === overlay) overlay.remove();
+    });
+
+    // Typeset MathJax if available
+    if(window.MathJax && window.MathJax.typesetPromise) {
+      window.MathJax.typesetPromise([body]);
+    }
   }
 
   function openLightbox(index){
