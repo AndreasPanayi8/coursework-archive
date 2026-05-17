@@ -1464,15 +1464,6 @@
   }
 
   /* ── Improved WIP card design ── */
-  .wip-list-item {
-    border-left:3px solid transparent;
-    transition:border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s;
-  }
-  .wip-list-item:hover {
-    border-left-color:var(--accent);
-    box-shadow:var(--shadow-md);
-    transform:translateX(2px);
-  }
   .wip-list-item.thesis-item {
     border-left-color:#a78bfa;
     background:linear-gradient(135deg, rgba(139,92,246,0.04) 0%, var(--card) 60%);
@@ -1480,9 +1471,11 @@
   [data-theme="light"] .wip-list-item.thesis-item {
     background:linear-gradient(135deg, rgba(139,92,246,0.05) 0%, var(--card) 60%);
   }
-  .wip-list-item.thesis-item:hover {
-    border-left-color:#7c3aed;
-    box-shadow:0 4px 20px rgba(139,92,246,0.15);
+  @media (hover: hover) {
+    .wip-list-item.thesis-item:hover {
+      border-left-color:#7c3aed;
+      box-shadow:0 4px 20px rgba(139,92,246,0.15);
+    }
   }
   .wip-venue-row {
     display:flex;
@@ -1635,30 +1628,22 @@
     padding:12px 14px;
     border-radius:10px;
     border:1px solid var(--border);
+    border-left:3px solid transparent;
     background:var(--card);
     margin-bottom:8px;
-    transition:all 0.2s ease;
+    transition:border-color 0.2s, background 0.2s, box-shadow 0.2s, transform 0.2s;
     position:relative;
-    overflow:hidden;
   }
 
-  .wip-list-item::before {
-    content:'';
-    position:absolute;
-    left:0; top:0; bottom:0;
-    width:3px;
-    background:var(--accent);
-    opacity:0;
-    transition:opacity 0.2s;
+  @media (hover: hover) {
+    .wip-list-item:hover {
+      background:var(--bg);
+      border-color:var(--accent);
+      border-left-color:var(--accent);
+      transform:translateX(4px);
+      box-shadow:var(--shadow-sm);
+    }
   }
-
-  .wip-list-item:hover {
-    background:var(--bg);
-    border-color:var(--accent);
-    transform:translateX(4px);
-  }
-
-  .wip-list-item:hover::before { opacity:1; }
 
   .wip-list-icon {
     font-size:18px;
@@ -1733,6 +1718,16 @@
     border:1px solid rgba(79,110,247,0.2);
     white-space:nowrap;
     flex-shrink:0;
+  }
+  .wip-status-badge.submitted {
+    background:rgba(16,185,129,0.1);
+    color:#059669;
+    border-color:rgba(16,185,129,0.22);
+  }
+  [data-theme="dark"] .wip-status-badge.submitted {
+    background:rgba(16,185,129,0.12);
+    color:#34d399;
+    border-color:rgba(16,185,129,0.25);
   }
 
   .wip-collaborators {
@@ -2109,10 +2104,12 @@
     box-shadow:var(--shadow-sm);
     transition:transform 0.22s, box-shadow 0.22s, border-color 0.22s;
   }
-  .hp-card:hover {
-    transform:translateY(-3px);
-    box-shadow:var(--shadow-md);
-    border-color:var(--accent);
+  @media (hover: hover) {
+    .hp-card:hover {
+      transform:translateY(-3px);
+      box-shadow:var(--shadow-md);
+      border-color:var(--accent);
+    }
   }
   .hp-card.full { grid-column:1/-1; }
   .hp-card-header {
@@ -2251,7 +2248,9 @@
     background:var(--bg);
     transition:border-color 0.2s, box-shadow 0.2s;
   }
-  .pub-entry:hover { border-color:var(--accent); box-shadow:var(--shadow-sm); }
+  @media (hover: hover) {
+    .pub-entry:hover { border-color:var(--accent); box-shadow:var(--shadow-sm); }
+  }
   .pub-title {
     font-weight:600;
     font-size:14.5px;
@@ -2288,6 +2287,17 @@
     background:rgba(217,119,6,0.08);
     color:#b45309;
     border-color:rgba(217,119,6,0.2);
+  }
+  /* Submitted status override (inline style handles it, this is a fallback) */
+  .pub-status.submitted {
+    background:rgba(16,185,129,0.1);
+    color:#059669;
+    border-color:rgba(16,185,129,0.22);
+  }
+  [data-theme="dark"] .pub-status.submitted {
+    background:rgba(16,185,129,0.12);
+    color:#34d399;
+    border-color:rgba(16,185,129,0.25);
   }
 
   /* Skills */
@@ -2587,10 +2597,10 @@
           <span class="hp-card-title">Research &amp; Publications</span>
         </div>
         <div class="pub-entry">
-          <div class="pub-title">Faster Even-Cycle Listing via Unbalanced Supersaturation</div>
+          <div class="pub-title">Listing Even Cycles Faster than the Submodular-Width Barrier</div>
           <div class="pub-authors"><strong>Andreas Panagi</strong>, Vasilis Nakos, Hung Q. Ngo</div>
           <div class="pub-venue-row">
-            <span class="pub-status">⏳ In Preparation</span>
+            <span class="pub-status submitted">✅ Submitted</span>
           </div>
           <div style="font-size:13px;color:var(--text-secondary);margin-top:10px;line-height:1.6;">
             Output-sensitive algorithms for listing even-length cycles in simple graphs and hypergraphs, advancing the current state of the art.
@@ -2727,7 +2737,7 @@
         <span style="font-size:16px;flex-shrink:0">🔬</span>
         <span>Currently Working On</span>
       </span>
-      <span class="wip-badge">3</span>
+      <span class="wip-badge">2</span>
 
     </div>
 
@@ -2736,6 +2746,10 @@
     <div class="tree-section-label">📚 Completed Coursework</div>
 
     <!-- Coursework folders injected by JS -->
+
+    <hr class="tree-divider" id="projectsDivider" style="display:none">
+    <div class="tree-section-label" id="projectsLabel" style="display:none">🛠️ Projects</div>
+    <div id="projectsRows"></div>
   </aside>
   </div>
 
@@ -3335,24 +3349,102 @@
       wipRow.addEventListener('click', showWipPanel);
       wipRow.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' ') showWipPanel(); });
     }
+    // Render Projects section
+    renderProjectsSidebar();
+  }
+
+  function renderProjectsSidebar() {
+    const divider = document.getElementById('projectsDivider');
+    const label   = document.getElementById('projectsLabel');
+    const rows    = document.getElementById('projectsRows');
+    if(!divider || !label || !rows) return;
+    divider.style.display = '';
+    label.style.display   = '';
+    rows.innerHTML = '';
+    PROJECTS_ITEMS.forEach(function(proj) {
+      var row = document.createElement('div');
+      row.className = 'wip-folder-row';
+      row.setAttribute('role','button');
+      row.setAttribute('tabindex','0');
+      row.innerHTML =
+        '<span class="name">' +
+          '<span style="font-size:16px;flex-shrink:0">' + proj.icon + '</span>' +
+          '<span>' + escapeHtml(proj.title) + '</span>' +
+        '</span>';
+      row.addEventListener('click', function(){ showProjectPanel(proj); });
+      row.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' ') showProjectPanel(proj); });
+      rows.appendChild(row);
+    });
+  }
+
+  function showProjectPanel(proj) {
+    document.querySelectorAll('.folder, .wip-folder-row').forEach(function(el){ el.classList.remove('active'); });
+    // Mark the clicked sidebar row active
+    var rows = document.querySelectorAll('#projectsRows .wip-folder-row');
+    rows.forEach(function(r){
+      if(r.querySelector('span:last-child') && r.querySelector('span span:last-child') &&
+         r.querySelector('span span:last-child').textContent === proj.title) {
+        r.classList.add('active');
+      }
+    });
+    panelPath.innerHTML = proj.icon + ' ' + proj.title;
+    panelCount.textContent = '';
+    currentFiles = [];
+    updateBreadcrumb([]);
+    filesEl.innerHTML = '';
+
+    var list = document.createElement('div');
+    list.className = 'wip-list-panel';
+
+    var row = document.createElement('div');
+    row.className = 'wip-list-item';
+
+    var icon = document.createElement('span');
+    icon.className = 'wip-list-icon';
+    icon.textContent = proj.icon;
+
+    var body = document.createElement('div');
+    body.className = 'wip-list-body';
+
+    var titleEl = document.createElement('div');
+    titleEl.className = 'wip-list-title';
+    titleEl.textContent = proj.title;
+    body.appendChild(titleEl);
+
+    var descEl = document.createElement('div');
+    descEl.className = 'wip-list-desc';
+    descEl.style.marginTop = '6px';
+    descEl.textContent = proj.desc;
+    body.appendChild(descEl);
+
+    if(proj.link) {
+      var linkEl = document.createElement('a');
+      linkEl.className = 'wip-list-link';
+      linkEl.href = proj.link.href;
+      linkEl.target = '_blank';
+      linkEl.rel = 'noopener';
+      linkEl.innerHTML = '↗ ' + escapeHtml(proj.link.label);
+      body.appendChild(linkEl);
+    }
+
+    row.appendChild(icon);
+    row.appendChild(body);
+    list.appendChild(row);
+    filesEl.appendChild(list);
+    scrollToPanel();
+    if(window.innerWidth <= 1024) {
+      sidebarOpen = false;
+      updateToggleState();
+    }
   }
 
   const WIP_ITEMS = [
     {
-      icon:'⛓️',
-      title:'Blockchain Theory & TypeScript Implementation',
-      desc:'Studying blockchain foundations theory and building a full blockchain — Marabu — from scratch in TypeScript.',
-      collaborators: null,
-      status: 'In Progress',
-      link: null,
-      isThesis: false
-    },
-    {
       icon:'⚡',
-      title:'Faster Even-Cycle Listing via Unbalanced Supersaturation',
-      desc:'Design and analysis of an output-sensitive algorithm for listing even length cycles in simple graphs and hypergraphs, improving upon the current state of the art. Currently being prepared for publication.',
+      title:'Listing Even Cycles Faster than the Submodular-Width Barrier',
+      desc:'Design and analysis of an output-sensitive algorithm for listing even length cycles in simple graphs and hypergraphs, improving upon the current state of the art.',
       collaborators: ['Dr. Vasilis Nakos', 'Dr. Hung Q. Ngo'],
-      status: 'Preparing for Publication',
+      status: 'Submitted',
       link: null,
       isThesis: false
     },
@@ -3366,6 +3458,15 @@
       venue: 'National & Kapodistrian University of Athens · Department of Informatics and Telecommunications',
       link: null,
       isThesis: true
+    }
+  ];
+
+  const PROJECTS_ITEMS = [
+    {
+      icon:'⛓️',
+      title:'Blockchain Node (Marabu)',
+      desc:'A fully-featured blockchain node — Marabu — built from scratch in TypeScript, covering peer discovery, transaction validation, UTXO management, and proof-of-work mining.',
+      link: { href:'https://github.com/AndreasPanayi8/blockchain-foundations', label:'View on GitHub' }
     }
   ];
 
@@ -3403,7 +3504,8 @@
       titleEl.textContent = item.title;
 
       var statusEl = document.createElement('span');
-      statusEl.className = item.isThesis ? 'wip-thesis-badge' : 'wip-status-badge';
+      var statusLower = (item.status || '').toLowerCase();
+      statusEl.className = item.isThesis ? 'wip-thesis-badge' : ('wip-status-badge' + (statusLower === 'submitted' ? ' submitted' : ''));
       statusEl.textContent = item.isThesis ? ('🎓 ' + item.status) : (item.status || 'In Progress');
 
       topRow.appendChild(titleEl);
@@ -3459,6 +3561,12 @@
 
     filesEl.appendChild(list);
     scrollToPanel();
+
+    // Auto-collapse sidebar on mobile when WIP panel is shown
+    if(window.innerWidth <= 1024) {
+      sidebarOpen = false;
+      updateToggleState();
+    }
   }
 
   function openLightbox(index){
