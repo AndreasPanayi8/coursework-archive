@@ -1900,32 +1900,47 @@
     .hero { padding:32px 16px 32px; }
   }
 
-  /* Subtle institution row */
+  /* Institution badges */
   .hero-inst-row {
     display:flex;
     align-items:center;
-    gap:8px;
+    gap:10px;
     flex-wrap:wrap;
     margin-bottom:20px;
   }
   .hero-inst-badge {
     display:inline-flex;
     align-items:center;
-    gap:5px;
-    font-size:11.5px;
-    color:rgba(255,255,255,0.48);
-    font-family:'DM Mono',monospace;
-    letter-spacing:0.03em;
-    padding:4px 10px;
-    background:rgba(255,255,255,0.06);
-    border:1px solid rgba(255,255,255,0.1);
-    border-radius:6px;
+    gap:7px;
+    font-size:12px;
+    font-weight:500;
+    font-family:'DM Sans',system-ui,sans-serif;
+    letter-spacing:0.01em;
+    padding:6px 13px;
+    border-radius:999px;
     white-space:nowrap;
+    transition:transform 0.15s, box-shadow 0.15s;
   }
-  .hero-inst-sep {
-    font-size:11px;
-    color:rgba(255,255,255,0.2);
+  .hero-inst-badge.badge-msc {
+    color:rgba(255,255,255,0.92);
+    background:linear-gradient(135deg,rgba(108,138,255,0.22) 0%,rgba(79,110,247,0.12) 100%);
+    border:1px solid rgba(108,138,255,0.38);
+    box-shadow:0 0 0 3px rgba(108,138,255,0.06);
   }
+  .hero-inst-badge.badge-bsc {
+    color:rgba(255,255,255,0.82);
+    background:linear-gradient(135deg,rgba(167,139,250,0.18) 0%,rgba(139,92,246,0.10) 100%);
+    border:1px solid rgba(167,139,250,0.3);
+    box-shadow:0 0 0 3px rgba(167,139,250,0.05);
+  }
+  .hero-inst-badge .badge-dot {
+    width:6px; height:6px;
+    border-radius:50%;
+    flex-shrink:0;
+  }
+  .badge-msc .badge-dot { background:rgba(108,138,255,0.9); }
+  .badge-bsc .badge-dot { background:rgba(167,139,250,0.85); }
+  .hero-inst-sep { display:none; }
   .hero-eyebrow {
     display:inline-flex;
     align-items:center;
@@ -2490,9 +2505,8 @@
         <div class="hero-name">Andreas Panagi</div>
         <div class="hero-subtitle">MSc Theoretical Computer Science &nbsp;·&nbsp; Algorithms &amp; Computational Complexity</div>
         <div class="hero-inst-row">
-          <span class="hero-inst-badge">NTUA · NKUA — MSc ALMA Programme</span>
-          <span class="hero-inst-sep">·</span>
-          <span class="hero-inst-badge">NKUA — BSc Mathematics</span>
+          <span class="hero-inst-badge badge-msc"><span class="badge-dot"></span>NTUA · NKUA &mdash; MSc ALMA</span>
+          <span class="hero-inst-badge badge-bsc"><span class="badge-dot"></span>NKUA &mdash; BSc Mathematics</span>
         </div>
         <div class="hero-bio">
           I'm a theoretical computer science graduate student from the National Technical University of Athens
@@ -2741,15 +2755,22 @@
 
     </div>
 
+    <!-- Projects – data-static keeps buildTreeAndRender from wiping these -->
+    <hr class="tree-divider" data-static>
+    <div class="tree-section-label" data-static>🛠️ Projects</div>
+    <div class="wip-folder-row" id="projectsFolderRow" role="button" tabindex="0" data-static>
+      <span class="name">
+        <span style="font-size:16px;flex-shrink:0">🏗️</span>
+        <span>Completed Projects &amp; Implementations</span>
+      </span>
+      <span class="wip-badge">2</span>
+    </div>
+
     <hr class="tree-divider">
 
     <div class="tree-section-label">📚 Completed Coursework</div>
 
     <!-- Coursework folders injected by JS -->
-
-    <hr class="tree-divider" id="projectsDivider" style="display:none">
-    <div class="tree-section-label" id="projectsLabel" style="display:none">🛠️ Projects</div>
-    <div id="projectsRows"></div>
   </aside>
   </div>
 
@@ -3333,12 +3354,12 @@
     // Update WIP badge count to match actual items
     const wipBadge = document.querySelector('#wipFolderRow .wip-badge');
     if(wipBadge) wipBadge.textContent = WIP_ITEMS.length;
-    // Remove all dynamically-injected folder nodes (everything after the last .tree-section-label)
-    const labels = treeEl.querySelectorAll('.tree-section-label');
-    const lastLabel = labels[labels.length - 1];
-    if(lastLabel) {
-      while(lastLabel.nextSibling) {
-        treeEl.removeChild(lastLabel.nextSibling);
+    // Remove dynamically-injected coursework folders (everything after the Completed Coursework label)
+    const dynamicLabels = treeEl.querySelectorAll('.tree-section-label:not([data-static])');
+    const lastDynLabel = dynamicLabels[dynamicLabels.length - 1];
+    if(lastDynLabel) {
+      while(lastDynLabel.nextSibling) {
+        treeEl.removeChild(lastDynLabel.nextSibling);
       }
     }
     renderTree(root, treeEl, []);
@@ -3349,46 +3370,47 @@
       wipRow.addEventListener('click', showWipPanel);
       wipRow.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' ') showWipPanel(); });
     }
-    // Render Projects section
-    renderProjectsSidebar();
+    // Wire up Projects row click once
+    const projRow = document.getElementById('projectsFolderRow');
+    if(projRow && !projRow._projBound) {
+      projRow._projBound = true;
+      projRow.addEventListener('click', showProjectsPanel);
+      projRow.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' ') showProjectsPanel(); });
+    }
   }
 
   function renderProjectsSidebar() {
-    const divider = document.getElementById('projectsDivider');
-    const label   = document.getElementById('projectsLabel');
-    const rows    = document.getElementById('projectsRows');
-    if(!divider || !label || !rows) return;
-    divider.style.display = '';
-    label.style.display   = '';
-    rows.innerHTML = '';
-    PROJECTS_ITEMS.forEach(function(proj) {
-      var row = document.createElement('div');
-      row.className = 'wip-folder-row';
-      row.setAttribute('role','button');
-      row.setAttribute('tabindex','0');
-      row.innerHTML =
-        '<span class="name">' +
-          '<span style="font-size:16px;flex-shrink:0">' + proj.icon + '</span>' +
-          '<span>' + escapeHtml(proj.title) + '</span>' +
-        '</span>';
-      row.addEventListener('click', function(){ showProjectPanel(proj); });
-      row.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' ') showProjectPanel(proj); });
-      rows.appendChild(row);
-    });
+    // Wire up the static Projects row (fallback for when manifest never loads)
+    const projRow = document.getElementById('projectsFolderRow');
+    if(projRow && !projRow._projBound) {
+      projRow._projBound = true;
+      projRow.addEventListener('click', showProjectsPanel);
+      projRow.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' ') showProjectsPanel(); });
+    }
   }
 
-  function showProjectPanel(proj) {
+  const PROJECTS_ITEMS = [
+    {
+      icon:'⛓️',
+      title:'Blockchain Node (Marabu)',
+      desc:'A fully-featured blockchain node — Marabu — built from scratch in TypeScript, covering peer discovery, transaction validation, UTXO management, and proof-of-work mining.',
+      links: [{ href:'https://github.com/AndreasPanayi8/blockchain-foundations', label:'View on GitHub' }]
+    },
+    {
+      icon:'🌐',
+      title:'Portfolio Website',
+      desc:'This website — a custom-built academic portfolio and coursework file-browser. Designed and developed from scratch with vanilla JS, no frameworks.',
+      links: []
+    }
+  ];
+
+  function showProjectsPanel() {
     document.querySelectorAll('.folder, .wip-folder-row').forEach(function(el){ el.classList.remove('active'); });
-    // Mark the clicked sidebar row active
-    var rows = document.querySelectorAll('#projectsRows .wip-folder-row');
-    rows.forEach(function(r){
-      if(r.querySelector('span:last-child') && r.querySelector('span span:last-child') &&
-         r.querySelector('span span:last-child').textContent === proj.title) {
-        r.classList.add('active');
-      }
-    });
-    panelPath.innerHTML = proj.icon + ' ' + proj.title;
-    panelCount.textContent = '';
+    var projRow = document.getElementById('projectsFolderRow');
+    if(projRow) projRow.classList.add('active');
+
+    panelPath.innerHTML = '🛠️ Projects';
+    panelCount.textContent = PROJECTS_ITEMS.length + ' projects';
     currentFiles = [];
     updateBreadcrumb([]);
     filesEl.innerHTML = '';
@@ -3396,40 +3418,43 @@
     var list = document.createElement('div');
     list.className = 'wip-list-panel';
 
-    var row = document.createElement('div');
-    row.className = 'wip-list-item';
+    PROJECTS_ITEMS.forEach(function(proj) {
+      var row = document.createElement('div');
+      row.className = 'wip-list-item';
 
-    var icon = document.createElement('span');
-    icon.className = 'wip-list-icon';
-    icon.textContent = proj.icon;
+      var iconEl = document.createElement('span');
+      iconEl.className = 'wip-list-icon';
+      iconEl.textContent = proj.icon;
 
-    var body = document.createElement('div');
-    body.className = 'wip-list-body';
+      var body = document.createElement('div');
+      body.className = 'wip-list-body';
 
-    var titleEl = document.createElement('div');
-    titleEl.className = 'wip-list-title';
-    titleEl.textContent = proj.title;
-    body.appendChild(titleEl);
+      var titleEl = document.createElement('div');
+      titleEl.className = 'wip-list-title';
+      titleEl.textContent = proj.title;
+      body.appendChild(titleEl);
 
-    var descEl = document.createElement('div');
-    descEl.className = 'wip-list-desc';
-    descEl.style.marginTop = '6px';
-    descEl.textContent = proj.desc;
-    body.appendChild(descEl);
+      var descEl = document.createElement('div');
+      descEl.className = 'wip-list-desc';
+      descEl.style.marginTop = '6px';
+      descEl.textContent = proj.desc;
+      body.appendChild(descEl);
 
-    if(proj.link) {
-      var linkEl = document.createElement('a');
-      linkEl.className = 'wip-list-link';
-      linkEl.href = proj.link.href;
-      linkEl.target = '_blank';
-      linkEl.rel = 'noopener';
-      linkEl.innerHTML = '↗ ' + escapeHtml(proj.link.label);
-      body.appendChild(linkEl);
-    }
+      (proj.links || []).forEach(function(lnk) {
+        var linkEl = document.createElement('a');
+        linkEl.className = 'wip-list-link';
+        linkEl.href = lnk.href;
+        linkEl.target = '_blank';
+        linkEl.rel = 'noopener';
+        linkEl.innerHTML = '↗ ' + escapeHtml(lnk.label);
+        body.appendChild(linkEl);
+      });
 
-    row.appendChild(icon);
-    row.appendChild(body);
-    list.appendChild(row);
+      row.appendChild(iconEl);
+      row.appendChild(body);
+      list.appendChild(row);
+    });
+
     filesEl.appendChild(list);
     scrollToPanel();
     if(window.innerWidth <= 1024) {
@@ -3458,15 +3483,6 @@
       venue: 'National & Kapodistrian University of Athens · Department of Informatics and Telecommunications',
       link: null,
       isThesis: true
-    }
-  ];
-
-  const PROJECTS_ITEMS = [
-    {
-      icon:'⛓️',
-      title:'Blockchain Node (Marabu)',
-      desc:'A fully-featured blockchain node — Marabu — built from scratch in TypeScript, covering peer discovery, transaction validation, UTXO management, and proof-of-work mining.',
-      link: { href:'https://github.com/AndreasPanayi8/blockchain-foundations', label:'View on GitHub' }
     }
   ];
 
@@ -3973,6 +3989,7 @@
 
   loadManifest();
   updateToggleState();
+  renderProjectsSidebar();
 </script>
 </body>
 </html>
