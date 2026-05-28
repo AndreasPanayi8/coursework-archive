@@ -3,6 +3,8 @@
   "path": ".",
   "files": [
     "Academic CV.pdf",
+    "LICENSE",
+    "README.md",
     "Tech CV.pdf",
     "gen_manifest.py",
     "index.html",
@@ -478,6 +480,14 @@
           "dirs": []
         }
       ]
+    },
+    {
+      "name": "Thesis",
+      "path": "Thesis",
+      "files": [
+        "Presentation.pdf"
+      ],
+      "dirs": []
     }
   ]
 }
