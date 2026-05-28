@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Andreas Panagi</title>
-<meta name="description" content="Andreas Panagi – MSc Theoretical Computer Science, algorithms and data structures researcher at NKUA/NTUA, Athens">
+<title>Andreas Panayi</title>
+<meta name="description" content="Andreas Panayi – MSc Theoretical Computer Science, algorithms and data structures researcher at NKUA/NTUA, Athens">
 
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&display=swap');
@@ -1695,6 +1695,60 @@
   @media (max-width: 768px) {
     .lb-drag-handle { display:block; }
   }
+  .thesis-video-box {
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:20px 24px;
+    margin-top:20px;
+    max-width:680px;
+  }
+  .thesis-video-box-title {
+    font-size:14px;
+    font-weight:700;
+    color:var(--text);
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .thesis-video-link {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px 16px;
+    border-radius:10px;
+    background:var(--card);
+    border:1px solid var(--border);
+    margin-bottom:10px;
+    text-decoration:none;
+    color:var(--text);
+    transition:all 0.2s;
+  }
+  .thesis-video-link:last-child { margin-bottom:0; }
+  .thesis-video-link:hover {
+    border-color:var(--accent);
+    background:var(--accent-soft);
+    transform:translateX(4px);
+  }
+  .thesis-video-link .tv-icon { font-size:22px; flex-shrink:0; }
+  .thesis-video-link .tv-label {
+    font-size:14px;
+    font-weight:600;
+    color:var(--text);
+  }
+  .thesis-video-link .tv-sub {
+    font-size:12px;
+    color:var(--text-secondary);
+    margin-top:2px;
+  }
+  .thesis-video-link .tv-arrow {
+    margin-left:auto;
+    color:var(--accent);
+    font-size:16px;
+    flex-shrink:0;
+  }
+
   .tree-divider {
     border:none;
     border-top:1px solid var(--border);
@@ -2502,7 +2556,7 @@
     <div class="hero-inner">
       <div class="hero-text">
         <div class="hero-eyebrow">Athens, Greece · Limassol, Cyprus</div>
-        <div class="hero-name">Andreas Panagi</div>
+        <div class="hero-name">Andreas Panayi</div>
         <div class="hero-subtitle">MSc Theoretical Computer Science &nbsp;·&nbsp; Algorithms &amp; Computational Complexity</div>
         <div class="hero-inst-row">
           <span class="hero-inst-badge badge-msc"><span class="badge-dot"></span>NTUA · NKUA &mdash; MSc ALMA</span>
@@ -2612,7 +2666,7 @@
         </div>
         <div class="pub-entry">
           <div class="pub-title">Listing Even Cycles Faster than the Submodular-Width Barrier</div>
-          <div class="pub-authors"><strong>Andreas Panagi</strong>, Vasilis Nakos, Hung Q. Ngo</div>
+          <div class="pub-authors"><strong>Andreas Panayi</strong>, Vasilis Nakos, Hung Q. Ngo</div>
           <div class="pub-venue-row">
             <span class="pub-status submitted">✅ Submitted</span>
           </div>
@@ -2764,6 +2818,16 @@
         <span>Completed Projects &amp; Implementations</span>
       </span>
       <span class="wip-badge">2</span>
+    </div>
+
+    <hr class="tree-divider" data-static>
+    <div class="tree-section-label" data-static>🔬 Research</div>
+    <div class="wip-folder-row" id="researchFolderRow" role="button" tabindex="0" data-static>
+      <span class="name">
+        <span style="font-size:16px;flex-shrink:0">📝</span>
+        <span>Thesis</span>
+      </span>
+      <span class="wip-badge">1</span>
     </div>
 
     <hr class="tree-divider">
@@ -3387,6 +3451,86 @@
       projRow.addEventListener('click', showProjectsPanel);
       projRow.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' ') showProjectsPanel(); });
     }
+    // Wire up the static Research / Thesis row
+    const resRow = document.getElementById('researchFolderRow');
+    if(resRow && !resRow._resBound) {
+      resRow._resBound = true;
+      resRow.addEventListener('click', showThesisPanel);
+      resRow.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' ') showThesisPanel(); });
+    }
+  }
+
+  function showThesisPanel() {
+    document.querySelectorAll('.folder, .wip-folder-row').forEach(function(el){ el.classList.remove('active'); });
+    var resRow = document.getElementById('researchFolderRow');
+    if(resRow) resRow.classList.add('active');
+
+    panelPath.innerHTML = '📝 Research — Thesis';
+    panelCount.textContent = '';
+    currentFiles = [{ src:'Thesis/Presentation.pdf', title:'Presentation.pdf' }];
+    updateBreadcrumb([]);
+    filesEl.innerHTML = '';
+
+    var wrapper = document.createElement('div');
+    wrapper.style.cssText = 'max-width:720px;width:100%;';
+
+    // Tab bar (single tab for now, easy to extend later)
+    var tabBar = document.createElement('div');
+    tabBar.style.cssText = 'display:flex;gap:4px;background:var(--bg);padding:4px;border-radius:10px;margin-bottom:22px;width:fit-content;';
+    tabBar.innerHTML = '<button style="padding:8px 22px;border-radius:8px;border:none;background:var(--card);color:var(--text);font-size:13.5px;font-weight:600;cursor:default;box-shadow:0 1px 5px rgba(0,0,0,0.18);font-family:\'DM Sans\',sans-serif;">📝 Thesis</button>';
+    wrapper.appendChild(tabBar);
+
+    // PDF card
+    var cardGrid = document.createElement('div');
+    cardGrid.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;';
+
+    var card = document.createElement('div');
+    card.className = 'file';
+    card.style.cursor = 'pointer';
+    card.innerHTML = `
+      <div class="thumb">
+        <div class="file-type-badge badge-pdf">PDF</div>
+        <div style="font-size:52px;">📄</div>
+      </div>
+      <div class="meta">
+        <div class="title" title="Presentation.pdf">Presentation.pdf</div>
+        <div class="file-path">Thesis/Presentation.pdf</div>
+      </div>
+    `;
+    card.addEventListener('click', function(){ openLightbox(0); });
+    cardGrid.appendChild(card);
+    wrapper.appendChild(cardGrid);
+
+    // Greek presentation video links box
+    var videoBox = document.createElement('div');
+    videoBox.className = 'thesis-video-box';
+    videoBox.innerHTML = `
+      <div class="thesis-video-box-title">🎥 Greek Thesis Presentation (Recording)</div>
+      <a class="thesis-video-link" href="https://uniflix.uoa.gr/events/player?id=6a1815ad660b8b65a0d03523" target="_blank" rel="noopener">
+        <span class="tv-icon">▶️</span>
+        <div>
+          <div class="tv-label">Part 1</div>
+          <div class="tv-sub">uniflix.uoa.gr</div>
+        </div>
+        <span class="tv-arrow">↗</span>
+      </a>
+      <a class="thesis-video-link" href="https://uniflix.uoa.gr/events/player?id=6a1815b4660b8b65a0d03524" target="_blank" rel="noopener">
+        <span class="tv-icon">▶️</span>
+        <div>
+          <div class="tv-label">Part 2</div>
+          <div class="tv-sub">uniflix.uoa.gr</div>
+        </div>
+        <span class="tv-arrow">↗</span>
+      </a>
+    `;
+    wrapper.appendChild(videoBox);
+
+    filesEl.appendChild(wrapper);
+    scrollToPanel();
+    if(window.innerWidth <= 1024) {
+      sidebarOpen = false;
+      updateToggleState();
+    }
   }
 
   const PROJECTS_ITEMS = [
@@ -3472,17 +3616,6 @@
       status: 'Submitted',
       link: null,
       isThesis: false
-    },
-    {
-      icon:'🎓',
-      title:'Thesis Defense',
-      desc:'Presenting the current research publication at the National and Kapodistrian University of Athens.',
-      collaborators: null,
-      status: 'Thesis Defense',
-      date: '28 May 2025 · 12:00',
-      venue: 'National & Kapodistrian University of Athens · Department of Informatics and Telecommunications',
-      link: null,
-      isThesis: true
     }
   ];
 
