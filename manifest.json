@@ -2,10 +2,11 @@
   "name": "coursework-archive",
   "path": ".",
   "files": [
-    "Academic CV.pdf",
+    ".DS_Store",
+    "CV - Academic.pdf",
+    "CV - Tech.pdf",
     "LICENSE",
     "README.md",
-    "Tech CV.pdf",
     "gen_manifest.py",
     "index.html",
     "manifest.json"
@@ -485,7 +486,8 @@
       "name": "Thesis",
       "path": "Thesis",
       "files": [
-        "Presentation.pdf"
+        "Presentation.pdf",
+        "thesis.pdf"
       ],
       "dirs": []
     }
