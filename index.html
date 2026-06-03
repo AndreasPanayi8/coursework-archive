@@ -3239,7 +3239,11 @@
     };
     
     // Folders to exclude from the coursework tree (shown separately under Research)
-    const RESEARCH_FOLDERS = new Set(['Thesis', 'Archimedes Research Unit', 'Archimedes']);
+    // Matching is case-insensitive and checks prefix for robustness
+    const isResearchFolder = function(name) {
+      var n = name.toLowerCase();
+      return n === 'thesis' || n.startsWith('archimedes');
+    };
     
     if(manifest.files && Array.isArray(manifest.files)){
       manifest.files.forEach(file => {
@@ -3249,7 +3253,7 @@
     
     if(manifest.dirs && Array.isArray(manifest.dirs)){
       manifest.dirs.forEach(dir => {
-        if(!RESEARCH_FOLDERS.has(dir.name)) {
+        if(!isResearchFolder(dir.name)) {
           root.children[dir.name] = convertDirToNode(dir);
         }
       });
@@ -3494,6 +3498,17 @@
     // Update WIP badge count to match actual items
     const wipBadge = document.querySelector('#wipFolderRow .wip-badge');
     if(wipBadge) wipBadge.textContent = WIP_ITEMS.length;
+    // Update Archimedes badge with real file count from manifest
+    const archBadge = document.querySelector('#archimedesFolderRow .wip-badge');
+    if(archBadge) {
+      const archDir = manifestData.dirs ? manifestData.dirs.find(function(d){ return d.name.toLowerCase().startsWith('archimedes'); }) : null;
+      if(archDir) {
+        var cnt = 0;
+        function countAll(d){ if(d.files) cnt += d.files.length; if(d.dirs) d.dirs.forEach(countAll); }
+        countAll(archDir);
+        archBadge.textContent = cnt || '';
+      }
+    }
     // Remove dynamically-injected coursework folders (everything after the Completed Coursework label)
     const dynamicLabels = treeEl.querySelectorAll('.tree-section-label:not([data-static])');
     const lastDynLabel = dynamicLabels[dynamicLabels.length - 1];
@@ -3556,50 +3571,38 @@
     if(resRow) resRow.classList.add('active');
 
     panelPath.innerHTML = '📝 Master\'s Thesis';
-    panelCount.textContent = '';
 
-    // Look for thesis.pdf specifically, then fall back to any PDF in Thesis folder
+    // Find the Thesis folder in the manifest
     var thesisDir = (manifestData && manifestData.dirs) ? manifestData.dirs.find(function(d){ return d.name === 'Thesis'; }) : null;
-    var thesisPdfFile = null;
-    if(thesisDir && thesisDir.files && thesisDir.files.length > 0) {
-      thesisPdfFile = thesisDir.files.find(function(f){ return f.toLowerCase() === 'thesis.pdf'; })
-                   || thesisDir.files.find(function(f){ return f.toLowerCase().endsWith('.pdf'); });
-    }
-    var thesisPdfSrc = thesisDir && thesisPdfFile ? (thesisDir.path + '/' + thesisPdfFile) : 'Thesis/thesis.pdf';
-    var thesisPdfTitle = thesisPdfFile || 'thesis.pdf';
 
-    currentFiles = [{ src: thesisPdfSrc, title: thesisPdfTitle }];
+    // Build the files list from the manifest, falling back to thesis.pdf if unavailable
+    var thesisFiles = [];
+    if(thesisDir && thesisDir.files && thesisDir.files.length > 0) {
+      thesisDir.files.forEach(function(f) {
+        thesisFiles.push({ src: thesisDir.path + '/' + f, title: f });
+      });
+    } else {
+      // Fallback: hardcode thesis.pdf so the card always appears
+      thesisFiles = [{ src: 'Thesis/thesis.pdf', title: 'thesis.pdf' }];
+    }
+
+    panelCount.textContent = thesisFiles.length + ' file' + (thesisFiles.length !== 1 ? 's' : '');
+    currentFiles = thesisFiles;
     updateBreadcrumb([]);
     filesEl.innerHTML = '';
 
-    var wrapper = document.createElement('div');
-    wrapper.style.cssText = 'max-width:720px;width:100%;';
+    // Render each file as a proper file card (same as coursework browser)
+    thesisFiles.sort(function(a,b){ return (a.title||'').localeCompare(b.title||''); });
+    thesisFiles.forEach(function(it, index){ renderFileCard(it, index); });
 
-    // PDF card
-    var cardGrid = document.createElement('div');
-    cardGrid.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-bottom:16px;';
-
-    var card = document.createElement('div');
-    card.className = 'file';
-    card.style.cursor = 'pointer';
-    card.innerHTML = `
-      <div class="thumb">
-        <div class="file-type-badge badge-pdf">PDF</div>
-        <div style="font-size:52px;">📄</div>
-      </div>
-      <div class="meta">
-        <div class="title" title="${thesisPdfTitle}">${thesisPdfTitle}</div>
-        <div class="file-path">${thesisPdfSrc}</div>
-      </div>
-    `;
-    card.addEventListener('click', function(){ openLightbox(0); });
-    cardGrid.appendChild(card);
-    wrapper.appendChild(cardGrid);
+    // Append the extra info boxes in a full-width row below the file cards
+    var extraRow = document.createElement('div');
+    extraRow.style.cssText = 'grid-column:1/-1;display:flex;flex-direction:column;gap:16px;margin-top:8px;max-width:720px;';
 
     // ALMA repository link
     var almaBox = document.createElement('div');
     almaBox.className = 'thesis-video-box';
-    almaBox.style.marginBottom = '16px';
+    almaBox.style.marginTop = '0';
     almaBox.innerHTML = `
       <div class="thesis-video-box-title">🎓 Institutional Repository</div>
       <a class="thesis-video-link" href="http://alma.di.uoa.gr/node/743" target="_blank" rel="noopener">
@@ -3611,11 +3614,12 @@
         <span class="tv-arrow">↗</span>
       </a>
     `;
-    wrapper.appendChild(almaBox);
+    extraRow.appendChild(almaBox);
 
     // Greek presentation video links box
     var videoBox = document.createElement('div');
     videoBox.className = 'thesis-video-box';
+    videoBox.style.marginTop = '0';
     videoBox.innerHTML = `
       <div class="thesis-video-box-title">🎥 Greek Thesis Presentation (Recording)</div>
       <a class="thesis-video-link" href="https://uniflix.uoa.gr/events/player?id=6a1815ad660b8b65a0d03523" target="_blank" rel="noopener">
@@ -3635,9 +3639,9 @@
         <span class="tv-arrow">↗</span>
       </a>
     `;
-    wrapper.appendChild(videoBox);
+    extraRow.appendChild(videoBox);
 
-    filesEl.appendChild(wrapper);
+    filesEl.appendChild(extraRow);
     scrollToPanel();
     if(window.innerWidth <= 1024) {
       sidebarOpen = false;
@@ -3645,48 +3649,64 @@
     }
   }
 
-  const ARCHIMEDES_INFO = {
-    role: 'Research Intern',
-    dates: 'Jun 2025 – Jan 2026',
-    org: 'Archimedes Research Unit, Athena Research Center',
-    desc: 'Designed and implemented advanced data structures for computational geometry problems. Conducted research in algorithms, artificial intelligence, and data science.',
-    topics: ['Computational Geometry', 'Data Structures', 'Algorithms', 'AI & Data Science']
-  };
-
   function showArchimedesPanel() {
     document.querySelectorAll('.folder, .wip-folder-row').forEach(function(el){ el.classList.remove('active'); });
     var archRow = document.getElementById('archimedesFolderRow');
     if(archRow) archRow.classList.add('active');
 
-    panelPath.innerHTML = '🏛️ Archimedes Research Unit';
-    panelCount.textContent = '';
-    currentFiles = [];
-    updateBreadcrumb([]);
-    filesEl.innerHTML = '';
+    // Find the Archimedes folder in the manifest by trying common name variants
+    var archDir = null;
+    if(manifestData && manifestData.dirs) {
+      archDir = manifestData.dirs.find(function(d){
+        var n = d.name.toLowerCase();
+        return n === 'archimedes research unit' || n === 'archimedes' || n.startsWith('archimedes');
+      });
+    }
 
-    var wrapper = document.createElement('div');
-    wrapper.style.cssText = 'max-width:720px;width:100%;';
+    if(archDir && archDir.files && archDir.files.length > 0) {
+      // Build files list and use the standard showFiles path so it behaves exactly
+      // like clicking any coursework folder in the tree
+      var archFiles = archDir.files.map(function(f){
+        return { src: archDir.path + '/' + f, title: f };
+      });
+      panelPath.innerHTML = '🏛️ Archimedes Research Unit';
+      panelCount.textContent = archFiles.length + ' file' + (archFiles.length !== 1 ? 's' : '');
+      currentFiles = archFiles;
+      updateBreadcrumb([]);
+      filesEl.innerHTML = '';
+      archFiles.sort(function(a,b){ return (a.title||'').localeCompare(b.title||''); });
+      archFiles.forEach(function(it, index){ renderFileCard(it, index); });
+    } else if(archDir && archDir.dirs && archDir.dirs.length > 0) {
+      // Folder exists but files are in subdirectories — render the sub-tree
+      var root2 = buildTreeFromManifest({ dirs:[archDir], files:[] });
+      // Actually just flatten all files from the archDir recursively
+      var allArchFiles = [];
+      function collectArch(dir) {
+        if(dir.files) dir.files.forEach(function(f){ allArchFiles.push({ src: dir.path + '/' + f, title: f }); });
+        if(dir.dirs) dir.dirs.forEach(collectArch);
+      }
+      collectArch(archDir);
+      panelPath.innerHTML = '🏛️ Archimedes Research Unit';
+      panelCount.textContent = allArchFiles.length + ' file' + (allArchFiles.length !== 1 ? 's' : '');
+      currentFiles = allArchFiles;
+      updateBreadcrumb([]);
+      filesEl.innerHTML = '';
+      allArchFiles.sort(function(a,b){ return (a.title||'').localeCompare(b.title||''); });
+      allArchFiles.forEach(function(it, index){ renderFileCard(it, index); });
+    } else {
+      // Manifest not loaded yet or folder not found — show a placeholder
+      panelPath.innerHTML = '🏛️ Archimedes Research Unit';
+      panelCount.textContent = '';
+      currentFiles = [];
+      updateBreadcrumb([]);
+      filesEl.innerHTML = `
+        <div class="welcome" style="grid-column:1/-1">
+          <div class="welcome-icon">🏛️</div>
+          <h2>Archimedes Research Unit</h2>
+          <p style="max-width:420px;margin:0 auto;">Files from this research internship will appear here once the repository is loaded. Make sure <code>manifest.json</code> is up to date.</p>
+        </div>`;
+    }
 
-    var box = document.createElement('div');
-    box.className = 'thesis-video-box';
-    box.innerHTML = `
-      <div class="thesis-video-box-title">🏛️ Archimedes Research Unit · Athena Research Center</div>
-      <div style="padding:4px 0 12px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:12px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:6px;">
-          <span style="font-weight:600;font-size:15px;color:var(--text);">Research Intern</span>
-          <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">Jun 2025 – Jan 2026</span>
-        </div>
-        <div style="font-size:13.5px;color:var(--text-secondary);line-height:1.65;">Designed and implemented advanced data structures for computational geometry problems. Conducted research in algorithms, artificial intelligence, and data science.</div>
-      </div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px;padding-top:4px;">
-        <span style="background:var(--accent-soft);color:var(--accent);border:1px solid rgba(79,110,247,0.2);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;">Computational Geometry</span>
-        <span style="background:var(--accent-soft);color:var(--accent);border:1px solid rgba(79,110,247,0.2);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;">Data Structures</span>
-        <span style="background:var(--accent-soft);color:var(--accent);border:1px solid rgba(79,110,247,0.2);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;">Algorithms</span>
-        <span style="background:var(--accent-soft);color:var(--accent);border:1px solid rgba(79,110,247,0.2);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;">AI &amp; Data Science</span>
-      </div>
-    `;
-    wrapper.appendChild(box);
-    filesEl.appendChild(wrapper);
     scrollToPanel();
     if(window.innerWidth <= 1024) {
       sidebarOpen = false;
