@@ -2710,6 +2710,14 @@
         </div>
         <div class="exp-entry">
           <div class="exp-header">
+            <div class="exp-role">Research Intern — Data Management &amp; Big Data</div>
+            <div class="exp-date">2025 – Present</div>
+          </div>
+          <div class="exp-org">Research &amp; Innovation Foundation of Cyprus</div>
+          <div class="exp-desc">Research internship at a company specialising in data management, big data, data reduction, data compression, and data decay. Work covers the full pipeline from design-phase research to proof-of-concept deployment, grounded in expertise spanning traditional databases, data streams, spatiotemporal systems, IoT, and machine learning applications.</div>
+        </div>
+        <div class="exp-entry">
+          <div class="exp-header">
             <div class="exp-role">Teaching Assistant — Computer Science I</div>
             <div class="exp-date">2021 – 2026</div>
           </div>
@@ -2898,7 +2906,7 @@
         <span style="font-size:16px;flex-shrink:0">🏛️</span>
         <span>Archimedes Research Unit</span>
       </span>
-      <span class="wip-badge"></span>
+      <span class="wip-badge">8</span>
     </div>
 
     <hr class="tree-divider">
@@ -3663,38 +3671,7 @@
       });
     }
 
-    if(archDir && archDir.files && archDir.files.length > 0) {
-      // Build files list and use the standard showFiles path so it behaves exactly
-      // like clicking any coursework folder in the tree
-      var archFiles = archDir.files.map(function(f){
-        return { src: archDir.path + '/' + f, title: f };
-      });
-      panelPath.innerHTML = '🏛️ Archimedes Research Unit';
-      panelCount.textContent = archFiles.length + ' file' + (archFiles.length !== 1 ? 's' : '');
-      currentFiles = archFiles;
-      updateBreadcrumb([]);
-      filesEl.innerHTML = '';
-      archFiles.sort(function(a,b){ return (a.title||'').localeCompare(b.title||''); });
-      archFiles.forEach(function(it, index){ renderFileCard(it, index); });
-    } else if(archDir && archDir.dirs && archDir.dirs.length > 0) {
-      // Folder exists but files are in subdirectories — render the sub-tree
-      var root2 = buildTreeFromManifest({ dirs:[archDir], files:[] });
-      // Actually just flatten all files from the archDir recursively
-      var allArchFiles = [];
-      function collectArch(dir) {
-        if(dir.files) dir.files.forEach(function(f){ allArchFiles.push({ src: dir.path + '/' + f, title: f }); });
-        if(dir.dirs) dir.dirs.forEach(collectArch);
-      }
-      collectArch(archDir);
-      panelPath.innerHTML = '🏛️ Archimedes Research Unit';
-      panelCount.textContent = allArchFiles.length + ' file' + (allArchFiles.length !== 1 ? 's' : '');
-      currentFiles = allArchFiles;
-      updateBreadcrumb([]);
-      filesEl.innerHTML = '';
-      allArchFiles.sort(function(a,b){ return (a.title||'').localeCompare(b.title||''); });
-      allArchFiles.forEach(function(it, index){ renderFileCard(it, index); });
-    } else {
-      // Manifest not loaded yet or folder not found — show a placeholder
+    if(!archDir) {
       panelPath.innerHTML = '🏛️ Archimedes Research Unit';
       panelCount.textContent = '';
       currentFiles = [];
@@ -3705,12 +3682,89 @@
           <h2>Archimedes Research Unit</h2>
           <p style="max-width:420px;margin:0 auto;">Files from this research internship will appear here once the repository is loaded. Make sure <code>manifest.json</code> is up to date.</p>
         </div>`;
+      scrollToPanel();
+      return;
     }
+
+    // Count all files recursively
+    function countAllFiles(dir) {
+      var c = (dir.files ? dir.files.length : 0);
+      if(dir.dirs) dir.dirs.forEach(function(d){ c += countAllFiles(d); });
+      return c;
+    }
+    var totalCount = countAllFiles(archDir);
+
+    panelPath.innerHTML = '🏛️ Archimedes Research Unit';
+    panelCount.textContent = totalCount + ' file' + (totalCount !== 1 ? 's' : '');
+    updateBreadcrumb([]);
+    filesEl.innerHTML = '';
+    currentFiles = [];
+
+    // Render the directory tree inline in the panel, starting from archDir
+    renderArchimedesDir(archDir, filesEl, archDir.path);
 
     scrollToPanel();
     if(window.innerWidth <= 1024) {
       sidebarOpen = false;
       updateToggleState();
+    }
+  }
+
+  function renderArchimedesDir(dir, container, basePath) {
+    // If this dir has direct files, show them as cards first
+    if(dir.files && dir.files.length > 0) {
+      var fileItems = dir.files.map(function(f){
+        return { src: dir.path + '/' + f, title: f };
+      });
+      fileItems.sort(function(a,b){ return (a.title||'').localeCompare(b.title||''); });
+      // Assign indices within the full flattened set for lightbox navigation
+      var startIdx = currentFiles.length;
+      fileItems.forEach(function(it){ currentFiles.push(it); });
+      fileItems.forEach(function(it, i){ renderFileCard(it, startIdx + i); });
+    }
+
+    // Then render subdirectory section headers + their contents
+    if(dir.dirs && dir.dirs.length > 0) {
+      dir.dirs.forEach(function(subdir) {
+        function countAllFiles(d) {
+          var c = (d.files ? d.files.length : 0);
+          if(d.dirs) d.dirs.forEach(function(dd){ c += countAllFiles(dd); });
+          return c;
+        }
+        var subCount = countAllFiles(subdir);
+        if(subCount === 0) return; // skip empty dirs
+
+        // Folder header row (collapsible)
+        var folderHeader = document.createElement('div');
+        folderHeader.style.cssText = 'grid-column:1/-1;display:flex;align-items:center;gap:10px;padding:14px 18px;margin-top:16px;background:var(--bg);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:background 0.2s,border-color 0.2s;user-select:none;';
+        folderHeader.innerHTML = `
+          <span style="font-size:16px;flex-shrink:0;transition:transform 0.25s" class="arch-caret">▶</span>
+          <span style="font-size:16px;flex-shrink:0" class="arch-folder-icon">📁</span>
+          <span style="font-weight:600;font-size:15px;color:var(--text);flex:1">${escapeHtml(subdir.name)}</span>
+          <span style="background:var(--card);color:var(--text-secondary);padding:3px 10px;border-radius:12px;font-size:12px;font-weight:700;border:1px solid var(--border);">${subCount}</span>
+        `;
+        container.appendChild(folderHeader);
+
+        // Subdir content container (collapsed by default)
+        var subdirContainer = document.createElement('div');
+        subdirContainer.style.cssText = 'grid-column:1/-1;display:none;';
+        subdirContainer.className = 'files';
+        container.appendChild(subdirContainer);
+
+        var expanded = false;
+        folderHeader.addEventListener('click', function() {
+          expanded = !expanded;
+          subdirContainer.style.display = expanded ? 'grid' : 'none';
+          var caretEl = folderHeader.querySelector('.arch-caret');
+          var folderIconEl = folderHeader.querySelector('.arch-folder-icon');
+          if(caretEl) caretEl.style.transform = expanded ? 'rotate(90deg)' : '';
+          if(folderIconEl) folderIconEl.textContent = expanded ? '📂' : '📁';
+          folderHeader.style.borderColor = expanded ? 'var(--accent)' : 'var(--border)';
+          if(expanded && subdirContainer.childElementCount === 0) {
+            renderArchimedesDir(subdir, subdirContainer, subdir.path);
+          }
+        });
+      });
     }
   }
 
@@ -3799,9 +3853,9 @@
       isThesis: false
     },
     {
-      icon:'🏛️',
+      icon:'🗄️',
       title:'Research Internship — Research and Innovation Foundation of Cyprus',
-      desc:'A six-week research internship supported by the Research and Innovation Foundation of Cyprus, focused on research in algorithms and data structures.',
+      desc:'A research internship supported by the Research and Innovation Foundation of Cyprus, at a company specialising in research, innovation, and education in data management, big data, data reduction, data compression, and data decay. Work spans the full pipeline from design-phase research to proof-of-concept deployment for international markets, drawing on the founders\' 30+ years of experience across traditional databases, big data and data streams, spatiotemporal systems, sensor networks, IoT, and machine learning.',
       collaborators: [],
       status: 'In Progress',
       link: null,
