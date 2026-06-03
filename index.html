@@ -1671,15 +1671,30 @@
   .wip-list-link {
     display:inline-flex;
     align-items:center;
-    gap:3px;
-    margin-top:5px;
+    gap:5px;
+    margin-top:8px;
     font-size:12px;
     font-weight:600;
     color:var(--accent);
     text-decoration:none;
+    padding:4px 10px;
+    border-radius:20px;
+    background:var(--accent-soft);
+    border:1px solid rgba(79,110,247,0.2);
+    transition:all 0.18s;
   }
 
-  .wip-list-link:hover { text-decoration:underline; color:var(--accent-hover); }
+  .wip-list-link:hover {
+    background:var(--accent);
+    color:white;
+    border-color:var(--accent);
+    transform:translateY(-1px);
+  }
+  [data-theme="dark"] .wip-list-link {
+    color:#6c8aff;
+    background:rgba(108,138,255,0.12);
+    border-color:rgba(108,138,255,0.25);
+  }
 
   /* Mobile drag handle for bottom-sheet lightbox */
   .lb-drag-handle {
@@ -1700,7 +1715,7 @@
     border:1px solid var(--border);
     border-radius:14px;
     padding:20px 24px;
-    margin-top:20px;
+    margin-top:16px;
     max-width:680px;
   }
   .thesis-video-box-title {
@@ -1782,6 +1797,26 @@
     background:rgba(16,185,129,0.12);
     color:#34d399;
     border-color:rgba(16,185,129,0.25);
+  }
+  .wip-status-badge.in-preparation {
+    background:rgba(139,92,246,0.1);
+    color:#7c3aed;
+    border-color:rgba(139,92,246,0.22);
+  }
+  [data-theme="dark"] .wip-status-badge.in-preparation {
+    background:rgba(139,92,246,0.12);
+    color:#a78bfa;
+    border-color:rgba(139,92,246,0.25);
+  }
+  .wip-status-badge.in-progress {
+    background:rgba(245,158,11,0.1);
+    color:#b45309;
+    border-color:rgba(245,158,11,0.22);
+  }
+  [data-theme="dark"] .wip-status-badge.in-progress {
+    background:rgba(245,158,11,0.12);
+    color:#fbbf24;
+    border-color:rgba(245,158,11,0.25);
   }
 
   .wip-collaborators {
@@ -2357,6 +2392,31 @@
     color:#b45309;
     border-color:rgba(217,119,6,0.2);
   }
+  .pub-arxiv-link {
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    padding:4px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+    color:var(--accent);
+    background:var(--accent-soft);
+    border:1px solid rgba(79,110,247,0.2);
+    text-decoration:none;
+    transition:all 0.18s;
+  }
+  .pub-arxiv-link:hover {
+    background:var(--accent);
+    color:white;
+    border-color:var(--accent);
+  }
+  [data-theme="dark"] .pub-arxiv-link {
+    color:#6c8aff;
+    background:rgba(108,138,255,0.12);
+    border-color:rgba(108,138,255,0.25);
+  }
+
   /* Submitted status override (inline style handles it, this is a fallback) */
   .pub-status.submitted {
     background:rgba(16,185,129,0.1);
@@ -2668,7 +2728,11 @@
           <div class="pub-title">Listing Even Cycles Faster than the Submodular-Width Barrier</div>
           <div class="pub-authors"><strong>Andreas Panayi</strong>, Vasilis Nakos, Hung Q. Ngo</div>
           <div class="pub-venue-row">
-            <span class="pub-status submitted">✅ Submitted</span>
+            <span class="pub-status submitted">✅ Submitted to Conference</span>
+            <a href="https://arxiv.org/abs/2605.30564" target="_blank" rel="noopener" class="pub-arxiv-link">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              arXiv:2605.30564
+            </a>
           </div>
           <div style="font-size:13px;color:var(--text-secondary);margin-top:10px;line-height:1.6;">
             Output-sensitive algorithms for listing even-length cycles in simple graphs and hypergraphs, advancing the current state of the art.
@@ -2805,7 +2869,7 @@
         <span style="font-size:16px;flex-shrink:0">🔬</span>
         <span>Currently Working On</span>
       </span>
-      <span class="wip-badge">2</span>
+      <span class="wip-badge">4</span>
 
     </div>
 
@@ -2825,9 +2889,16 @@
     <div class="wip-folder-row" id="researchFolderRow" role="button" tabindex="0" data-static>
       <span class="name">
         <span style="font-size:16px;flex-shrink:0">📝</span>
-        <span>Thesis</span>
+        <span>Master's Thesis</span>
       </span>
       <span class="wip-badge">1</span>
+    </div>
+    <div class="wip-folder-row" id="archimedesFolderRow" role="button" tabindex="0" data-static>
+      <span class="name">
+        <span style="font-size:16px;flex-shrink:0">🏛️</span>
+        <span>Archimedes Research Unit</span>
+      </span>
+      <span class="wip-badge"></span>
     </div>
 
     <hr class="tree-divider">
@@ -3167,6 +3238,9 @@
       files: []
     };
     
+    // Folders to exclude from the coursework tree (shown separately under Research)
+    const RESEARCH_FOLDERS = new Set(['Thesis', 'Archimedes Research Unit', 'Archimedes']);
+    
     if(manifest.files && Array.isArray(manifest.files)){
       manifest.files.forEach(file => {
         root.files.push({ src: file, title: file });
@@ -3175,7 +3249,9 @@
     
     if(manifest.dirs && Array.isArray(manifest.dirs)){
       manifest.dirs.forEach(dir => {
-        root.children[dir.name] = convertDirToNode(dir);
+        if(!RESEARCH_FOLDERS.has(dir.name)) {
+          root.children[dir.name] = convertDirToNode(dir);
+        }
       });
     }
     
@@ -3441,6 +3517,13 @@
       projRow.addEventListener('click', showProjectsPanel);
       projRow.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' ') showProjectsPanel(); });
     }
+    // Wire up Archimedes row click once
+    const archRow = document.getElementById('archimedesFolderRow');
+    if(archRow && !archRow._archBound) {
+      archRow._archBound = true;
+      archRow.addEventListener('click', showArchimedesPanel);
+      archRow.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' ') showArchimedesPanel(); });
+    }
   }
 
   function renderProjectsSidebar() {
@@ -3451,12 +3534,19 @@
       projRow.addEventListener('click', showProjectsPanel);
       projRow.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' ') showProjectsPanel(); });
     }
-    // Wire up the static Research / Thesis row
+    // Wire up the static Research / Master's Thesis row
     const resRow = document.getElementById('researchFolderRow');
     if(resRow && !resRow._resBound) {
       resRow._resBound = true;
       resRow.addEventListener('click', showThesisPanel);
       resRow.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' ') showThesisPanel(); });
+    }
+    // Wire up the Archimedes Research Unit row
+    const archRow = document.getElementById('archimedesFolderRow');
+    if(archRow && !archRow._archBound) {
+      archRow._archBound = true;
+      archRow.addEventListener('click', showArchimedesPanel);
+      archRow.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' ') showArchimedesPanel(); });
     }
   }
 
@@ -3465,14 +3555,18 @@
     var resRow = document.getElementById('researchFolderRow');
     if(resRow) resRow.classList.add('active');
 
-    panelPath.innerHTML = '📝 Thesis';
+    panelPath.innerHTML = '📝 Master\'s Thesis';
     panelCount.textContent = '';
 
-    // Derive the PDF path from the manifest so it always matches the real file
+    // Look for thesis.pdf specifically, then fall back to any PDF in Thesis folder
     var thesisDir = (manifestData && manifestData.dirs) ? manifestData.dirs.find(function(d){ return d.name === 'Thesis'; }) : null;
-    var thesisPdfFile = (thesisDir && thesisDir.files && thesisDir.files.length > 0) ? thesisDir.files.find(function(f){ return f.toLowerCase().endsWith('.pdf'); }) : null;
-    var thesisPdfSrc = thesisDir && thesisPdfFile ? (thesisDir.path + '/' + thesisPdfFile) : 'Thesis/Presentation.pdf';
-    var thesisPdfTitle = thesisPdfFile || 'Presentation.pdf';
+    var thesisPdfFile = null;
+    if(thesisDir && thesisDir.files && thesisDir.files.length > 0) {
+      thesisPdfFile = thesisDir.files.find(function(f){ return f.toLowerCase() === 'thesis.pdf'; })
+                   || thesisDir.files.find(function(f){ return f.toLowerCase().endsWith('.pdf'); });
+    }
+    var thesisPdfSrc = thesisDir && thesisPdfFile ? (thesisDir.path + '/' + thesisPdfFile) : 'Thesis/thesis.pdf';
+    var thesisPdfTitle = thesisPdfFile || 'thesis.pdf';
 
     currentFiles = [{ src: thesisPdfSrc, title: thesisPdfTitle }];
     updateBreadcrumb([]);
@@ -3483,7 +3577,7 @@
 
     // PDF card
     var cardGrid = document.createElement('div');
-    cardGrid.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;';
+    cardGrid.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-bottom:16px;';
 
     var card = document.createElement('div');
     card.className = 'file';
@@ -3501,6 +3595,23 @@
     card.addEventListener('click', function(){ openLightbox(0); });
     cardGrid.appendChild(card);
     wrapper.appendChild(cardGrid);
+
+    // ALMA repository link
+    var almaBox = document.createElement('div');
+    almaBox.className = 'thesis-video-box';
+    almaBox.style.marginBottom = '16px';
+    almaBox.innerHTML = `
+      <div class="thesis-video-box-title">🎓 Institutional Repository</div>
+      <a class="thesis-video-link" href="http://alma.di.uoa.gr/node/743" target="_blank" rel="noopener">
+        <span class="tv-icon">🔗</span>
+        <div>
+          <div class="tv-label">ALMA — University of Athens Repository</div>
+          <div class="tv-sub">alma.di.uoa.gr</div>
+        </div>
+        <span class="tv-arrow">↗</span>
+      </a>
+    `;
+    wrapper.appendChild(almaBox);
 
     // Greek presentation video links box
     var videoBox = document.createElement('div');
@@ -3526,6 +3637,55 @@
     `;
     wrapper.appendChild(videoBox);
 
+    filesEl.appendChild(wrapper);
+    scrollToPanel();
+    if(window.innerWidth <= 1024) {
+      sidebarOpen = false;
+      updateToggleState();
+    }
+  }
+
+  const ARCHIMEDES_INFO = {
+    role: 'Research Intern',
+    dates: 'Jun 2025 – Jan 2026',
+    org: 'Archimedes Research Unit, Athena Research Center',
+    desc: 'Designed and implemented advanced data structures for computational geometry problems. Conducted research in algorithms, artificial intelligence, and data science.',
+    topics: ['Computational Geometry', 'Data Structures', 'Algorithms', 'AI & Data Science']
+  };
+
+  function showArchimedesPanel() {
+    document.querySelectorAll('.folder, .wip-folder-row').forEach(function(el){ el.classList.remove('active'); });
+    var archRow = document.getElementById('archimedesFolderRow');
+    if(archRow) archRow.classList.add('active');
+
+    panelPath.innerHTML = '🏛️ Archimedes Research Unit';
+    panelCount.textContent = '';
+    currentFiles = [];
+    updateBreadcrumb([]);
+    filesEl.innerHTML = '';
+
+    var wrapper = document.createElement('div');
+    wrapper.style.cssText = 'max-width:720px;width:100%;';
+
+    var box = document.createElement('div');
+    box.className = 'thesis-video-box';
+    box.innerHTML = `
+      <div class="thesis-video-box-title">🏛️ Archimedes Research Unit · Athena Research Center</div>
+      <div style="padding:4px 0 12px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:12px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:6px;">
+          <span style="font-weight:600;font-size:15px;color:var(--text);">Research Intern</span>
+          <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">Jun 2025 – Jan 2026</span>
+        </div>
+        <div style="font-size:13.5px;color:var(--text-secondary);line-height:1.65;">Designed and implemented advanced data structures for computational geometry problems. Conducted research in algorithms, artificial intelligence, and data science.</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;padding-top:4px;">
+        <span style="background:var(--accent-soft);color:var(--accent);border:1px solid rgba(79,110,247,0.2);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;">Computational Geometry</span>
+        <span style="background:var(--accent-soft);color:var(--accent);border:1px solid rgba(79,110,247,0.2);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;">Data Structures</span>
+        <span style="background:var(--accent-soft);color:var(--accent);border:1px solid rgba(79,110,247,0.2);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;">Algorithms</span>
+        <span style="background:var(--accent-soft);color:var(--accent);border:1px solid rgba(79,110,247,0.2);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;">AI &amp; Data Science</span>
+      </div>
+    `;
+    wrapper.appendChild(box);
     filesEl.appendChild(wrapper);
     scrollToPanel();
     if(window.innerWidth <= 1024) {
@@ -3614,7 +3774,34 @@
       title:'Listing Even Cycles Faster than the Submodular-Width Barrier',
       desc:'Design and analysis of an output-sensitive algorithm for listing even length cycles in simple graphs and hypergraphs, improving upon the current state of the art.',
       collaborators: ['Dr. Vasilis Nakos', 'Dr. Hung Q. Ngo'],
-      status: 'Submitted',
+      status: 'Submitted to Conference',
+      link: { href:'https://arxiv.org/abs/2605.30564', label:'arXiv:2605.30564' },
+      isThesis: false
+    },
+    {
+      icon:'🏛️',
+      title:'Research Internship — Research and Innovation Foundation of Cyprus',
+      desc:'A six-week research internship supported by the Research and Innovation Foundation of Cyprus, focused on research in algorithms and data structures.',
+      collaborators: [],
+      status: 'In Progress',
+      link: null,
+      isThesis: false
+    },
+    {
+      icon:'🔗',
+      title:'Blockchain Foundations and Development — Exam & Verification',
+      desc:'Preparation and examination for the Blockchain Foundations and Development certification, covering core blockchain concepts, distributed ledger technology, and smart contract development.',
+      collaborators: [],
+      status: 'In Progress',
+      link: null,
+      isThesis: false
+    },
+    {
+      icon:'📐',
+      title:'Survey: Geometric Dynamic Data Structures',
+      desc:'Preparation of a comprehensive survey on geometric dynamic data structures, covering the current state of the art in data structures for dynamic geometric problems.',
+      collaborators: [],
+      status: 'In Preparation',
       link: null,
       isThesis: false
     }
@@ -3654,8 +3841,12 @@
       titleEl.textContent = item.title;
 
       var statusEl = document.createElement('span');
-      var statusLower = (item.status || '').toLowerCase();
-      statusEl.className = item.isThesis ? 'wip-thesis-badge' : ('wip-status-badge' + (statusLower === 'submitted' ? ' submitted' : ''));
+      var statusLower = (item.status || '').toLowerCase().replace(/\s+/g, '-');
+      var statusClass = 'wip-status-badge';
+      if(statusLower === 'submitted' || statusLower === 'submitted-to-conference') statusClass += ' submitted';
+      else if(statusLower === 'in-preparation') statusClass += ' in-preparation';
+      else if(statusLower === 'in-progress') statusClass += ' in-progress';
+      statusEl.className = item.isThesis ? 'wip-thesis-badge' : statusClass;
       statusEl.textContent = item.isThesis ? ('🎓 ' + item.status) : (item.status || 'In Progress');
 
       topRow.appendChild(titleEl);
