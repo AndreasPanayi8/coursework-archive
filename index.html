@@ -3657,21 +3657,26 @@
     }
   }
 
+  // ── Archimedes panel state ──
+  var archRootDir = null;          // the manifest dir node for Archimedes
+  var archCurrentDir = null;       // which dir is currently shown in the right panel
+  var archPathStack = [];          // stack of {name, dir} for breadcrumb navigation
+
   function showArchimedesPanel() {
     document.querySelectorAll('.folder, .wip-folder-row').forEach(function(el){ el.classList.remove('active'); });
     var archRow = document.getElementById('archimedesFolderRow');
     if(archRow) archRow.classList.add('active');
 
     // Find the Archimedes folder in the manifest by trying common name variants
-    var archDir = null;
+    archRootDir = null;
     if(manifestData && manifestData.dirs) {
-      archDir = manifestData.dirs.find(function(d){
+      archRootDir = manifestData.dirs.find(function(d){
         var n = d.name.toLowerCase();
         return n === 'archimedes research unit' || n === 'archimedes' || n.startsWith('archimedes');
       });
     }
 
-    if(!archDir) {
+    if(!archRootDir) {
       panelPath.innerHTML = '🏛️ Archimedes Research Unit';
       panelCount.textContent = '';
       currentFiles = [];
@@ -3686,22 +3691,10 @@
       return;
     }
 
-    // Count all files recursively
-    function countAllFiles(dir) {
-      var c = (dir.files ? dir.files.length : 0);
-      if(dir.dirs) dir.dirs.forEach(function(d){ c += countAllFiles(d); });
-      return c;
-    }
-    var totalCount = countAllFiles(archDir);
-
-    panelPath.innerHTML = '🏛️ Archimedes Research Unit';
-    panelCount.textContent = totalCount + ' file' + (totalCount !== 1 ? 's' : '');
-    updateBreadcrumb([]);
-    filesEl.innerHTML = '';
-    currentFiles = [];
-
-    // Render the directory tree inline in the panel, starting from archDir
-    renderArchimedesDir(archDir, filesEl, archDir.path);
+    // Start at root of Archimedes dir
+    archPathStack = [];
+    archCurrentDir = archRootDir;
+    renderArchimedesView();
 
     scrollToPanel();
     if(window.innerWidth <= 1024) {
@@ -3710,61 +3703,139 @@
     }
   }
 
-  function renderArchimedesDir(dir, container, basePath) {
-    // If this dir has direct files, show them as cards first
+  function countAllArchFiles(dir) {
+    var c = (dir.files ? dir.files.length : 0);
+    if(dir.dirs) dir.dirs.forEach(function(d){ c += countAllArchFiles(d); });
+    return c;
+  }
+
+  function renderArchimedesView() {
+    var dir = archCurrentDir;
+
+    // ── Panel header ──
+    panelPath.innerHTML = '🏛️ Archimedes Research Unit';
+
+    // Collect only the direct files in this dir (not recursive) for the right panel
+    var fileItems = [];
     if(dir.files && dir.files.length > 0) {
-      var fileItems = dir.files.map(function(f){
-        return { src: dir.path + '/' + f, title: f };
+      dir.files.forEach(function(f){
+        fileItems.push({ src: dir.path + '/' + f, title: f });
       });
       fileItems.sort(function(a,b){ return (a.title||'').localeCompare(b.title||''); });
-      // Assign indices within the full flattened set for lightbox navigation
-      var startIdx = currentFiles.length;
-      fileItems.forEach(function(it){ currentFiles.push(it); });
-      fileItems.forEach(function(it, i){ renderFileCard(it, startIdx + i); });
+    }
+    panelCount.textContent = fileItems.length + ' file' + (fileItems.length !== 1 ? 's' : '');
+    currentFiles = fileItems;
+    filesEl.innerHTML = '';
+
+    // ── Breadcrumb for Archimedes internal navigation ──
+    // We build a custom breadcrumb inside the panel (not the global one)
+    updateBreadcrumb([]);  // clear global breadcrumb
+
+    if(archPathStack.length > 0) {
+      // Back button / path row at top of panel (full-width)
+      var breadRow = document.createElement('div');
+      breadRow.style.cssText = 'grid-column:1/-1;display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap;';
+
+      // "Root" link
+      var rootLink = document.createElement('span');
+      rootLink.style.cssText = 'color:var(--accent);cursor:pointer;font-size:14px;font-weight:600;padding:4px 8px;border-radius:6px;transition:background 0.15s;';
+      rootLink.textContent = '🏛️ Archimedes';
+      rootLink.addEventListener('mouseenter', function(){ this.style.background='var(--accent-soft)'; });
+      rootLink.addEventListener('mouseleave', function(){ this.style.background=''; });
+      rootLink.addEventListener('click', function(){
+        archPathStack = [];
+        archCurrentDir = archRootDir;
+        renderArchimedesView();
+      });
+      breadRow.appendChild(rootLink);
+
+      // Intermediate path segments
+      archPathStack.forEach(function(step, idx) {
+        var sep = document.createElement('span');
+        sep.style.cssText = 'color:var(--muted);font-size:14px;';
+        sep.textContent = '›';
+        breadRow.appendChild(sep);
+
+        if(idx < archPathStack.length - 1) {
+          var link = document.createElement('span');
+          link.style.cssText = 'color:var(--accent);cursor:pointer;font-size:14px;font-weight:600;padding:4px 8px;border-radius:6px;transition:background 0.15s;';
+          link.textContent = step.name;
+          link.addEventListener('mouseenter', function(){ this.style.background='var(--accent-soft)'; });
+          link.addEventListener('mouseleave', function(){ this.style.background=''; });
+          (function(capturedIdx){
+            link.addEventListener('click', function(){
+              archPathStack = archPathStack.slice(0, capturedIdx + 1);
+              archCurrentDir = archPathStack[capturedIdx].dir;
+              renderArchimedesView();
+            });
+          })(idx);
+          breadRow.appendChild(link);
+        } else {
+          // Last segment — plain text (current dir)
+          var cur = document.createElement('span');
+          cur.style.cssText = 'font-size:14px;color:var(--text);font-weight:600;padding:4px 8px;';
+          cur.textContent = step.name;
+          breadRow.appendChild(cur);
+        }
+      });
+
+      filesEl.appendChild(breadRow);
     }
 
-    // Then render subdirectory section headers + their contents
+    // ── Subfolder rows (like coursework archive folders) ──
     if(dir.dirs && dir.dirs.length > 0) {
-      dir.dirs.forEach(function(subdir) {
-        function countAllFiles(d) {
-          var c = (d.files ? d.files.length : 0);
-          if(d.dirs) d.dirs.forEach(function(dd){ c += countAllFiles(dd); });
-          return c;
-        }
-        var subCount = countAllFiles(subdir);
-        if(subCount === 0) return; // skip empty dirs
+      dir.dirs.forEach(function(subdir){
+        var subCount = countAllArchFiles(subdir);
+        if(subCount === 0) return; // skip empty
 
-        // Folder header row (collapsible)
-        var folderHeader = document.createElement('div');
-        folderHeader.style.cssText = 'grid-column:1/-1;display:flex;align-items:center;gap:10px;padding:14px 18px;margin-top:16px;background:var(--bg);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:background 0.2s,border-color 0.2s;user-select:none;';
-        folderHeader.innerHTML = `
-          <span style="font-size:16px;flex-shrink:0;transition:transform 0.25s" class="arch-caret">▶</span>
-          <span style="font-size:16px;flex-shrink:0" class="arch-folder-icon">📁</span>
-          <span style="font-weight:600;font-size:15px;color:var(--text);flex:1">${escapeHtml(subdir.name)}</span>
-          <span style="background:var(--card);color:var(--text-secondary);padding:3px 10px;border-radius:12px;font-size:12px;font-weight:700;border:1px solid var(--border);">${subCount}</span>
+        var folderCard = document.createElement('div');
+        folderCard.style.cssText = 'grid-column:1/-1;display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--card);border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all 0.22s;position:relative;';
+
+        // Left accent bar (like .folder::before)
+        folderCard.innerHTML = `
+          <span style="font-size:20px;flex-shrink:0">📁</span>
+          <span style="font-weight:600;font-size:15px;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(subdir.name)}</span>
+          <span style="background:var(--bg);color:var(--text-secondary);padding:4px 12px;border-radius:14px;font-size:12px;font-weight:700;border:1px solid var(--border);flex-shrink:0;">${subCount}</span>
+          <span style="color:var(--accent);font-size:18px;flex-shrink:0;">›</span>
         `;
-        container.appendChild(folderHeader);
 
-        // Subdir content container (collapsed by default)
-        var subdirContainer = document.createElement('div');
-        subdirContainer.style.cssText = 'grid-column:1/-1;display:none;';
-        subdirContainer.className = 'files';
-        container.appendChild(subdirContainer);
-
-        var expanded = false;
-        folderHeader.addEventListener('click', function() {
-          expanded = !expanded;
-          subdirContainer.style.display = expanded ? 'grid' : 'none';
-          var caretEl = folderHeader.querySelector('.arch-caret');
-          var folderIconEl = folderHeader.querySelector('.arch-folder-icon');
-          if(caretEl) caretEl.style.transform = expanded ? 'rotate(90deg)' : '';
-          if(folderIconEl) folderIconEl.textContent = expanded ? '📂' : '📁';
-          folderHeader.style.borderColor = expanded ? 'var(--accent)' : 'var(--border)';
-          if(expanded && subdirContainer.childElementCount === 0) {
-            renderArchimedesDir(subdir, subdirContainer, subdir.path);
-          }
+        folderCard.addEventListener('mouseenter', function(){
+          this.style.borderColor = 'var(--accent)';
+          this.style.background = 'var(--bg)';
+          this.style.transform = 'translateX(4px)';
+          this.querySelector('span:first-child').textContent = '📂';
         });
+        folderCard.addEventListener('mouseleave', function(){
+          this.style.borderColor = 'var(--border)';
+          this.style.background = 'var(--card)';
+          this.style.transform = '';
+          this.querySelector('span:first-child').textContent = '📁';
+        });
+
+        (function(capturedSubdir){
+          folderCard.addEventListener('click', function(){
+            archPathStack.push({ name: capturedSubdir.name, dir: capturedSubdir });
+            archCurrentDir = capturedSubdir;
+            renderArchimedesView();
+          });
+        })(subdir);
+
+        filesEl.appendChild(folderCard);
       });
+    }
+
+    // ── File cards for direct files in this dir ──
+    if(fileItems.length > 0) {
+      fileItems.forEach(function(it, index){ renderFileCard(it, index); });
+    }
+
+    // ── Empty state ──
+    if((!dir.dirs || dir.dirs.every(function(d){ return countAllArchFiles(d)===0; })) && fileItems.length === 0) {
+      var emptyEl = document.createElement('div');
+      emptyEl.className = 'welcome';
+      emptyEl.style.gridColumn = '1/-1';
+      emptyEl.innerHTML = '<div class="welcome-icon">📂</div><h2>Empty folder</h2><p>No files here yet.</p>';
+      filesEl.appendChild(emptyEl);
     }
   }
 
