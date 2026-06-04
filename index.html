@@ -2710,7 +2710,7 @@
         </div>
         <div class="exp-entry">
           <div class="exp-header">
-            <div class="exp-role">Research Intern — Data Management &amp; Big Data</div>
+            <div class="exp-role">Research &amp; Implementation Intern — Data Management &amp; Big Data</div>
             <div class="exp-date">2025 – Present</div>
           </div>
           <div class="exp-org">Research &amp; Innovation Foundation of Cyprus</div>
@@ -2907,6 +2907,16 @@
         <span>Archimedes Research Unit</span>
       </span>
       <span class="wip-badge">8</span>
+    </div>
+
+    <hr class="tree-divider" data-static>
+    <div class="tree-section-label" data-static>👤 Personal</div>
+    <div class="wip-folder-row" id="cvFolderRow" role="button" tabindex="0" data-static>
+      <span class="name">
+        <span style="font-size:16px;flex-shrink:0">📄</span>
+        <span>CV</span>
+      </span>
+      <span class="wip-badge">2</span>
     </div>
 
     <hr class="tree-divider">
@@ -3255,6 +3265,8 @@
     
     if(manifest.files && Array.isArray(manifest.files)){
       manifest.files.forEach(file => {
+        // Exclude CV files — they have their own dedicated tab
+        if(file.toLowerCase().startsWith('cv')) return;
         root.files.push({ src: file, title: file });
       });
     }
@@ -3547,6 +3559,19 @@
       archRow.addEventListener('click', showArchimedesPanel);
       archRow.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' ') showArchimedesPanel(); });
     }
+    // Wire up CV row click once
+    const cvRow = document.getElementById('cvFolderRow');
+    if(cvRow && !cvRow._cvBound) {
+      cvRow._cvBound = true;
+      cvRow.addEventListener('click', showCvPanel);
+      cvRow.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' ') showCvPanel(); });
+    }
+    // Update CV badge with real count from manifest
+    const cvBadge = document.querySelector('#cvFolderRow .wip-badge');
+    if(cvBadge && manifestData && manifestData.files) {
+      const cvCount = manifestData.files.filter(function(f){ return f.toLowerCase().startsWith('cv'); }).length;
+      if(cvCount) cvBadge.textContent = cvCount;
+    }
   }
 
   function renderProjectsSidebar() {
@@ -3570,6 +3595,13 @@
       archRow._archBound = true;
       archRow.addEventListener('click', showArchimedesPanel);
       archRow.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' ') showArchimedesPanel(); });
+    }
+    // Wire up the CV row
+    const cvRow = document.getElementById('cvFolderRow');
+    if(cvRow && !cvRow._cvBound) {
+      cvRow._cvBound = true;
+      cvRow.addEventListener('click', showCvPanel);
+      cvRow.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' ') showCvPanel(); });
     }
   }
 
@@ -3607,12 +3639,20 @@
     var extraRow = document.createElement('div');
     extraRow.style.cssText = 'grid-column:1/-1;display:flex;flex-direction:column;gap:16px;margin-top:8px;max-width:720px;';
 
-    // ALMA repository link
+    // Institutional repository links box (Pergamos first, then ALMA)
     var almaBox = document.createElement('div');
     almaBox.className = 'thesis-video-box';
     almaBox.style.marginTop = '0';
     almaBox.innerHTML = `
       <div class="thesis-video-box-title">🎓 Institutional Repository</div>
+      <a class="thesis-video-link" href="https://pergamos.lib.uoa.gr/uoa/dl/object/5402752" target="_blank" rel="noopener">
+        <span class="tv-icon">🔗</span>
+        <div>
+          <div class="tv-label">Pergamos — University of Athens Library</div>
+          <div class="tv-sub">pergamos.lib.uoa.gr</div>
+        </div>
+        <span class="tv-arrow">↗</span>
+      </a>
       <a class="thesis-video-link" href="http://alma.di.uoa.gr/node/743" target="_blank" rel="noopener">
         <span class="tv-icon">🔗</span>
         <div>
@@ -3650,6 +3690,37 @@
     extraRow.appendChild(videoBox);
 
     filesEl.appendChild(extraRow);
+    scrollToPanel();
+    if(window.innerWidth <= 1024) {
+      sidebarOpen = false;
+      updateToggleState();
+    }
+  }
+
+  function showCvPanel() {
+    document.querySelectorAll('.folder, .wip-folder-row').forEach(function(el){ el.classList.remove('active'); });
+    var cvRow = document.getElementById('cvFolderRow');
+    if(cvRow) cvRow.classList.add('active');
+
+    // Pull CV files from manifest root files
+    var cvFiles = [];
+    if(manifestData && manifestData.files) {
+      manifestData.files.forEach(function(f){
+        if(f.toLowerCase().startsWith('cv')) {
+          cvFiles.push({ src: f, title: f });
+        }
+      });
+    }
+    cvFiles.sort(function(a,b){ return (a.title||'').localeCompare(b.title||''); });
+
+    panelPath.innerHTML = '📄 CV';
+    panelCount.textContent = cvFiles.length + ' file' + (cvFiles.length !== 1 ? 's' : '');
+    currentFiles = cvFiles;
+    updateBreadcrumb([]);
+    filesEl.innerHTML = '';
+
+    cvFiles.forEach(function(it, index){ renderFileCard(it, index); });
+
     scrollToPanel();
     if(window.innerWidth <= 1024) {
       sidebarOpen = false;
@@ -3925,7 +3996,7 @@
     },
     {
       icon:'🗄️',
-      title:'Research Internship — Research and Innovation Foundation of Cyprus',
+      title:'Research &amp; Implementation Internship — Research and Innovation Foundation of Cyprus',
       desc:'A research internship supported by the Research and Innovation Foundation of Cyprus at a company specializing in research, innovation, and education across data management, big data, data reduction, data compression, and data decay. The role spans the full pipeline, from early-stage research and design to proof-of-concept deployment for international markets.',
       collaborators: [],
       status: 'In Progress',
