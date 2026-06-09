@@ -3,7 +3,9 @@
 This repository contains selected coursework, presentations, notes, code, and research-related material.
 
 Personal Webpage: https://andreaspanayi8.github.io/coursework-archive/
+
 Google Scholar: https://scholar.google.com/citations?user=ZMQ-fdQAAAAJ&hl=en&oi=ao
+
 ORCiD: https://orcid.org/0009-0007-2703-5130
 
 ## License
