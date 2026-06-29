@@ -3132,8 +3132,10 @@
     #archiveView { padding:12px 10px 0; }
     .archive-header { border-radius:12px; }
     .archive-header-inner { align-items:flex-start; }
-    .summary { justify-content:flex-start; }
+    .header-content { width:100%; flex-shrink:1; }
+    .summary { width:100%; justify-content:flex-start; flex-wrap:wrap; }
     .summary-badge { padding:8px 11px; }
+    .summary-badge span:not(.badge-icon):not(.badge-label) { font-size:15px; }
     .panel { padding:16px; }
     .panel-header { align-items:stretch; }
     .view-options { justify-content:flex-start; }
@@ -3196,6 +3198,28 @@
     .hp-card { break-inside:avoid; box-shadow:none; }
   }
 
+  /* ── Scroll containment: stop scroll-chaining/rubber-band bleed on mobile ── */
+  #tree,
+  .code-content,
+  .lb-container,
+  .files {
+    overscroll-behavior:contain;
+  }
+  .breadcrumb {
+    overscroll-behavior-x:contain;
+  }
+
+  /* ── Tap feedback: press states for touch (tap-highlight is transparent) ── */
+  .explore-card:active { transform:scale(0.985); }
+  .hero-btn:active { transform:translateY(1px) scale(0.98); }
+  .nav-tab:active { transform:scale(0.96); }
+  .summary-badge:active { transform:scale(0.95); }
+  .view-btn:active { transform:scale(0.92); }
+  .theme-toggle:active { transform:scale(0.92); }
+  .lb-btn:active,
+  .lb-nav-btn:active { transform:scale(0.94); }
+  .wip-list-item:active { transform:translateX(2px); }
+
 </style>
 </head>
 <body>
@@ -3253,7 +3277,7 @@
           </a>
         </div>
         <div class="hero-actions">
-          <button type="button" class="hero-btn hero-btn-primary" onclick="showView('archive')">Browse coursework <span aria-hidden="true">→</span></button>
+          <button type="button" class="hero-btn hero-btn-primary" onclick="showView('archive')">Browse archive <span aria-hidden="true">→</span></button>
           <button type="button" class="hero-btn hero-btn-secondary" onclick="goToWip()">Current work</button>
         </div>
       </div><!-- /.hero-text -->
@@ -3493,14 +3517,14 @@
     <div class="hp-explore-row">
       <a class="explore-card explore-card-archive" onclick="showView('archive')" role="button" tabindex="0">
         <div class="explore-card-icon">📚</div>
-        <div class="explore-card-title">Coursework Archive</div>
-        <div class="explore-card-desc">Browse all coursework, research notes, presentations, and code implementations from my studies.</div>
+        <div class="explore-card-title">Coursework and Project Archive</div>
+        <div class="explore-card-desc">Browse all coursework, research notes, presentations, code implementations, and more.</div>
         <div class="explore-card-arrow">Explore Archive →</div>
       </a>
       <a class="explore-card explore-card-wip" onclick="goToWip()" role="button" tabindex="0">
         <div class="explore-card-icon">🔬</div>
         <div class="explore-card-title">Currently Working On</div>
-        <div class="explore-card-desc">Active research projects, papers in preparation, and ongoing implementations.</div>
+        <div class="explore-card-desc">Active research projects, papers in preparation, ongoing implementations, and more.</div>
         <div class="explore-card-arrow">View Projects →</div>
       </a>
     </div>
@@ -5307,6 +5331,16 @@
     if (window.scrollY > 400) bttBtn.classList.add('visible');
     else bttBtn.classList.remove('visible');
   }, { passive: true });
+
+  // Keyboard activation for the Home explore cards (role=button)
+  document.querySelectorAll('.explore-card[role="button"]').forEach(function(card){
+    card.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        card.click();
+      }
+    });
+  });
 
   if(location.hash === '#archive') showView('archive');
 </script>
