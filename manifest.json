@@ -2,14 +2,14 @@
   "name": "coursework-archive",
   "path": ".",
   "files": [
-    ".DS_Store",
     "CV - Academic.pdf",
     "CV - Tech.pdf",
     "LICENSE",
     "README.md",
     "gen_manifest.py",
     "index.html",
-    "manifest.json"
+    "manifest.json",
+    "og-image.png"
   ],
   "dirs": [
     {
@@ -148,7 +148,9 @@
               "path": "Exercises and Labs by Course/Blockchain Foundations/Theory Exercises",
               "files": [
                 "Theory Exercises 1.pdf",
-                "Theory Exercises 2.pdf"
+                "Theory Exercises 2.pdf",
+                "Theory Exercises 3.pdf",
+                "Theory Exercises 4.pdf"
               ],
               "dirs": []
             }
