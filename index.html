@@ -10,6 +10,45 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&display=swap" rel="stylesheet" />
 <title>Andreas Panayi</title>
 <meta name="description" content="Andreas Panayi – MSc Theoretical Computer Science, algorithms and data structures researcher at NKUA/NTUA, Athens">
+<meta name="author" content="Andreas Panayi">
+<link rel="canonical" href="https://REPLACE-WITH-YOUR-DOMAIN/">
+
+<!-- Favicon (self-contained SVG monogram; no external file needed) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2764%27%20height%3D%2764%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20width%3D%2764%27%20height%3D%2764%27%20rx%3D%2714%27%20fill%3D%27%2315161a%27%2F%3E%3Crect%20x%3D%272.5%27%20y%3D%272.5%27%20width%3D%2759%27%20height%3D%2759%27%20rx%3D%2712.5%27%20fill%3D%27none%27%20stroke%3D%27%23ffffff%27%20stroke-opacity%3D%270.14%27%20stroke-width%3D%271.5%27%2F%3E%3Ctext%20x%3D%2732%27%20y%3D%2733%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27central%27%20font-family%3D%27Georgia%2C%20serif%27%20font-weight%3D%27700%27%20font-size%3D%2729%27%20fill%3D%27%2360a5fa%27%3EAP%3C%2Ftext%3E%3C%2Fsvg%3E">
+
+<!-- Open Graph (link previews on LinkedIn, Slack, WhatsApp, Facebook, etc.) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Andreas Panayi">
+<meta property="og:title" content="Andreas Panayi — Theoretical Computer Science">
+<meta property="og:description" content="MSc Theoretical Computer Science at NKUA/NTUA, Athens. Algorithms, data structures, and computational complexity — research, coursework, and project archive.">
+<meta property="og:image" content="og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Andreas Panayi — Theoretical Computer Science">
+<meta property="og:url" content="https://REPLACE-WITH-YOUR-DOMAIN/">
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Andreas Panayi — Theoretical Computer Science">
+<meta name="twitter:description" content="MSc Theoretical Computer Science at NKUA/NTUA, Athens. Algorithms, data structures, and computational complexity — research, coursework, and project archive.">
+<meta name="twitter:image" content="og-image.png">
+
+<!-- Structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Andreas Panayi",
+  "jobTitle": "MSc Theoretical Computer Science Researcher",
+  "description": "Algorithms, data structures, and computational complexity researcher.",
+  "affiliation": [
+    {"@type": "CollegeOrUniversity", "name": "National and Kapodistrian University of Athens"},
+    {"@type": "CollegeOrUniversity", "name": "National Technical University of Athens"}
+  ],
+  "knowsAbout": ["Fine-Grained Algorithms", "Parameterized Algorithms", "Computational Complexity", "Graph Theory", "Data Structures"],
+  "sameAs": ["https://scholar.google.com/citations?user=ZMQ-fdQAAAAJ", "https://github.com/AndreasPanayi8"]
+}
+</script>
 
 <script>
   /* Apply the saved theme before first paint; otherwise follow the OS preference. */
@@ -3540,7 +3579,7 @@
   <div class="archive-header-inner">
     <div class="archive-header-text">
       <div class="hero-eyebrow">Archive</div>
-      <h1 class="archive-title">Coursework Archive</h1>
+      <h1 class="archive-title">Coursework and Project Archive</h1>
       <p class="subtitle">Theoretical Computer Science — coursework, research, presentations, and implementations</p>
     </div>
     <div class="header-content">
@@ -3702,8 +3741,10 @@
     tabArchive.classList.toggle('active', !showingHome);
     tabHome.setAttribute('aria-pressed', String(showingHome));
     tabArchive.setAttribute('aria-pressed', String(!showingHome));
+    if(showingHome){ tabHome.setAttribute('aria-current','page'); tabArchive.removeAttribute('aria-current'); }
+    else { tabArchive.setAttribute('aria-current','page'); tabHome.removeAttribute('aria-current'); }
     searchWrapper.style.display = showingHome ? 'none' : '';
-    document.title = showingHome ? 'Andreas Panayi' : 'Coursework Archive — Andreas Panayi';
+    document.title = showingHome ? 'Andreas Panayi' : 'Coursework and Project Archive — Andreas Panayi';
     try { history.replaceState(null, '', showingHome ? '#home' : '#archive'); } catch(e) {}
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -4156,7 +4197,7 @@
       <div class="welcome" style="grid-column:1/-1">
         <div class="welcome-icon">📂</div>
         <h2>Explore the Repository</h2>
-        <p>Select a folder from the navigation to browse coursework, research papers, presentations, and code implementations</p>
+        <p>Select a folder from the navigation to browse coursework, projects, research, presentations, code implementations, and more</p>
         <div style="margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
           <div style="background:var(--bg);padding:12px 20px;border-radius:12px;border:1px solid var(--border);">
             <div style="font-size:24px;font-weight:700;color:var(--accent);">${allFiles.length}</div>
