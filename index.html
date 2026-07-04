@@ -974,9 +974,7 @@
   }
   
   .welcome-icon{
-    font-size:80px;
     margin-bottom:24px;
-    animation:float 3s ease-in-out infinite;
   }
   
   @keyframes float{
@@ -3259,6 +3257,19 @@
   .lb-nav-btn:active { transform:scale(0.94); }
   .wip-list-item:active { transform:translateX(2px); }
 
+  /* ===== MONOCHROME ICON SYSTEM (professional pass) ===== */
+  .hp-card-icon, .award-icon, .badge-icon, .explore-card-icon, .wip-list-icon,
+  .tv-icon, .venue-icon, .folder-icon, .welcome-icon {
+    display:inline-flex; align-items:center; justify-content:center; line-height:1;
+  }
+  .hp-card-icon, .wip-list-icon, .award-icon, .explore-card-icon, .tv-icon { color:var(--accent); }
+  .welcome-icon { color:var(--muted); }
+  .welcome-icon svg { stroke-width:1.25; }
+  .thumb-icon { color:var(--muted); display:flex; align-items:center; justify-content:center; }
+  .thumb-icon svg { stroke-width:1.25; }
+  .venue-icon { color:var(--muted); }
+  .sidebar-row-icon { flex-shrink:0; display:inline-flex; align-items:center; color:var(--accent); }
+
 </style>
 </head>
 <body>
@@ -3272,10 +3283,10 @@
   </div>
   <div class="nav-right">
     <div class="nav-search-wrapper" id="navSearchWrapper" style="display:none">
-      <span class="search-icon">🔍</span>
+      <span class="search-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>
       <input type="search" id="search" placeholder="Search files…" autocomplete="off" aria-label="Search archive files" />
     </div>
-    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch theme" title="Switch theme"><span aria-hidden="true">☾</span></button>
+    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch theme" title="Switch theme"><span aria-hidden="true" style="display:inline-flex;align-items:center"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></span></button>
   </div>
 </nav>
 
@@ -3330,7 +3341,7 @@
       <!-- Education -->
       <div class="hp-card" id="education">
         <div class="hp-card-header">
-          <span class="hp-card-icon">🎓</span>
+          <span class="hp-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></span>
           <span class="hp-card-title">Education</span>
         </div>
         <div class="edu-entry">
@@ -3358,7 +3369,7 @@
       <!-- Experience -->
       <div class="hp-card" id="experience">
         <div class="hp-card-header">
-          <span class="hp-card-icon">💼</span>
+          <span class="hp-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg></span>
           <span class="hp-card-title">Experience</span>
         </div>
         <div class="exp-entry">
@@ -3391,7 +3402,7 @@
       <div class="hp-card" id="publications">
         <div class="hp-card-header" style="justify-content:space-between;flex-wrap:wrap;gap:8px;">
           <div style="display:flex;align-items:center;gap:10px;">
-            <span class="hp-card-icon">⚡</span>
+            <span class="hp-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span>
             <span class="hp-card-title">Research &amp; Publications</span>
           </div>
           <a href="https://scholar.google.com/citations?user=ZMQ-fdQAAAAJ&hl=en&oi=ao" target="_blank" rel="noopener" class="scholar-link" title="Google Scholar Profile">
@@ -3403,7 +3414,7 @@
           <div class="pub-title">Listing Even Cycles Faster than the Submodular-Width Barrier</div>
           <div class="pub-authors"><strong>Andreas Panayi</strong>, Vasilis Nakos, Hung Q. Ngo</div>
           <div class="pub-venue-row">
-            <span class="pub-status submitted">✅ Submitted to Conference</span>
+            <span class="pub-status submitted">Submitted to Conference</span>
             <a href="https://arxiv.org/abs/2605.30564" target="_blank" rel="noopener" class="pub-arxiv-link">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
               arXiv:2605.30564
@@ -3417,7 +3428,7 @@
           <div class="pub-title">Faster Even-Cycle Listing via Unbalanced Supersaturation</div>
           <div class="pub-authors"><strong>Andreas Panayi</strong></div>
           <div class="pub-venue-row">
-            <span class="pub-status submitted">🎓 B.Sc. Thesis</span>
+            <span class="pub-status submitted">B.Sc. Thesis</span>
             <a href="https://pergamos.lib.uoa.gr/en/item/uoadl:5402752" target="_blank" rel="noopener" class="pub-arxiv-link">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
               Pergamos &mdash; NKUA
@@ -3432,7 +3443,7 @@
       <!-- Research Interests -->
       <div class="hp-card" id="research-interests">
         <div class="hp-card-header">
-          <span class="hp-card-icon">🔭</span>
+          <span class="hp-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88"/></svg></span>
           <span class="hp-card-title">Research Interests</span>
         </div>
 
@@ -3486,46 +3497,49 @@
       <!-- Skills -->
       <div class="hp-card full">
         <div class="hp-card-header">
-          <span class="hp-card-icon">⚙️</span>
+          <span class="hp-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
           <span class="hp-card-title">Technical Skills</span>
         </div>
         <div class="skills-section-label">Primary Languages</div>
         <div class="skill-chips">
-          <span class="skill-chip primary">🐍 Python</span>
-          <span class="skill-chip primary">🟦 TypeScript</span>
-          <span class="skill-chip primary">📐 MATLAB</span>
+          <span class="skill-chip primary">Python</span>
+          <span class="skill-chip primary">TypeScript</span>
+          <span class="skill-chip primary">C++</span>
         </div>
         <div class="skills-section-label">Working Knowledge</div>
         <div class="skill-chips">
-          <span class="skill-chip">⚡ C++</span>
-          <span class="skill-chip">🔢 Julia</span>
-          <span class="skill-chip">📊 R</span>
-          <span class="skill-chip">λ Haskell</span>
-          <span class="skill-chip">🔮 Prolog</span>
+          <span class="skill-chip">MATLAB</span>
+          <span class="skill-chip">SQL</span>
+          <span class="skill-chip">Julia</span>
+          <span class="skill-chip">R</span>
+          <span class="skill-chip">Haskell</span>
+          <span class="skill-chip">Prolog</span>
         </div>
         <div class="skills-section-label">Tools &amp; Systems</div>
         <div class="skill-chips">
-          <span class="skill-chip">🔧 Git / GitHub</span>
-          <span class="skill-chip">🐧 Linux</span>
-          <span class="skill-chip">📡 SSH</span>
-          <span class="skill-chip">📄 LaTeX / XeLaTeX</span>
-          <span class="skill-chip">☁️ Remote Deployment</span>
+          <span class="skill-chip">Git / GitHub</span>
+          <span class="skill-chip">Docker</span>
+          <span class="skill-chip">PostgreSQL</span>
+          <span class="skill-chip">Linux</span>
+          <span class="skill-chip">SSH</span>
+          <span class="skill-chip">LaTeX / XeLaTeX</span>
+          <span class="skill-chip">Remote Deployment</span>
         </div>
         <div class="skills-section-label">Languages</div>
         <div class="skill-chips">
-          <span class="skill-chip primary">🇬🇷 Greek (native)</span>
-          <span class="skill-chip primary">🇬🇧 English (fluent)</span>
+          <span class="skill-chip primary">Greek (native)</span>
+          <span class="skill-chip primary">English (fluent)</span>
         </div>
       </div>
 
       <!-- Awards & Athletics -->
       <div class="hp-card full">
         <div class="hp-card-header">
-          <span class="hp-card-icon">🏆</span>
+          <span class="hp-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></span>
           <span class="hp-card-title">Scholarships &amp; Distinctions</span>
         </div>
         <div class="award-entry">
-          <span class="award-icon">🎖️</span>
+          <span class="award-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></span>
           <div>
             <div class="award-title">Cyprus State Scholarships Foundation</div>
             <div class="award-meta">2020 – 2026</div>
@@ -3533,7 +3547,7 @@
           </div>
         </div>
         <div class="award-entry">
-          <span class="award-icon">🏦</span>
+          <span class="award-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></span>
           <div>
             <div class="award-title">Hellenic Bank Cyprus</div>
             <div class="award-meta">2020 – 2024</div>
@@ -3541,7 +3555,7 @@
           </div>
         </div>
         <div class="award-entry">
-          <span class="award-icon">🏅</span>
+          <span class="award-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></span>
           <div>
             <div class="award-title">Cyprus National Athletics Team</div>
             <div class="award-meta">International competitions, all age categories</div>
@@ -3555,13 +3569,13 @@
     <!-- Explore CTA -->
     <div class="hp-explore-row">
       <a class="explore-card explore-card-archive" onclick="showView('archive')" role="button" tabindex="0">
-        <div class="explore-card-icon">📚</div>
+        <div class="explore-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg></div>
         <div class="explore-card-title">Coursework and Project Archive</div>
         <div class="explore-card-desc">Browse all coursework, research notes, presentations, code implementations, and more.</div>
         <div class="explore-card-arrow">Explore Archive →</div>
       </a>
       <a class="explore-card explore-card-wip" onclick="goToWip()" role="button" tabindex="0">
-        <div class="explore-card-icon">🔬</div>
+        <div class="explore-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/><path d="M6.453 15h11.094"/><path d="M8.5 2h7"/></svg></div>
         <div class="explore-card-title">Currently Working On</div>
         <div class="explore-card-desc">Active research projects, papers in preparation, ongoing implementations, and more.</div>
         <div class="explore-card-arrow">View Projects →</div>
@@ -3585,17 +3599,17 @@
     <div class="header-content">
       <div class="summary" id="stats">
         <div class="summary-badge" title="Total folders in repository">
-          <span class="badge-icon">📁</span>
+          <span class="badge-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg></span>
           <span id="folderCount">0</span>
           <span class="badge-label">Folders</span>
         </div>
         <div class="summary-badge" title="Total files in repository">
-          <span class="badge-icon">📄</span>
+          <span class="badge-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg></span>
           <span id="fileCount">0</span>
           <span class="badge-label">Files</span>
         </div>
         <div class="summary-badge" title="Number of courses covered">
-          <span class="badge-icon">📚</span>
+          <span class="badge-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span>
           <span id="courseCount">0</span>
           <span class="badge-label">Courses</span>
         </div>
@@ -3609,7 +3623,7 @@
 <main>
   <div id="sidebarWrapper">
     <button type="button" class="tree-toggle-btn" id="treeToggle" aria-expanded="true" aria-controls="tree">
-      <span>📂 Browse Repository</span>
+      <span style="display:inline-flex;align-items:center;gap:8px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg> Browse Repository</span>
       <i class="tree-toggle-chevron">▼</i>
     </button>
     <aside class="tree" id="tree">
@@ -3618,7 +3632,7 @@
 
     <div class="wip-folder-row" id="wipFolderRow" role="button" tabindex="0">
       <span class="name">
-        <span style="font-size:16px;flex-shrink:0">🔬</span>
+        <span class="sidebar-row-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/><path d="M6.453 15h11.094"/><path d="M8.5 2h7"/></svg></span>
         <span>Currently Working On</span>
       </span>
       <span class="wip-badge">3</span>
@@ -3627,37 +3641,37 @@
 
     <!-- Projects – data-static keeps buildTreeAndRender from wiping these -->
     <hr class="tree-divider" data-static>
-    <div class="tree-section-label" data-static>🛠️ Projects</div>
+    <div class="tree-section-label" data-static>Projects</div>
     <div class="wip-folder-row" id="projectsFolderRow" role="button" tabindex="0" data-static>
       <span class="name">
-        <span style="font-size:16px;flex-shrink:0">🏗️</span>
+        <span class="sidebar-row-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg></span>
         <span>Completed Projects &amp; Implementations</span>
       </span>
       <span class="wip-badge">5</span>
     </div>
 
     <hr class="tree-divider" data-static>
-    <div class="tree-section-label" data-static>🔬 Research</div>
+    <div class="tree-section-label" data-static>Research</div>
     <div class="wip-folder-row" id="researchFolderRow" role="button" tabindex="0" data-static>
       <span class="name">
-        <span style="font-size:16px;flex-shrink:0">📝</span>
+        <span class="sidebar-row-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg></span>
         <span>Master's Thesis</span>
       </span>
       <span class="wip-badge">1</span>
     </div>
     <div class="wip-folder-row" id="archimedesFolderRow" role="button" tabindex="0" data-static>
       <span class="name">
-        <span style="font-size:16px;flex-shrink:0">🏛️</span>
+        <span class="sidebar-row-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></span>
         <span>Archimedes Research Unit</span>
       </span>
       <span class="wip-badge">8</span>
     </div>
 
     <hr class="tree-divider" data-static>
-    <div class="tree-section-label" data-static>👤 Personal</div>
+    <div class="tree-section-label" data-static>Personal</div>
     <div class="wip-folder-row" id="cvFolderRow" role="button" tabindex="0" data-static>
       <span class="name">
-        <span style="font-size:16px;flex-shrink:0">📄</span>
+        <span class="sidebar-row-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg></span>
         <span>CV</span>
       </span>
       <span class="wip-badge">2</span>
@@ -3665,7 +3679,7 @@
 
     <hr class="tree-divider">
 
-    <div class="tree-section-label">📚 Completed Coursework</div>
+    <div class="tree-section-label">Completed Coursework</div>
 
     <!-- Coursework folders injected by JS -->
   </aside>
@@ -3674,7 +3688,7 @@
   <section class="panel">
     <div class="panel-header">
       <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;flex:1">
-        <div class="panel-title" id="panelPath">👋 Welcome</div>
+        <div class="panel-title" id="panelPath">Welcome</div>
         <div class="panel-count" id="panelCount"></div>
       </div>
       <div class="view-options">
@@ -3716,9 +3730,9 @@
       </div>
       <div class="lb-actions">
         <a href="#" class="lb-btn lb-btn-download" id="lb-download" download>
-          ⬇️ Download
+          <span style="display:inline-flex;align-items:center;gap:7px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg> Download</span>
         </a>
-        <button type="button" class="lb-btn lb-btn-close" id="lb-close">✕ Close</button>
+        <button type="button" class="lb-btn lb-btn-close" id="lb-close">Close</button>
       </div>
     </div>
     <div id="lb-content"></div>
@@ -3726,6 +3740,41 @@
 </div>
 
 <script>
+  // ── Inline SVG icon system (monochrome, stroke-based; matches hero icons) ──
+  const ICONS = {
+    'search': '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>',
+    'folder': '<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>',
+    'folder-open': '<path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/>',
+    'file': '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>',
+    'file-text': '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>',
+    'book': '<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>',
+    'graduation-cap': '<path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/>',
+    'briefcase': '<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/>',
+    'compass': '<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88"/>',
+    'code': '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
+    'award': '<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>',
+    'archive': '<rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/>',
+    'flask': '<path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/><path d="M6.453 15h11.094"/><path d="M8.5 2h7"/>',
+    'landmark': '<line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/>',
+    'globe': '<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>',
+    'chart': '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>',
+    'music': '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+    'database': '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/>',
+    'link': '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+    'layers': '<path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/>',
+    'map-pin': '<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',
+    'download': '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>',
+    'moon': '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
+    'sun': '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>',
+    'pen': '<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>',
+    'play': '<polygon points="6 3 20 12 6 21 6 3"/>',
+    'zap': '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10"/>'
+  };
+  function svgIcon(name, size) {
+    size = size || 16;
+    return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICONS[name] || ICONS.file) + '</svg>';
+  }
+
   // ===== VIEW SWITCHING =====
   function showView(view) {
     const homeView = document.getElementById('homeView');
@@ -3796,7 +3845,7 @@
 
   function updateThemeControl(theme) {
     const nextTheme = theme === 'dark' ? 'light' : 'dark';
-    themeToggle.querySelector('[aria-hidden="true"]').textContent = theme === 'dark' ? '☀' : '☾';
+    themeToggle.querySelector('[aria-hidden="true"]').innerHTML = theme === 'dark' ? svgIcon('sun', 17) : svgIcon('moon', 17);
     themeToggle.setAttribute('aria-label', `Switch to ${nextTheme} mode`);
     themeToggle.title = `Switch to ${nextTheme} mode`;
     if (themeColorMeta) themeColorMeta.content = theme === 'dark' ? '#0f1218' : '#ffffff';
@@ -3886,7 +3935,7 @@
       showWelcome();
     } catch(e){ 
       console.error('Failed to load manifest:', e);
-      treeEl.innerHTML += `<div style="padding:12px;color:var(--muted);font-size:13px;">⚠️ Could not load repository data</div>`;
+      treeEl.innerHTML += `<div style="padding:12px;color:var(--muted);font-size:13px;">Could not load repository data</div>`;
     }
   }
   
@@ -3963,7 +4012,7 @@
     }
     
     let html = '<div class="breadcrumb">';
-    html += '<span class="breadcrumb-item"><span class="breadcrumb-link" data-path="">🏠 Home</span></span>';
+    html += '<span class="breadcrumb-item"><span class="breadcrumb-link" data-path="">Home</span></span>';
     
     let accumulatedPath = '';
     pathParts.forEach((part, index) => {
@@ -4089,7 +4138,7 @@
       row.innerHTML = `
         <div class="name">
           <span class="caret">▶</span>
-          <span class="folder-icon">📁</span>
+          <span class="folder-icon">${svgIcon('folder', 16)}</span>
           <span title="${displayPath}">${child.name}</span>
         </div>
         <div class="folder-count">${fileCount}</div>
@@ -4106,7 +4155,7 @@
         const open = sub.style.display === 'block';
         sub.style.display = open ? 'none' : 'block';
         row.querySelector('.caret').classList.toggle('open', !open);
-        row.querySelector('.folder-icon').textContent = open ? '📁' : '📂';
+        row.querySelector('.folder-icon').innerHTML = open ? svgIcon('folder', 16) : svgIcon('folder-open', 16);
         row.setAttribute('aria-expanded', String(!open));
         
         if(!open && sub.childElementCount === 0){
@@ -4140,7 +4189,7 @@
       const fileCount = node.files.length;
       showBtn.innerHTML = `
         <div class="name">
-          <span class="folder-icon">📄</span>
+          <span class="folder-icon">${svgIcon('file', 16)}</span>
           <span>Files in this folder</span>
         </div>
         <div class="folder-count">${fileCount}</div>
@@ -4190,12 +4239,12 @@
     document.querySelectorAll('.folder').forEach(function(f){ f.classList.remove('active'); });
     const wipRow = document.getElementById('wipFolderRow');
     if(wipRow) wipRow.classList.remove('active');
-    panelPath.textContent = '👋 Welcome';
+    panelPath.textContent = 'Welcome';
     panelCount.textContent = '';
     currentFiles = [];
     filesEl.innerHTML = `
       <div class="welcome" style="grid-column:1/-1">
-        <div class="welcome-icon">📂</div>
+        <div class="welcome-icon">${svgIcon('folder-open', 56)}</div>
         <h2>Explore the Repository</h2>
         <p>Select a folder from the navigation to browse coursework, projects, research, presentations, code implementations, and more</p>
         <div style="margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
@@ -4204,11 +4253,11 @@
             <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">Total Files</div>
           </div>
           <div style="background:var(--bg);padding:12px 20px;border-radius:12px;border:1px solid var(--border);">
-            <div style="font-size:24px;font-weight:700;color:var(--accent);">📚</div>
+            <div style="display:flex;justify-content:center;color:var(--accent);">${svgIcon('book', 24)}</div>
             <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">Academic Content</div>
           </div>
           <div style="background:var(--bg);padding:12px 20px;border-radius:12px;border:1px solid var(--border);">
-            <div style="font-size:24px;font-weight:700;color:var(--accent);">🔍</div>
+            <div style="display:flex;justify-content:center;color:var(--accent);">${svgIcon('search', 24)}</div>
             <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">Searchable</div>
           </div>
         </div>
@@ -4218,7 +4267,7 @@
   }
 
   function showFiles(files, path){
-    panelPath.textContent = '📁 ' + path;
+    panelPath.textContent = path;
     panelCount.textContent = files.length + ' file' + (files.length !== 1 ? 's' : '');
     filesEl.innerHTML = '';
     currentFiles = files;
@@ -4265,10 +4314,9 @@
       v.style.objectFit='cover';
       thumb.appendChild(v);
     } else {
-      const icon = getFileIcon(ext);
       const iconEl = document.createElement('div');
-      iconEl.style.fontSize = '52px';
-      iconEl.textContent = icon;
+      iconEl.className = 'thumb-icon';
+      iconEl.innerHTML = svgIcon(getFileIcon(ext), 48);
       thumb.appendChild(iconEl);
     }
     
@@ -4292,16 +4340,16 @@
 
   function getFileIcon(ext){
     const icons = {
-      pdf: '📄', doc: '📝', docx: '📝', txt: '📝',
-      zip: '🗜️', rar: '🗜️', '7z': '🗜️',
-      mp3: '🎵', wav: '🎵', ogg: '🎵',
-      html: '🌐', css: '🎨', js: '⚙️',
-      py: '🐍', java: '☕', cpp: '⚡',
-      tex: '📐', ipynb: '📊', csv: '📊',
-      rdata: '📈', log: '📋', aux: '📋',
-      out: '📋', gz: '🗜️', toc: '📋'
+      pdf: 'file-text', doc: 'file-text', docx: 'file-text', txt: 'file-text',
+      zip: 'archive', rar: 'archive', '7z': 'archive', gz: 'archive',
+      mp3: 'music', wav: 'music', ogg: 'music',
+      html: 'globe', css: 'code', js: 'code',
+      py: 'code', java: 'code', cpp: 'code',
+      tex: 'file-text', ipynb: 'chart', csv: 'chart',
+      rdata: 'chart', log: 'file', aux: 'file',
+      out: 'file', toc: 'file'
     };
-    return icons[ext] || '📄';
+    return icons[ext] || 'file';
   }
 
   function escapeHtml(s){ 
@@ -4406,7 +4454,7 @@
     var resRow = document.getElementById('researchFolderRow');
     if(resRow) resRow.classList.add('active');
 
-    panelPath.innerHTML = '📝 Master\'s Thesis';
+    panelPath.textContent = 'Master\'s Thesis';
 
     // Find the Thesis folder in the manifest
     var thesisDir = (manifestData && manifestData.dirs) ? manifestData.dirs.find(function(d){ return d.name === 'Thesis'; }) : null;
@@ -4440,9 +4488,9 @@
     almaBox.className = 'thesis-video-box';
     almaBox.style.marginTop = '0';
     almaBox.innerHTML = `
-      <div class="thesis-video-box-title">🎓 Institutional Repository</div>
+      <div class="thesis-video-box-title">Institutional Repository</div>
       <a class="thesis-video-link" href="https://pergamos.lib.uoa.gr/uoa/dl/object/5402752" target="_blank" rel="noopener">
-        <span class="tv-icon">🔗</span>
+        <span class="tv-icon">${svgIcon('link', 18)}</span>
         <div>
           <div class="tv-label">Pergamos — University of Athens Library</div>
           <div class="tv-sub">pergamos.lib.uoa.gr</div>
@@ -4450,7 +4498,7 @@
         <span class="tv-arrow">↗</span>
       </a>
       <a class="thesis-video-link" href="http://alma.di.uoa.gr/node/743" target="_blank" rel="noopener">
-        <span class="tv-icon">🔗</span>
+        <span class="tv-icon">${svgIcon('link', 18)}</span>
         <div>
           <div class="tv-label">ALMA — University of Athens Repository</div>
           <div class="tv-sub">alma.di.uoa.gr</div>
@@ -4465,9 +4513,9 @@
     videoBox.className = 'thesis-video-box';
     videoBox.style.marginTop = '0';
     videoBox.innerHTML = `
-      <div class="thesis-video-box-title">🎥 Greek Thesis Presentation (Recording)</div>
+      <div class="thesis-video-box-title">Greek Thesis Presentation (Recording)</div>
       <a class="thesis-video-link" href="https://uniflix.uoa.gr/events/player?id=6a1815ad660b8b65a0d03523" target="_blank" rel="noopener">
-        <span class="tv-icon">▶️</span>
+        <span class="tv-icon">${svgIcon('play', 18)}</span>
         <div>
           <div class="tv-label">Part 1</div>
           <div class="tv-sub">uniflix.uoa.gr</div>
@@ -4475,7 +4523,7 @@
         <span class="tv-arrow">↗</span>
       </a>
       <a class="thesis-video-link" href="https://uniflix.uoa.gr/events/player?id=6a1815b4660b8b65a0d03524" target="_blank" rel="noopener">
-        <span class="tv-icon">▶️</span>
+        <span class="tv-icon">${svgIcon('play', 18)}</span>
         <div>
           <div class="tv-label">Part 2</div>
           <div class="tv-sub">uniflix.uoa.gr</div>
@@ -4509,7 +4557,7 @@
     }
     cvFiles.sort(function(a,b){ return (a.title||'').localeCompare(b.title||''); });
 
-    panelPath.innerHTML = '📄 CV';
+    panelPath.textContent = 'CV';
     panelCount.textContent = cvFiles.length + ' file' + (cvFiles.length !== 1 ? 's' : '');
     currentFiles = cvFiles;
     updateBreadcrumb([]);
@@ -4544,13 +4592,13 @@
     }
 
     if(!archRootDir) {
-      panelPath.innerHTML = '🏛️ Archimedes Research Unit';
+      panelPath.textContent = 'Archimedes Research Unit';
       panelCount.textContent = '';
       currentFiles = [];
       updateBreadcrumb([]);
       filesEl.innerHTML = `
         <div class="welcome" style="grid-column:1/-1">
-          <div class="welcome-icon">🏛️</div>
+          <div class="welcome-icon">${svgIcon('landmark', 56)}</div>
           <h2>Archimedes Research Unit</h2>
           <p style="max-width:420px;margin:0 auto;">Files from this research internship will appear here once the repository is loaded. Make sure <code>manifest.json</code> is up to date.</p>
         </div>`;
@@ -4580,7 +4628,7 @@
     var dir = archCurrentDir;
 
     // ── Panel header ──
-    panelPath.innerHTML = '🏛️ Archimedes Research Unit';
+    panelPath.textContent = 'Archimedes Research Unit';
 
     // Collect only the direct files in this dir (not recursive) for the right panel
     var fileItems = [];
@@ -4606,7 +4654,7 @@
       // "Root" link
       var rootLink = document.createElement('span');
       rootLink.style.cssText = 'color:var(--accent);cursor:pointer;font-size:14px;font-weight:600;padding:4px 8px;border-radius:6px;transition:background 0.15s;';
-      rootLink.textContent = '🏛️ Archimedes';
+      rootLink.textContent = 'Archimedes';
       rootLink.addEventListener('mouseenter', function(){ this.style.background='var(--accent-soft)'; });
       rootLink.addEventListener('mouseleave', function(){ this.style.background=''; });
       rootLink.addEventListener('click', function(){
@@ -4660,7 +4708,7 @@
 
         // Left accent bar (like .folder::before)
         folderCard.innerHTML = `
-          <span style="font-size:20px;flex-shrink:0">📁</span>
+          <span class="sidebar-row-icon">${svgIcon('folder', 18)}</span>
           <span style="font-weight:600;font-size:15px;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(subdir.name)}</span>
           <span style="background:var(--bg);color:var(--text-secondary);padding:4px 12px;border-radius:14px;font-size:12px;font-weight:700;border:1px solid var(--border);flex-shrink:0;">${subCount}</span>
           <span style="color:var(--accent);font-size:18px;flex-shrink:0;">›</span>
@@ -4670,13 +4718,13 @@
           this.style.borderColor = 'var(--accent)';
           this.style.background = 'var(--bg)';
           this.style.transform = 'translateX(4px)';
-          this.querySelector('span:first-child').textContent = '📂';
+          this.querySelector('span:first-child').innerHTML = svgIcon('folder-open', 18);
         });
         folderCard.addEventListener('mouseleave', function(){
           this.style.borderColor = 'var(--border)';
           this.style.background = 'var(--card)';
           this.style.transform = '';
-          this.querySelector('span:first-child').textContent = '📁';
+          this.querySelector('span:first-child').innerHTML = svgIcon('folder', 18);
         });
 
         (function(capturedSubdir){
@@ -4701,38 +4749,38 @@
       var emptyEl = document.createElement('div');
       emptyEl.className = 'welcome';
       emptyEl.style.gridColumn = '1/-1';
-      emptyEl.innerHTML = '<div class="welcome-icon">📂</div><h2>Empty folder</h2><p>No files here yet.</p>';
+      emptyEl.innerHTML = '<div class="welcome-icon">' + svgIcon('folder-open', 56) + '</div><h2>Empty folder</h2><p>No files here yet.</p>';
       filesEl.appendChild(emptyEl);
     }
   }
 
   const PROJECTS_ITEMS = [
     {
-      icon:'⛓️',
+      icon:'link',
       title:'Blockchain Node (Marabu)',
       desc:'A fully-featured blockchain node, Marabu, built from scratch in TypeScript, covering peer discovery, transaction validation, UTXO management, and proof-of-work mining.',
       links: [{ href:'https://github.com/AndreasPanayi8/blockchain-foundations', label:'View on GitHub' }]
     },
     {
-      icon:'🌐',
+      icon:'globe',
       title:'Portfolio Website',
       desc:'This website — a custom-built academic portfolio and coursework file browser, designed and developed from scratch in vanilla JavaScript, without frameworks.',
       links: [{ href:'https://github.com/AndreasPanayi8/coursework-archive', label:'View on GitHub' }]
     },
     {
-      icon:'📦',
+      icon:'database',
       title:'PLATCOM Project: Big Data and Machine Learning',
       desc:'An R&D project involving a closed-source implementation of a data compression meta-framework, using SQL and PostgreSQL databases alongside supervised and unsupervised machine learning methods. Implemented mainly in C++, with Python and SQL also used.',
       links: []
     },
     {
-      icon:'📊',
+      icon:'chart',
       title:'Statistical Machine Learning Models',
       desc:'Implementation, experimentation, and evaluation of various statistical machine learning models to identify the best fit for different datasets. Implemented in Python and Python notebooks; code available in the Machine Learning folder under Completed Coursework.',
       links: []
     },
     {
-      icon:'🌲',
+      icon:'layers',
       title:'Data Structures Implementation',
       desc:'A small part of broader work carried out at the Archimedes Research Unit of the Athena Research Center, accompanying a survey on data structures and the research problem under study, Planar Skyline Reporting. Code in Python and C++ is available under the Archimedes Research Unit tab.',
       links: []
@@ -4744,7 +4792,7 @@
     var projRow = document.getElementById('projectsFolderRow');
     if(projRow) projRow.classList.add('active');
 
-    panelPath.innerHTML = '🛠️ Projects';
+    panelPath.textContent = 'Projects';
     panelCount.textContent = PROJECTS_ITEMS.length + ' projects';
     currentFiles = [];
     updateBreadcrumb([]);
@@ -4759,7 +4807,7 @@
 
       var iconEl = document.createElement('span');
       iconEl.className = 'wip-list-icon';
-      iconEl.textContent = proj.icon;
+      iconEl.innerHTML = svgIcon(proj.icon, 18);
 
       var body = document.createElement('div');
       body.className = 'wip-list-body';
@@ -4800,7 +4848,7 @@
 
   const WIP_ITEMS = [
     {
-      icon:'⚡',
+      icon:'zap',
       title:'Listing Even Cycles Faster than the Submodular-Width Barrier',
       desc:'Evaluates closed-2k and 2k-cycle queries faster than the submodular-width barrier, expressing the algorithms using algorithms naturally implementable in database systems. Also proves that the Unbalanced Supersaturation Conjecture gives optimal results in evaluating 2k-cycle queries.',
       collaborators: ['Dr. Vasilis Nakos', 'Dr. Hung Q. Ngo'],
@@ -4809,7 +4857,7 @@
       isThesis: false
     },
     {
-      icon:'🗄️',
+      icon:'database',
       title:'Research and Innovation Foundation of Cyprus, RINNOCO',
       desc:'A research internship supported by the Research and Innovation Foundation of Cyprus at a company specializing in research, innovation, and education across data management, big data, data reduction, data compression, and data decay. The role spans the full pipeline, from early-stage research and design to proof-of-concept deployment for international markets.',
       collaborators: [],
@@ -4818,7 +4866,7 @@
       isThesis: false
     },
     {
-      icon:'📐',
+      icon:'file-text',
       title:'Survey: Geometric Dynamic Data Structures',
       desc:'Preparation of a comprehensive survey on geometric dynamic data structures, covering the current state of the art in data structures for dynamic geometric problems.',
       collaborators: [],
@@ -4833,7 +4881,7 @@
     var wipRow = document.getElementById('wipFolderRow');
     if(wipRow) wipRow.classList.add('active');
 
-    panelPath.innerHTML = '🔬 Currently Working On';
+    panelPath.textContent = 'Currently Working On';
     panelCount.textContent = WIP_ITEMS.length + ' projects';
     currentFiles = [];
     updateBreadcrumb([]);
@@ -4848,7 +4896,7 @@
 
       var icon = document.createElement('span');
       icon.className = 'wip-list-icon';
-      icon.textContent = item.icon;
+      icon.innerHTML = svgIcon(item.icon, 18);
 
       var body = document.createElement('div');
       body.className = 'wip-list-body';
@@ -4868,7 +4916,7 @@
       else if(statusLower === 'in-preparation') statusClass += ' in-preparation';
       else if(statusLower === 'in-progress') statusClass += ' in-progress';
       statusEl.className = item.isThesis ? 'wip-thesis-badge' : statusClass;
-      statusEl.textContent = item.isThesis ? ('🎓 ' + item.status) : (item.status || 'In Progress');
+      statusEl.textContent = item.isThesis ? item.status : (item.status || 'In Progress');
 
       topRow.appendChild(titleEl);
       topRow.appendChild(statusEl);
@@ -4876,7 +4924,7 @@
       if(item.date) {
         var dateBadge = document.createElement('span');
         dateBadge.className = 'wip-date-badge';
-        dateBadge.textContent = '📅 ' + item.date;
+        dateBadge.textContent = item.date;
         topRow.appendChild(dateBadge);
       }
 
@@ -4892,7 +4940,7 @@
       if(item.venue) {
         var venueEl = document.createElement('div');
         venueEl.className = 'wip-venue-row';
-        venueEl.innerHTML = '<span class="venue-icon">📍</span><span>' + escapeHtml(item.venue) + '</span>';
+        venueEl.innerHTML = '<span class="venue-icon">' + svgIcon('map-pin', 14) + '</span><span>' + escapeHtml(item.venue) + '</span>';
         body.appendChild(venueEl);
       }
 
@@ -4954,8 +5002,8 @@
     
     // Update metadata
     metadata.innerHTML = `
-      <div class="lb-metadata-item">📄 ${ext.toUpperCase()}</div>
-      <div class="lb-metadata-item">📊 ${index + 1} of ${currentFiles.length}</div>
+      <div class="lb-metadata-item">${ext.toUpperCase()}</div>
+      <div class="lb-metadata-item">${index + 1} of ${currentFiles.length}</div>
     `;
     
     // Update navigation buttons
@@ -5000,9 +5048,9 @@
       pdfViewer.className = 'pdf-viewer';
       pdfViewer.innerHTML = `
         <div class="pdf-controls">
-          <button id="pdf-print-btn">🖨️ Print</button>
+          <button id="pdf-print-btn">Print</button>
           <span class="pdf-page-info">PDF Document</span>
-          <button id="pdf-newtab-btn">🔍 Open in New Tab</button>
+          <button id="pdf-newtab-btn">Open in New Tab</button>
         </div>
         <div class="pdf-iframe-container">
           <iframe id="pdf-iframe" src="${safe(item.src)}"></iframe>
@@ -5057,7 +5105,7 @@
           codePreview.innerHTML = `
             <div class="code-header">
               <span class="code-language">${language}</span>
-              <button class="code-copy-btn" onclick="copyCode('${codeId}', event)">📋 Copy</button>
+              <button class="code-copy-btn" onclick="copyCode('${codeId}', event)">Copy</button>
             </div>
             <div class="code-content">
               <pre><code id="${codeId}">${escapeHtml(code)}</code></pre>
@@ -5168,11 +5216,11 @@
       info.style.color = 'var(--text)';
       info.style.textAlign = 'center';
       info.innerHTML = `
-        <div style="font-size:72px;margin-bottom:24px">${getFileIcon(ext)}</div>
+        <div class="thumb-icon" style="margin-bottom:24px">${svgIcon(getFileIcon(ext), 64)}</div>
         <div style="font-size:20px;font-weight:600;margin-bottom:10px">${escapeHtml(item.title)}</div>
         <div style="opacity:0.7;font-size:15px">Preview not available for this file type</div>
         <div style="margin-top:20px">
-          <a href="${safe(item.src)}" download="${item.title}" class="lb-btn lb-btn-download">⬇️ Download to view</a>
+          <a href="${safe(item.src)}" download="${item.title}" class="lb-btn lb-btn-download">Download to view</a>
         </div>
       `;
       container.appendChild(info);
@@ -5190,17 +5238,17 @@
       
       if(navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(() => {
-          btn.textContent = '✓ Copied!';
+          btn.textContent = 'Copied ✓';
           btn.classList.add('copied');
           setTimeout(() => {
-            btn.textContent = '📋 Copy';
+            btn.textContent = 'Copy';
             btn.classList.remove('copied');
           }, 2000);
         }).catch((err) => {
           console.error('Copy failed:', err);
-          btn.textContent = '❌ Failed';
+          btn.textContent = 'Copy failed';
           setTimeout(() => {
-            btn.textContent = '📋 Copy';
+            btn.textContent = 'Copy';
           }, 2000);
         });
       } else {
@@ -5211,10 +5259,10 @@
         textarea.select();
         document.execCommand('copy');
         document.body.removeChild(textarea);
-        btn.textContent = '✓ Copied!';
+        btn.textContent = 'Copied ✓';
         btn.classList.add('copied');
         setTimeout(() => {
-          btn.textContent = '📋 Copy';
+          btn.textContent = 'Copy';
           btn.classList.remove('copied');
         }, 2000);
       }
@@ -5338,14 +5386,14 @@
       return ((it.title||'') + ' ' + it.src).toLowerCase().includes(q);
     });
     
-    panelPath.textContent = '🔍 Search: "' + q + '"';
+    panelPath.textContent = 'Search: "' + q + '"';
     panelCount.textContent = results.length + ' result' + (results.length !== 1 ? 's' : '');
     filesEl.innerHTML = '';
     updateBreadcrumb([]);
     currentFiles = results;
     
     if(results.length === 0){
-      filesEl.innerHTML = '<div class="welcome" style="grid-column:1/-1"><div class="welcome-icon">🔍</div><h2>No results found</h2><p>Try a different search term</p></div>';
+      filesEl.innerHTML = '<div class="welcome" style="grid-column:1/-1"><div class="welcome-icon">' + svgIcon('search', 56) + '</div><h2>No results found</h2><p>Try a different search term</p></div>';
       scrollToPanel();
       return;
     }
