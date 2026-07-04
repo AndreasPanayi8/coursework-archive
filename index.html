@@ -46,7 +46,7 @@
     {"@type": "CollegeOrUniversity", "name": "National Technical University of Athens"}
   ],
   "knowsAbout": ["Fine-Grained Algorithms", "Parameterized Algorithms", "Computational Complexity", "Graph Theory", "Data Structures"],
-  "sameAs": ["https://scholar.google.com/citations?user=ZMQ-fdQAAAAJ", "https://github.com/AndreasPanayi8"]
+  "sameAs": ["https://scholar.google.com/citations?user=ZMQ-fdQAAAAJ", "https://orcid.org/0009-0007-2703-5130", "https://github.com/AndreasPanayi8"]
 }
 </script>
 
@@ -2573,6 +2573,36 @@
     box-shadow:0 3px 10px rgba(248,113,113,0.3);
   }
 
+  /* BibTeX copy pill — discreet, neutral */
+  .pub-bibtex-btn {
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    padding:4px 11px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+    font-family:'DM Sans',sans-serif;
+    color:var(--muted);
+    background:transparent;
+    border:1px solid var(--border);
+    cursor:pointer;
+    transition:color .18s, border-color .18s, background .18s;
+  }
+  .pub-bibtex-btn:hover {
+    color:var(--accent);
+    border-color:var(--accent);
+  }
+  .pub-bibtex-btn.copied {
+    color:#059669;
+    border-color:#059669;
+  }
+  [data-theme="dark"] .pub-bibtex-btn.copied {
+    color:#34d399;
+    border-color:#34d399;
+  }
+  .pub-bibtex-btn svg { flex-shrink:0; }
+
   /* Google Scholar link */
   .scholar-link {
     display:inline-flex;
@@ -2727,8 +2757,8 @@
   }
   @media (max-width:560px) { .hp-explore-row { grid-template-columns:1fr; } }
   .explore-card {
-    border-radius:14px;
-    padding:22px 24px;
+    border-radius:12px;
+    padding:15px 18px;
     color:white;
     cursor:pointer;
     transition:transform 0.22s, box-shadow 0.22s;
@@ -2761,22 +2791,93 @@
   .explore-card:hover { transform:translateY(-4px); }
   .explore-card-archive:hover { box-shadow:0 12px 36px rgba(29,78,216,0.45); }
   .explore-card-wip:hover { box-shadow:0 12px 36px rgba(6,95,70,0.45); }
-  .explore-card-icon { font-size:26px; margin-bottom:10px; }
+  .explore-card-icon { font-size:20px; margin-bottom:7px; }
+  .explore-card-icon svg { width:20px; height:20px; }
   .explore-card-title {
     font-family:'Fraunces',Georgia,serif;
-    font-size:18px;
+    font-size:15.5px;
     font-weight:600;
-    margin-bottom:6px;
+    margin-bottom:4px;
     letter-spacing:-0.01em;
   }
-  .explore-card-desc { font-size:13px; opacity:0.74; line-height:1.6; }
+  .explore-card-desc { font-size:12px; opacity:0.72; line-height:1.5; }
+
+  /* ===== SITE FOOTER ===== */
+  .site-footer {
+    margin-top:20px;
+  }
+  .footer-cta-row {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+  }
+  @media (max-width:560px) { .footer-cta-row { grid-template-columns:1fr; } }
+  .footer-divider {
+    height:1px;
+    background:var(--border);
+    margin:32px 0 24px;
+  }
+  .footer-main {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:20px;
+  }
+  .footer-name {
+    font-family:'Fraunces',serif;
+    font-size:18px;
+    font-weight:600;
+    color:var(--text);
+  }
+  .footer-tagline {
+    font-size:13px;
+    color:var(--muted);
+    margin-top:3px;
+  }
+  .footer-links {
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .footer-link {
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:7px 13px;
+    font-size:13px;
+    font-weight:500;
+    color:var(--text-secondary);
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:8px;
+    text-decoration:none;
+    cursor:pointer;
+    transition:border-color .18s, color .18s, transform .18s;
+  }
+  .footer-link:hover {
+    color:var(--accent);
+    border-color:var(--accent);
+    transform:translateY(-1px);
+  }
+  .footer-link svg { flex-shrink:0; }
+  .footer-bottom {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:22px;
+    font-size:12.5px;
+    color:var(--muted);
+  }
   .explore-card-arrow {
     display:inline-flex;
     align-items:center;
     gap:6px;
     font-size:12px;
     font-weight:600;
-    margin-top:14px;
+    margin-top:9px;
     opacity:0.8;
     transition:opacity 0.2s, gap 0.2s;
   }
@@ -3215,7 +3316,7 @@
   @media print {
     .top-nav,
     #archiveView,
-    .hp-explore-row,
+    .footer-cta-row,
     .back-to-top { display:none !important; }
     body { background:#fff; color:#000; }
     .hero {
@@ -3307,10 +3408,11 @@
         </div>
         <div class="hero-bio">
           I'm a theoretical computer science graduate student from the National Technical University of Athens
-          and the National &amp; Kapodistrian University of Athens. My studies specialise in algorithms,
+          and the National &amp; Kapodistrian University of Athens. My studies specialize in algorithms,
           data structures, graph theory, and computational complexity.
           My current research focuses on fine-grained and parameterized algorithms, dynamic and geometric
           data structures, and extremal graph theory.
+          On the applied side, my research interests are in data management, big data, machine learning, and algorithmic applications.
         </div>
         <div class="hero-links">
           <a class="hero-link" href="mailto:andreaspanayi8@gmail.com">
@@ -3325,10 +3427,18 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422a12.083 12.083 0 0 1 .665 6.479A11.952 11.952 0 0 1 12 20.055a11.952 11.952 0 0 1-6.824-2.998 12.078 12.078 0 0 1 .665-6.479L12 14z"/></svg>
             Google Scholar
           </a>
+          <a class="hero-link" href="https://orcid.org/0009-0007-2703-5130" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947 0 .525-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.025-5.325 5.025h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722 0-2.016-1.284-3.722-4.097-3.722h-2.222z"/></svg>
+            ORCID
+          </a>
         </div>
         <div class="hero-actions">
           <button type="button" class="hero-btn hero-btn-primary" onclick="showView('archive')">Browse archive <span aria-hidden="true">→</span></button>
           <button type="button" class="hero-btn hero-btn-secondary" onclick="goToWip()">Current work</button>
+          <button type="button" class="hero-btn hero-btn-secondary" onclick="goToCv()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+            Download CV
+          </button>
         </div>
       </div><!-- /.hero-text -->
     </div><!-- /.hero-inner -->
@@ -3345,20 +3455,20 @@
           <span class="hp-card-title">Education</span>
         </div>
         <div class="edu-entry">
-          <div class="edu-degree">M.S. Theoretical Computer Science (ALMA)</div>
+          <div class="edu-degree">MSc Theoretical Computer Science (ALMA)</div>
           <div class="edu-institution">National Technical University of Athens &amp; National &amp; Kapodistrian University of Athens</div>
           <div class="edu-meta">
-            <span class="edu-gpa">GPA 9.82 / 10</span>
+            <span class="edu-gpa">GPA 9.9 / 10</span>
             <span class="edu-year">2024 – Present</span>
           </div>
           <div class="edu-track" style="margin-top:5px"><strong>Track:</strong> Algorithms, Logic &amp; Discrete Mathematics</div>
           <div class="edu-track" style="margin-top:5px"><strong>Selected coursework:</strong> Advanced Algorithms &amp; Data Structures, Computational Complexity, Graph Theory, Machine Learning, Artificial Intelligence, Algorithmic Data Science</div>
         </div>
         <div class="edu-entry">
-          <div class="edu-degree">B.Sc. in Mathematics</div>
+          <div class="edu-degree">BSc Mathematics</div>
           <div class="edu-institution">National &amp; Kapodistrian University of Athens</div>
           <div class="edu-meta">
-            <span class="edu-gpa">GPA 8.84 / 10</span>
+            <span class="edu-gpa">GPA 8.9 / 10</span>
             <span class="edu-year">2020 – 2024</span>
           </div>
           <div class="edu-track" style="margin-top:5px"><strong>Concentration:</strong> Applied Mathematics</div>
@@ -3374,19 +3484,19 @@
         </div>
         <div class="exp-entry">
           <div class="exp-header">
-            <div class="exp-role">Research Intern</div>
-            <div class="exp-date">Jun 2025 – Jan 2026</div>
-          </div>
-          <div class="exp-org">Archimedes Research Unit, Athena Research Center</div>
-          <div class="exp-desc">Designed and implemented advanced data structures for computational geometry problems. Conducted research in algorithms, artificial intelligence, and data science.</div>
-        </div>
-        <div class="exp-entry">
-          <div class="exp-header">
-            <div class="exp-role">Research &amp; Implementation Intern — Data Management &amp; Big Data</div>
+            <div class="exp-role">Research &amp; Development (Industry R&amp;D) Intern — Data Management &amp; Big Data</div>
             <div class="exp-date">2025 – Present</div>
           </div>
           <div class="exp-org">Research &amp; Innovation Foundation of Cyprus</div>
-          <div class="exp-desc">A research internship supported by the Research and Innovation Foundation of Cyprus at a company specializing in research, innovation, and education across data management, big data, data reduction, data compression, and data decay. The role spans the full pipeline, from early-stage research and design to proof-of-concept deployment for international markets.</div>
+          <div class="exp-desc">A research internship supported by the Research and Innovation Foundation of Cyprus at RINNOCO, a company specializing in research, innovation, and education across data management, big data, data reduction, data compression, and data decay and machine learning. The role spans the full pipeline, from early-stage research and design to proof-of-concept deployment for international markets.</div>
+        </div>
+        <div class="exp-entry">
+          <div class="exp-header">
+            <div class="exp-role">Research Intern — Artificial Intelligence, Data Science, Algorithms</div>
+            <div class="exp-date">Jun 2025 – Jan 2026</div>
+          </div>
+          <div class="exp-org">Archimedes Research Unit, Athena Research Center</div>
+          <div class="exp-desc">Designed and implemented advanced data structures for computational geometry problems to support research in algorithms and efficient computation. Conducted research in artificial intelligence and data science, applying algorithmic techniques to complex computational problems.</div>
         </div>
         <div class="exp-entry">
           <div class="exp-header">
@@ -3419,6 +3529,18 @@
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
               arXiv:2605.30564
             </a>
+            <button type="button" class="pub-bibtex-btn" onclick="copyBibtex(this)" data-bibtex="@misc{nakos2026listingcyclesfastersubmodularwidth,
+      title={Listing Even Cycles Faster than the Submodular-Width Barrier}, 
+      author={Vasileios Nakos and Hung Q. Ngo and Andreas Panayi},
+      year={2026},
+      eprint={2605.30564},
+      archivePrefix={arXiv},
+      primaryClass={cs.DB},
+      url={https://arxiv.org/abs/2605.30564}, 
+}">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <span class="bibtex-label">BibTeX</span>
+            </button>
           </div>
           <div style="font-size:13px;color:var(--text-secondary);margin-top:10px;line-height:1.6;">
             Output-sensitive algorithms for listing even-length cycles in simple graphs and hypergraphs, advancing the current state of the art.
@@ -3428,11 +3550,21 @@
           <div class="pub-title">Faster Even-Cycle Listing via Unbalanced Supersaturation</div>
           <div class="pub-authors"><strong>Andreas Panayi</strong></div>
           <div class="pub-venue-row">
-            <span class="pub-status submitted">B.Sc. Thesis</span>
+            <span class="pub-status submitted">BSc Thesis</span>
             <a href="https://pergamos.lib.uoa.gr/en/item/uoadl:5402752" target="_blank" rel="noopener" class="pub-arxiv-link">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
               Pergamos &mdash; NKUA
             </a>
+            <button type="button" class="pub-bibtex-btn" onclick="copyBibtex(this)" data-bibtex="@masterthesis{uoadl:5402752,
+    BIBTEX_ENTRY = &quot;masterthesis&quot;,
+    year = &quot;2026&quot;,
+    school = &quot;National and Kapodistrian University of Athens&quot;,
+    author = &quot;PANAGI ANTREAS&quot;,
+    title = &quot;Faster Even-Cycle Listing via Unbalanced Supersaturation&quot;
+}">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <span class="bibtex-label">BibTeX</span>
+            </button>
           </div>
           <div style="font-size:13px;color:var(--text-secondary);margin-top:10px;line-height:1.6;">
             Studies the problem of listing even-length cycles through the lens of extremal graph theory, with structural information from unbalanced supersaturation results driving faster algorithms.
@@ -3475,7 +3607,7 @@
           </section>
 
           <section class="research-group" aria-labelledby="research-cs-title">
-            <h3 class="research-group-title" id="research-cs-title">Computer Science</h3>
+            <h3 class="research-group-title" id="research-cs-title">Systems &amp; Applied</h3>
             <ul class="research-list">
               <li class="research-item">
                 <span class="research-item-name">Big Data</span>
@@ -3487,7 +3619,7 @@
               </li>
               <li class="research-item">
                 <span class="research-item-name">Machine Learning</span>
-                <span class="research-item-detail">Dimensionality reduction</span>
+                <span class="research-item-detail">Statistical models, convex optimization, supervised and unsupervised</span>
               </li>
             </ul>
           </section>
@@ -3567,20 +3699,58 @@
     </div><!-- /.hp-grid -->
 
     <!-- Explore CTA -->
-    <div class="hp-explore-row">
-      <a class="explore-card explore-card-archive" onclick="showView('archive')" role="button" tabindex="0">
-        <div class="explore-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg></div>
-        <div class="explore-card-title">Coursework and Project Archive</div>
-        <div class="explore-card-desc">Browse all coursework, research notes, presentations, code implementations, and more.</div>
-        <div class="explore-card-arrow">Explore Archive →</div>
-      </a>
-      <a class="explore-card explore-card-wip" onclick="goToWip()" role="button" tabindex="0">
-        <div class="explore-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/><path d="M6.453 15h11.094"/><path d="M8.5 2h7"/></svg></div>
-        <div class="explore-card-title">Currently Working On</div>
-        <div class="explore-card-desc">Active research projects, papers in preparation, ongoing implementations, and more.</div>
-        <div class="explore-card-arrow">View Projects →</div>
-      </a>
-    </div>
+    <footer class="site-footer" id="site-footer">
+      <div class="footer-cta-row">
+        <a class="explore-card explore-card-archive" onclick="showView('archive')" role="button" tabindex="0">
+          <div class="explore-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg></div>
+          <div class="explore-card-title">Coursework and Project Archive</div>
+          <div class="explore-card-desc">Browse all coursework, research notes, presentations, code implementations, and more.</div>
+          <div class="explore-card-arrow">Explore Archive →</div>
+        </a>
+        <a class="explore-card explore-card-wip" onclick="goToWip()" role="button" tabindex="0">
+          <div class="explore-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/><path d="M6.453 15h11.094"/><path d="M8.5 2h7"/></svg></div>
+          <div class="explore-card-title">Currently Working On</div>
+          <div class="explore-card-desc">Active research projects, papers in preparation, ongoing implementations, and more.</div>
+          <div class="explore-card-arrow">View Projects →</div>
+        </a>
+      </div>
+
+      <div class="footer-divider"></div>
+
+      <div class="footer-main">
+        <div class="footer-brand">
+          <div class="footer-name">Andreas Panayi</div>
+          <div class="footer-tagline">MSc Theoretical Computer Science · Athens, Greece &amp; Limassol, Cyprus</div>
+        </div>
+        <nav class="footer-links" aria-label="Profile links">
+          <a class="footer-link" href="mailto:andreaspanayi8@gmail.com">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            andreaspanayi8@gmail.com
+          </a>
+          <a class="footer-link" href="https://scholar.google.com/citations?user=ZMQ-fdQAAAAJ&hl=en&oi=ao" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422a12.083 12.083 0 0 1 .665 6.479A11.952 11.952 0 0 1 12 20.055a11.952 11.952 0 0 1-6.824-2.998 12.078 12.078 0 0 1 .665-6.479L12 14z"/></svg>
+            Scholar
+          </a>
+          <a class="footer-link" href="https://orcid.org/0009-0007-2703-5130" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947 0 .525-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.025-5.325 5.025h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722 0-2.016-1.284-3.722-4.097-3.722h-2.222z"/></svg>
+            ORCID
+          </a>
+          <a class="footer-link" href="https://github.com/andreaspanayi8" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            GitHub
+          </a>
+          <a class="footer-link" onclick="goToCv()" role="button" tabindex="0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+            CV
+          </a>
+        </nav>
+      </div>
+
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2026 Andreas Panayi</span>
+        <span class="footer-updated">Last updated: July 2026</span>
+      </div>
+    </footer>
 
   </div><!-- /.hp-container -->
 </div><!-- /#homeView -->
@@ -3808,6 +3978,16 @@
       }
     }, 60);
   }
+
+  function goToCv() {
+    showView('archive');
+    setTimeout(function() {
+      if (typeof showCvPanel === 'function') {
+        showCvPanel();
+      }
+    }, 60);
+  }
+  window.goToCv = goToCv;
 
   // ===== EXISTING SCRIPT =====
   window.addEventListener('error', function(e) {
@@ -5270,8 +5450,39 @@
       console.error('Copy error:', e);
     }
   };
+
+  // Copy BibTeX citation
+  window.copyBibtex = function(btn) {
+    try {
+      const text = btn.getAttribute('data-bibtex') || '';
+      const label = btn.querySelector('.bibtex-label');
+      const done = function() {
+        btn.classList.add('copied');
+        if(label) label.textContent = 'Copied ✓';
+        setTimeout(function() {
+          btn.classList.remove('copied');
+          if(label) label.textContent = 'BibTeX';
+        }, 2000);
+      };
+      if(navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(function() {
+          if(label) label.textContent = 'Copy failed';
+          setTimeout(function(){ if(label) label.textContent = 'BibTeX'; }, 2000);
+        });
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        done();
+      }
+    } catch(e) {
+      console.error('BibTeX copy error:', e);
+    }
+  };
   
-  // Navigation functions
   function navigateLightbox(direction) {
     const newIndex = currentFileIndex + direction;
     if(newIndex >= 0 && newIndex < currentFiles.length) {
