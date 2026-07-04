@@ -2337,24 +2337,38 @@
   }
   .edu-entry:last-child { border-bottom:none; padding-bottom:0; }
   .edu-entry:first-child { padding-top:0; }
+  .edu-header {
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:8px;
+    margin-bottom:3px;
+  }
   .edu-degree {
     font-weight:600;
     font-size:14.5px;
     color:var(--text);
-    margin-bottom:4px;
     line-height:1.4;
+  }
+  .edu-date {
+    font-size:11.5px;
+    color:var(--muted);
+    font-family:'DM Mono',monospace;
+    white-space:nowrap;
+    flex-shrink:0;
+    margin-top:2px;
+  }
+  .edu-inst-row {
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+    margin-bottom:10px;
   }
   .edu-institution {
     font-size:13px;
     color:var(--text-secondary);
-    margin-bottom:10px;
     line-height:1.45;
-  }
-  .edu-meta {
-    display:flex;
-    gap:8px;
-    align-items:center;
-    flex-wrap:wrap;
   }
   .edu-gpa {
     background:var(--accent-soft);
@@ -2364,11 +2378,8 @@
     font-size:12px;
     font-weight:700;
     border:1px solid rgba(31,35,40,0.15);
-  }
-  .edu-year {
-    font-size:12px;
-    color:var(--muted);
-    font-family:'DM Mono',monospace;
+    white-space:nowrap;
+    flex-shrink:0;
   }
   .edu-track {
     font-size:12.5px;
@@ -3455,21 +3466,25 @@
           <span class="hp-card-title">Education</span>
         </div>
         <div class="edu-entry">
-          <div class="edu-degree">MSc Theoretical Computer Science (ALMA)</div>
-          <div class="edu-institution">National Technical University of Athens &amp; National &amp; Kapodistrian University of Athens</div>
-          <div class="edu-meta">
+          <div class="edu-header">
+            <div class="edu-degree">MSc Theoretical Computer Science (ALMA)</div>
+            <div class="edu-date">2024 – 2026</div>
+          </div>
+          <div class="edu-inst-row">
+            <div class="edu-institution">National Technical University of Athens &amp; National &amp; Kapodistrian University of Athens</div>
             <span class="edu-gpa">GPA 9.9 / 10</span>
-            <span class="edu-year">2024 – Present</span>
           </div>
           <div class="edu-track" style="margin-top:5px"><strong>Track:</strong> Algorithms, Logic &amp; Discrete Mathematics</div>
           <div class="edu-track" style="margin-top:5px"><strong>Selected coursework:</strong> Advanced Algorithms &amp; Data Structures, Computational Complexity, Graph Theory, Machine Learning, Artificial Intelligence, Algorithmic Data Science</div>
         </div>
         <div class="edu-entry">
-          <div class="edu-degree">BSc Mathematics</div>
-          <div class="edu-institution">National &amp; Kapodistrian University of Athens</div>
-          <div class="edu-meta">
+          <div class="edu-header">
+            <div class="edu-degree">BSc Mathematics</div>
+            <div class="edu-date">2020 – 2024</div>
+          </div>
+          <div class="edu-inst-row">
+            <div class="edu-institution">National &amp; Kapodistrian University of Athens</div>
             <span class="edu-gpa">GPA 8.9 / 10</span>
-            <span class="edu-year">2020 – 2024</span>
           </div>
           <div class="edu-track" style="margin-top:5px"><strong>Concentration:</strong> Applied Mathematics</div>
           <div class="edu-track" style="margin-top:5px"><strong>Specialization:</strong> Computational Mathematics</div>
