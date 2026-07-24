@@ -4086,7 +4086,7 @@
   <a class="nav-logo" href="#home" onclick="showView('home'); return false;">Andreas Panayi</a>
   <div class="nav-tabs">
     <button type="button" class="nav-tab active" id="tabHome" aria-pressed="true" onclick="showView('home')">Home</button>
-    <button type="button" class="nav-tab" id="tabArchive" aria-pressed="false" onclick="showView('archive')">Library</button>
+    <button type="button" class="nav-tab" id="tabArchive" aria-pressed="false" onclick="showView('library')">Library</button>
   </div>
   <div class="nav-right">
     <div class="nav-search-wrapper" id="navSearchWrapper" style="display:none">
@@ -4145,7 +4145,7 @@
           </a>
         </div>
         <div class="hero-actions">
-          <button type="button" class="hero-btn hero-btn-primary" onclick="showView('archive')">Browse library <span aria-hidden="true">→</span></button>
+          <button type="button" class="hero-btn hero-btn-primary" onclick="showView('library')">Browse library <span aria-hidden="true">→</span></button>
           <button type="button" class="hero-btn hero-btn-secondary hero-btn-green" onclick="goToWip()">Current work</button>
           <button type="button" class="hero-btn hero-btn-secondary hero-btn-purple" onclick="goToCv()">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
@@ -4669,8 +4669,106 @@
     return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICONS[name] || ICONS.file) + '</svg>';
   }
 
+  // ===== SIDEBAR ACTIVE STATE =====
+  // Single source of truth: clears every selectable row (coursework folders and
+  // the static rows) before marking the new one, so selections can't stack up.
+  function setActiveRow(el) {
+    document.querySelectorAll('.folder, .wip-folder-row').forEach(function(x){ x.classList.remove('active'); });
+    if(el) el.classList.add('active');
+  }
+
+  // ===== HASH ROUTING =====
+  // Routes:
+  //   #home                              → landing page
+  //   #education … #awards               → landing page sections (plain anchors)
+  //   #library                           → library, welcome panel
+  //   #library/current                   → Currently Working On
+  //   #library/projects                  → Completed Projects & Implementations
+  //   #library/thesis                    → Master's Thesis
+  //   #library/archimedes[/Sub/Folder]   → Archimedes Research Unit (any depth)
+  //   #library/cv                        → CV
+  //   #library/coursework/<Folder/Path>  → a coursework folder
+  //   #archive                           → legacy alias for #library
+  var routingLock = false;
+
+  function archiveVisible() {
+    var av = document.getElementById('archiveView');
+    return !!av && av.style.display !== 'none';
+  }
+
+  function encPath(p) {
+    return String(p || '').split('/').filter(Boolean).map(encodeURIComponent).join('/');
+  }
+
+  function setRoute(hash, replace) {
+    if(location.hash === hash) return;
+    try {
+      history[replace ? 'replaceState' : 'pushState'](null, '', hash);
+    } catch(e) {
+      // pushState can fail on file:// — fall back to a plain hash assignment
+      routingLock = true;
+      location.hash = hash;
+      setTimeout(function(){ routingLock = false; }, 0);
+    }
+  }
+
+  // Called by the panel renderers to keep the URL in sync with what is on screen
+  function libRoute(section, path, replace) {
+    if(!archiveVisible()) return;
+    setRoute('#library' + (section ? '/' + section : '') + (path ? '/' + encPath(path) : ''), replace);
+  }
+
+  // Applies whatever is in location.hash. Returns true if it handled a library route.
+  function applyRoute() {
+    if(routingLock) return false;
+    var raw = (location.hash || '').replace(/^#/, '');
+    if(!raw) return false;
+
+    var segs = raw.split('/');
+    var head = decodeURIComponent(segs.shift()).toLowerCase();
+
+    if(head === 'home') { showView('home', { skipHash:true }); return false; }
+    if(head !== 'library' && head !== 'archive') return false;  // e.g. #education — let the browser scroll
+
+    showView('library', { skipHash:true });
+
+    var section = segs.length ? decodeURIComponent(segs.shift()).toLowerCase() : '';
+    var rest = segs.map(function(s){ try { return decodeURIComponent(s); } catch(e){ return s; } }).join('/');
+
+    // Panels that read manifest.json can't render before it has loaded
+    var needsManifest = (section === 'thesis' || section === 'archimedes' || section === 'coursework');
+    if(needsManifest && !manifestData) return true;
+
+    switch(section) {
+      case 'current':
+      case 'currently-working-on':
+      case 'wip':          showWipPanel(); break;
+      case 'projects':     showProjectsPanel(); break;
+      case 'thesis':       showThesisPanel(); break;
+      case 'cv':           showCvPanel(); break;
+      case 'archimedes':   showArchimedesPanel(rest); break;
+      case 'coursework':   if(rest){ navigateToPath(rest); highlightCourseworkRow(rest); } else showWelcome(); break;
+      default:             showWelcome();
+    }
+    return true;
+  }
+  window.applyRoute = applyRoute;
+
+  // Best effort: mark the sidebar row matching a deep-linked coursework folder
+  function highlightCourseworkRow(pathStr) {
+    var rows = document.querySelectorAll('#tree .folder');
+    for(var i = 0; i < rows.length; i++) {
+      var lbl = rows[i].querySelector('.name span[title]');
+      if(lbl && lbl.getAttribute('title') === pathStr) { setActiveRow(rows[i]); return; }
+    }
+  }
+
+  window.addEventListener('popstate', function(){ applyRoute(); });
+  window.addEventListener('hashchange', function(){ applyRoute(); });
+
   // ===== VIEW SWITCHING =====
-  function showView(view) {
+  function showView(view, opts) {
+    opts = opts || {};
     const homeView = document.getElementById('homeView');
     const archiveView = document.getElementById('archiveView');
     const tabHome = document.getElementById('tabHome');
@@ -4688,12 +4786,12 @@
     else { tabArchive.setAttribute('aria-current','page'); tabHome.removeAttribute('aria-current'); }
     searchWrapper.style.display = showingHome ? 'none' : '';
     document.title = showingHome ? 'Andreas Panayi' : 'Library — Coursework, Research & Projects — Andreas Panayi';
-    try { history.replaceState(null, '', showingHome ? '#home' : '#archive'); } catch(e) {}
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if(!opts.skipHash) setRoute(showingHome ? '#home' : '#library', opts.replace);
+    if(!opts.noScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function goToWip() {
-    showView('archive');
+    showView('library');
     setTimeout(function() {
       if (typeof showWipPanel === 'function') {
         showWipPanel();
@@ -4704,7 +4802,7 @@
   }
 
   function goToCv() {
-    showView('archive');
+    showView('library');
     setTimeout(function() {
       if (typeof showCvPanel === 'function') {
         showCvPanel();
@@ -4836,7 +4934,7 @@
       collectAllFiles(data);
       buildTreeAndRender();
       updateStats();
-      showWelcome();
+      if(!applyRoute()) showWelcome();
     } catch(e){ 
       console.error('Failed to load manifest:', e);
       treeEl.insertAdjacentHTML('beforeend', `<div style="padding:12px;color:var(--muted);font-size:13px;">Could not load repository data</div>`);
@@ -4966,6 +5064,7 @@
       showFiles(node.files, pathStr);
       currentPath = parts;
       updateBreadcrumb(parts);
+      libRoute('coursework', pathStr);
     }
   }
 
@@ -5071,10 +5170,8 @@
           currentPath = displayPath.split('/');
           updateBreadcrumb(currentPath);
         }
-        document.querySelectorAll('.folder').forEach(f => f.classList.remove('active'));
-        row.classList.add('active');
-        const wipRow = document.getElementById('wipFolderRow');
-        if(wipRow) wipRow.classList.remove('active');
+        setActiveRow(row);
+        libRoute('coursework', displayPath);
       });
       row.addEventListener('keydown', (e) => {
         if(e.key === 'Enter' || e.key === ' ') {
@@ -5104,10 +5201,8 @@
         showFiles(node.files, pathParts.join('/') || '/');
         currentPath = pathParts;
         updateBreadcrumb(pathParts);
-        document.querySelectorAll('.folder').forEach(f => f.classList.remove('active'));
-        showBtn.classList.add('active');
-        const wipRow2 = document.getElementById('wipFolderRow');
-        if(wipRow2) wipRow2.classList.remove('active');
+        setActiveRow(showBtn);
+        libRoute('coursework', pathParts.join('/'));
       });
       showBtn.addEventListener('keydown', (e) => {
         if(e.key === 'Enter' || e.key === ' ') {
@@ -5140,9 +5235,8 @@
   }
 
   function showWelcome(){
-    document.querySelectorAll('.folder').forEach(function(f){ f.classList.remove('active'); });
-    const wipRow = document.getElementById('wipFolderRow');
-    if(wipRow) wipRow.classList.remove('active');
+    setActiveRow(null);
+    libRoute('');
     panelPath.textContent = 'Welcome';
     panelCount.textContent = '';
     currentFiles = [];
@@ -5327,9 +5421,8 @@
   }
 
   function showThesisPanel() {
-    document.querySelectorAll('.folder, .wip-folder-row').forEach(function(el){ el.classList.remove('active'); });
-    var resRow = document.getElementById('researchFolderRow');
-    if(resRow) resRow.classList.add('active');
+    setActiveRow(document.getElementById('researchFolderRow'));
+    libRoute('thesis');
 
     panelPath.textContent = 'Master\'s Thesis';
 
@@ -5419,9 +5512,8 @@
   }
 
   function showCvPanel() {
-    document.querySelectorAll('.folder, .wip-folder-row').forEach(function(el){ el.classList.remove('active'); });
-    var cvRow = document.getElementById('cvFolderRow');
-    if(cvRow) cvRow.classList.add('active');
+    setActiveRow(document.getElementById('cvFolderRow'));
+    libRoute('cv');
 
     // Pull CV files from manifest root files
     var cvFiles = [];
@@ -5454,10 +5546,8 @@
   var archCurrentDir = null;       // which dir is currently shown in the right panel
   var archPathStack = [];          // stack of {name, dir} for breadcrumb navigation
 
-  function showArchimedesPanel() {
-    document.querySelectorAll('.folder, .wip-folder-row').forEach(function(el){ el.classList.remove('active'); });
-    var archRow = document.getElementById('archimedesFolderRow');
-    if(archRow) archRow.classList.add('active');
+  function showArchimedesPanel(subPath) {
+    setActiveRow(document.getElementById('archimedesFolderRow'));
 
     // Find the Archimedes folder in the manifest by trying common name variants
     archRootDir = null;
@@ -5469,6 +5559,7 @@
     }
 
     if(!archRootDir) {
+      libRoute('archimedes');
       panelPath.textContent = 'Archimedes Research Unit';
       panelCount.textContent = '';
       currentFiles = [];
@@ -5483,9 +5574,20 @@
       return;
     }
 
-    // Start at root of Archimedes dir
+    // Start at root of Archimedes dir, then walk into any deep-linked subfolder
     archPathStack = [];
     archCurrentDir = archRootDir;
+    if(subPath) {
+      String(subPath).split('/').filter(Boolean).forEach(function(name){
+        var next = (archCurrentDir.dirs || []).find(function(d){
+          return d.name.toLowerCase() === String(name).toLowerCase();
+        });
+        if(next) {
+          archPathStack.push({ name: next.name, dir: next });
+          archCurrentDir = next;
+        }
+      });
+    }
     renderArchimedesView();
 
     scrollToPanel();
@@ -5503,6 +5605,7 @@
 
   function renderArchimedesView() {
     var dir = archCurrentDir;
+    libRoute('archimedes', archPathStack.map(function(s){ return s.name; }).join('/'));
 
     // ── Panel header ──
     panelPath.textContent = 'Archimedes Research Unit';
@@ -5665,9 +5768,8 @@
   ];
 
   function showProjectsPanel() {
-    document.querySelectorAll('.folder, .wip-folder-row').forEach(function(el){ el.classList.remove('active'); });
-    var projRow = document.getElementById('projectsFolderRow');
-    if(projRow) projRow.classList.add('active');
+    setActiveRow(document.getElementById('projectsFolderRow'));
+    libRoute('projects');
 
     panelPath.textContent = 'Projects';
     panelCount.textContent = PROJECTS_ITEMS.length + ' projects';
@@ -5734,12 +5836,15 @@
       isThesis: false
     },
     {
-      icon:'database',
-      title:'Research and Innovation Foundation of Cyprus, RINNOCO',
-      desc:'A research internship supported by the Research and Innovation Foundation of Cyprus at a company specializing in research, innovation, and education across data management, big data, data reduction, data compression, and data decay. The role spans the full pipeline, from early-stage research and design to proof-of-concept deployment for international markets.',
+      icon:'compass',
+      title:'Unbalanced Supersaturation: Extremal Graph Theory and Algorithmic Implications',
+      desc:'Work towards the Unbalanced Supersaturation Conjecture in extremal graph theory. Its proof implies an optimal algorithm for listing C_{2k}. Partial progress so far includes two alternative proofs of the Weak Unbalanced Supersaturation Theorem, obtained through different techniques and currently unpublished, with ongoing work towards the full conjecture.',
       collaborators: [],
       status: 'In Progress',
-      link: null,
+      links: [
+        { href:'https://arxiv.org/abs/2605.30564', label:'Related paper — arXiv:2605.30564' },
+        { href:'https://pergamos.lib.uoa.gr/uoa/dl/object/5402752', label:'MSc thesis — Pergamos' }
+      ],
       isThesis: false
     },
     {
@@ -5754,9 +5859,8 @@
   ];
 
   function showWipPanel(){
-    document.querySelectorAll('.folder').forEach(function(f){ f.classList.remove('active'); });
-    var wipRow = document.getElementById('wipFolderRow');
-    if(wipRow) wipRow.classList.add('active');
+    setActiveRow(document.getElementById('wipFolderRow'));
+    libRoute('current');
 
     panelPath.textContent = 'Currently Working On';
     panelCount.textContent = WIP_ITEMS.length + ' projects';
@@ -5830,15 +5934,21 @@
         body.appendChild(collabEl);
       }
 
-      // External link
-      if(item.link) {
-        var linkEl = document.createElement('a');
-        linkEl.className = 'wip-list-link';
-        linkEl.href = item.link.href;
-        linkEl.target = '_blank';
-        linkEl.rel = 'noopener';
-        linkEl.textContent = '↗ ' + item.link.label;
-        body.appendChild(linkEl);
+      // External link(s)
+      var itemLinks = item.links || (item.link ? [item.link] : []);
+      if(itemLinks.length > 0) {
+        var linkRow = document.createElement('div');
+        linkRow.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;';
+        itemLinks.forEach(function(lnk) {
+          var linkEl = document.createElement('a');
+          linkEl.className = 'wip-list-link';
+          linkEl.href = lnk.href;
+          linkEl.target = '_blank';
+          linkEl.rel = 'noopener';
+          linkEl.textContent = '↗ ' + lnk.label;
+          linkRow.appendChild(linkEl);
+        });
+        body.appendChild(linkRow);
       }
 
       row.appendChild(icon);
@@ -6286,10 +6396,8 @@
     }
 
     // Deactivate any active sidebar selection
-    document.querySelectorAll('.folder').forEach(function(f){ f.classList.remove('active'); });
-    const wipRow = document.getElementById('wipFolderRow');
-    if(wipRow) wipRow.classList.remove('active');
-    
+    setActiveRow(null);
+
     const results = allFiles.filter(function(it){
       return ((it.title||'') + ' ' + it.src).toLowerCase().includes(q);
     });
@@ -6365,7 +6473,9 @@
     });
   });
 
-  if(location.hash === '#archive') showView('archive');
+  // Restore the view from the URL on first paint; sub-routes that need
+  // manifest.json are re-applied by loadManifest() once the data is in.
+  applyRoute();
 
   /* ===== Manuscript-theme animations ===== */
 
