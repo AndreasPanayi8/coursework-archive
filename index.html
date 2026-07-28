@@ -53,9 +53,7 @@
 <script>
   /* Apply the saved theme before first paint; otherwise follow the OS preference. */
   (function(){
-    var fallback = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? 'dark'
-      : 'light';
+    var fallback = 'light';
     try {
       var saved = localStorage.getItem('theme');
       document.documentElement.setAttribute('data-theme', saved === 'light' || saved === 'dark' ? saved : fallback);
@@ -4841,8 +4839,7 @@
   let currentFiles = [];
   let currentFileIndex = -1;
   
-  // Theme management: follow the OS by default, preserve an explicit user choice.
-  const themeMedia = window.matchMedia('(prefers-color-scheme: dark)');
+  // Theme management: default to light, preserve an explicit user choice.
   const themeColorMeta = document.getElementById('themeColorMeta');
 
   function updateThemeControl(theme) {
@@ -4861,17 +4858,11 @@
     }
   }
 
-  applyTheme(document.documentElement.getAttribute('data-theme') || (themeMedia.matches ? 'dark' : 'light'), false);
+  applyTheme(document.documentElement.getAttribute('data-theme') || 'light', false);
 
   themeToggle.addEventListener('click', () => {
     const currentTheme = document.documentElement.getAttribute('data-theme');
     applyTheme(currentTheme === 'dark' ? 'light' : 'dark', true);
-  });
-
-  themeMedia.addEventListener?.('change', event => {
-    let saved = null;
-    try { saved = localStorage.getItem('theme'); } catch(e) {}
-    if (!saved) applyTheme(event.matches ? 'dark' : 'light', false);
   });
   
   // Mobile sidebar toggle
@@ -5853,6 +5844,15 @@
       desc:'Preparation of a comprehensive survey on geometric dynamic data structures, covering the current state of the art in data structures for dynamic geometric problems.',
       collaborators: [],
       status: 'In Preparation',
+      link: null,
+      isThesis: false
+    },
+    {
+      icon:'code',
+      title:'MIT 6.5840: Distributed Systems',
+      desc:'Working through MIT\'s Distributed Systems course, implementing the accompanying Go labs — including MapReduce, Raft consensus, and fault-tolerant key/value storage.',
+      collaborators: [],
+      status: 'In Progress',
       link: null,
       isThesis: false
     }
