@@ -3895,14 +3895,10 @@
 
   /* ---- Research interests ---- */
   .research-groups {
-    grid-template-columns:1fr 1fr;
-    gap:12px 44px;
+    grid-template-columns:1fr;
+    gap:18px;
   }
-  @media (max-width:760px) { .research-groups { grid-template-columns:1fr; } }
-  .research-group + .research-group { padding-top:0; border-top:none; }
-  @media (max-width:760px) {
-    .research-group + .research-group { padding-top:18px; border-top:1px solid var(--border); }
-  }
+  .research-group + .research-group { padding-top:18px; border-top:1px solid var(--border); }
   .research-group-title {
     font-family:var(--font-mono);
     font-size:12px;
