@@ -9,8 +9,6 @@
     "README.md",
     "gen_manifest.py",
     "index.html",
-    "index2.html",
-    "index3.html",
     "manifest.json",
     "og-image.png"
   ],
@@ -493,6 +491,16 @@
       "files": [
         "Presentation.pdf",
         "thesis.pdf"
+      ],
+      "dirs": []
+    },
+    {
+      "name": "old_html",
+      "path": "old_html",
+      "files": [
+        "index2.html",
+        "index3.html",
+        "og-image2.png"
       ],
       "dirs": []
     }
