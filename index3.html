@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Andreas Panayi — Algorithm Designer · Theoretical Computer Science</title>
+<meta name="description" content="Andreas Panayi — algorithm designer & theoretical computer scientist (ALMA, NKUA × NTUA). Fine-grained & parameterized algorithms, dynamic and geometric data structures, structural graph theory. arXiv:2605.30564.">
+<meta name="theme-color" content="#0a0f24">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M8 24 16 7l8 17z' fill='none' stroke='%238f7bff' stroke-width='2'/%3E%3Ccircle cx='8' cy='24' r='3.4' fill='%23e9edff'/%3E%3Ccircle cx='16' cy='7' r='3.4' fill='%238f7bff'/%3E%3Ccircle cx='24' cy='24' r='3.4' fill='%23e9edff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --font-display:"Archivo",sans-serif;
+  --font-body:"Spectral",Georgia,serif;
+  --font-mono:"JetBrains Mono",monospace;
+  --ease:cubic-bezier(.22,.9,.28,1);
+  --maxw:1240px;
+}
+html[data-theme="dark"]{
+  --bg:#0a0f24; --bg2:#080c1e; --surface:#111838; --surface2:#161f46;
+  --ink:#e9edff; --muted:#b6bfe3; --faint:#8089ba;
+  --line:rgba(233,237,255,.16); --line-soft:rgba(233,237,255,.08);
+  --gline:rgba(190,200,255,.17);
+  --accent:#8f7bff; --blue:#4d8dff;
+  --accent-soft:rgba(143,123,255,.13); --blue-soft:rgba(77,141,255,.12);
+  --accent-ink:#0c0722;
+  --gold:#f2c14e; --gold-soft:rgba(242,193,78,.14);
+  --track:#080c1e; --shadow:0 20px 50px rgba(3,6,20,.55);
+  --canvas-op:.3;
+}
+html[data-theme="light"]{
+  --bg:#eef1fa; --bg2:#e5e9f7; --surface:#ffffff; --surface2:#f5f7fd;
+  --ink:#161c3d; --muted:#46517f; --faint:#6c75a0;
+  --line:rgba(22,28,61,.17); --line-soft:rgba(22,28,61,.08);
+  --gline:rgba(40,50,110,.22);
+  --accent:#6247e8; --blue:#2f66e0;
+  --accent-soft:rgba(98,71,232,.10); --blue-soft:rgba(47,102,224,.10);
+  --accent-ink:#ffffff;
+  --gold:#9a7110; --gold-soft:rgba(154,113,16,.14);
+  --track:#e5e9f7; --shadow:0 20px 44px rgba(38,48,110,.14);
+  --canvas-op:.24;
+}
+/* ============ BASE ============ */
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:var(--font-body); font-size:17.5px; line-height:1.8; font-weight:400;
+  transition:background .45s var(--ease),color .45s var(--ease);
+  overflow-x:hidden;
+  -webkit-tap-highlight-color:transparent;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--accent);color:var(--accent-ink)}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%}
+.wrap{width:min(var(--maxw),92vw);margin:0 auto}
+section{scroll-margin-top:92px;position:relative}
+p{max-width:62ch;text-wrap:pretty}
+h1,h2,h3,h4{text-wrap:balance}
+
+body::before{
+  content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(1100px 620px at 88% -12%,var(--accent-soft),transparent 62%),
+    radial-gradient(900px 700px at -12% 112%,var(--blue-soft),transparent 58%),
+    radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:auto,auto,28px 28px;
+}
+html[data-theme="light"] body::before{
+  background:
+    radial-gradient(1100px 620px at 88% -12%,var(--accent-soft),transparent 62%),
+    radial-gradient(900px 700px at -12% 112%,var(--blue-soft),transparent 58%),
+    radial-gradient(rgba(22,28,61,.05) 1px,transparent 1px);
+  background-size:auto,auto,28px 28px;
+}
+
+/* ============ TYPE HELPERS ============ */
+.kicker{
+  font-family:var(--font-mono);font-size:.75rem;font-weight:500;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--accent);
+  display:flex;align-items:center;gap:.9rem;
+}
+.kicker::after{content:"";height:1px;flex:0 0 52px;background:var(--accent);opacity:.6}
+h1,h2,h3,.display{font-family:var(--font-display);font-stretch:112%;line-height:1.05;letter-spacing:-.01em}
+h2{font-size:clamp(1.95rem,3.8vw,3rem);font-weight:820;text-transform:uppercase;margin:.7rem 0 0}
+.mono{font-family:var(--font-mono)}
+.ghost{
+  font-family:var(--font-display);font-weight:900;font-stretch:118%;
+  color:transparent;-webkit-text-stroke:1.5px var(--faint);opacity:.2;
+  user-select:none;pointer-events:none;
+}
+em.math{font-family:var(--font-body);font-style:italic;color:var(--blue)}
+html[data-theme="dark"] em.math{color:#7fa9ff}
+mark{background:none;color:var(--accent);font-weight:600}
+
+/* ============ PROGRESS + NAV ============ */
+#progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--accent);z-index:1000;transition:width .1s linear}
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  background:color-mix(in srgb,var(--bg) 90%,transparent);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line-soft);
+  transition:background .45s var(--ease);
+}
+.nav-in{width:min(var(--maxw),92vw);margin:0 auto;height:66px;display:flex;align-items:center;gap:1.2rem}
+.brand{display:flex;align-items:center;gap:.7rem;font-family:var(--font-display);font-weight:800;font-stretch:112%;letter-spacing:.02em;text-transform:uppercase;font-size:.95rem;flex-shrink:0}
+.brand svg{width:26px;height:26px}
+.brand b{color:var(--accent)}
+.nav-links{display:flex;gap:1.5rem;margin-left:auto;align-items:center}
+.nav-links a{
+  font-family:var(--font-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);position:relative;padding:.35rem 0;transition:color .25s;
+}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--accent);transition:width .3s var(--ease)}
+.nav-links a:hover,.nav-links a.active{color:var(--ink)}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+.theme-btn{
+  width:40px;height:40px;border-radius:50%;cursor:pointer;flex-shrink:0;margin-left:.9rem;
+  border:1px solid var(--line);background:var(--surface);color:var(--ink);
+  display:grid;place-items:center;transition:transform .35s var(--ease),border-color .25s,background .45s;
+}
+.theme-btn:hover{transform:rotate(40deg) scale(1.06);border-color:var(--accent)}
+.theme-btn svg{width:18px;height:18px}
+html[data-theme="dark"] .icon-sun{display:block} html[data-theme="dark"] .icon-moon{display:none}
+html[data-theme="light"] .icon-sun{display:none} html[data-theme="light"] .icon-moon{display:block}
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;width:42px;height:42px;cursor:pointer;flex-direction:column;gap:5px;align-items:center;justify-content:center;flex-shrink:0}
+.burger span{display:block;width:18px;height:2px;background:var(--ink);transition:.3s var(--ease)}
+body.nav-open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+body.nav-open .burger span:nth-child(2){opacity:0}
+body.nav-open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ============ HERO ============ */
+.hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:120px 0 0;position:relative;overflow:hidden}
+#graph{position:absolute;inset:0;width:100%;height:100%;opacity:var(--canvas-op);transition:opacity .45s}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:180px;background:linear-gradient(transparent,var(--bg));pointer-events:none;z-index:1}
+.hero-inner{width:min(var(--maxw),92vw);margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) clamp(340px,40vw,520px);gap:2.8rem;align-items:center;position:relative;z-index:2}
+.hero-copy{min-width:0}
+.hero-name{margin:1.1rem 0 .5rem;text-transform:uppercase;font-weight:900;font-stretch:118%;font-size:clamp(3.1rem,8.4vw,6.6rem);line-height:.92}
+.hero-name .l1{display:block;color:var(--ink)}
+.hero-name .l2{display:block;color:transparent;-webkit-text-stroke:2px var(--accent)}
+.hero-role{font-family:var(--font-mono);font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:1.4rem}
+.hero-role b{color:var(--gold);font-weight:500}
+.hero-role i{font-style:normal;color:var(--blue)}
+html[data-theme="dark"] .hero-role i{color:#7fa9ff}
+.hero-copy p.lede{font-size:1.22rem;max-width:37rem;color:var(--muted);line-height:1.75}
+.hero-copy p.lede strong{color:var(--ink);font-weight:600}
+.hero-copy p.lede a{color:var(--accent);border-bottom:1px solid var(--accent-soft);transition:border-color .25s}
+.hero-copy p.lede a:hover{border-color:var(--accent)}
+.hero-cta{display:flex;gap:.9rem;margin-top:1.9rem;flex-wrap:wrap}
+.btn{
+  font-family:var(--font-mono);font-size:.77rem;letter-spacing:.12em;text-transform:uppercase;
+  padding:.9rem 1.6rem;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:.6rem;
+  transition:transform .25s var(--ease),box-shadow .25s,background .25s,border-color .25s,color .25s;
+}
+.btn-solid{background:var(--accent);color:var(--accent-ink);border:1px solid var(--accent);font-weight:700}
+.btn-solid:hover{transform:translateY(-3px);box-shadow:0 12px 30px var(--accent-soft)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn-ghost:hover{border-color:var(--blue);color:var(--blue);transform:translateY(-3px)}
+.hero-stats{display:flex;gap:2.6rem;margin-top:2.8rem;flex-wrap:wrap}
+.stat .n{font-family:var(--font-display);font-weight:850;font-stretch:114%;font-size:2.15rem;color:var(--ink);line-height:1}
+.stat .n i{font-style:normal;color:var(--accent)}
+.stat .t{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-top:.4rem}
+
+/* ============ CONSOLE (refined) ============ */
+.console{
+  width:100%;
+  background:var(--surface);border:1px solid var(--line);border-radius:12px;
+  box-shadow:var(--shadow);overflow:hidden;position:relative;
+  transition:background .45s var(--ease),border-color .3s,transform .35s var(--ease);
+}
+.console:hover{border-color:color-mix(in srgb,var(--accent) 45%,var(--line));transform:translateY(-3px)}
+.console-bar{display:flex;align-items:center;gap:.5rem;padding:.7rem 1rem;border-bottom:1px solid var(--line-soft);background:linear-gradient(var(--surface2),color-mix(in srgb,var(--surface2) 70%,var(--surface)))}
+.dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+.dot.r{background:#e5534b}.dot.y{background:#e0a12f}.dot.g{background:#3fb950}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-left:.35rem;animation:pulseA 1.8s ease-in-out infinite}
+@keyframes pulseA{0%,100%{box-shadow:0 0 0 0 var(--accent-soft)}50%{box-shadow:0 0 0 6px transparent}}
+.console-title{flex:1 1 auto;min-width:0;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.06em;color:var(--muted);margin-left:.55rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.console-stats{flex:0 0 auto;margin-left:.7rem;font-family:var(--font-mono);font-size:.7rem;color:var(--muted);display:flex;gap:.85rem;white-space:nowrap}
+.console-stats b{color:var(--accent);font-weight:600}
+.console-body{padding:1rem 1.1rem;height:336px;overflow:hidden;font-family:var(--font-mono);font-size:.79rem;line-height:2;display:flex;flex-direction:column;justify-content:flex-end;gap:0}
+.cl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;animation:lineIn .4s var(--ease)}
+@keyframes lineIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.cl .p{color:var(--faint)} .cl .cmd{color:var(--ink)} .cl .ok{color:var(--gold)} .cl .hi{color:var(--accent)} .cl .dim{color:var(--faint)} .cl .bl{color:var(--blue)}
+html[data-theme="dark"] .cl .bl{color:#7fa9ff}
+.cursor-line{color:var(--accent)}
+.cursor-line::after{content:"▊";animation:blink 1s steps(1) infinite;margin-left:1px}
+@keyframes blink{50%{opacity:0}}
+
+/* areas strip (replaces ticker) */
+.areas{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:4.5rem;background:var(--bg2);position:relative;z-index:2;transition:background .45s}
+.areas-track{width:min(var(--maxw),92vw);margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.7rem 1.3rem;padding:1.15rem 0}
+.areas-track span{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+.areas-track .al{color:var(--accent);letter-spacing:.24em}
+.areas-track i{font-style:normal;color:var(--accent);font-size:.55rem;opacity:.75}
+
+/* ============ SECTIONS ============ */
+.sec{padding:7rem 0}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;margin-bottom:3.2rem;flex-wrap:wrap}
+.sec-head .idx{font-family:var(--font-display);font-weight:900;font-stretch:120%;font-size:clamp(3rem,6vw,4.6rem);line-height:.8}
+.sec-head p{max-width:28rem;color:var(--muted);font-size:1.06rem}
+
+/* profile */
+.profile-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr);gap:3rem;align-items:start}
+.lead-sum{font-size:clamp(1.3rem,2.3vw,1.65rem);font-weight:500;line-height:1.5;color:var(--ink);max-width:35rem}
+.profile-copy{min-width:0}
+.profile-copy p{margin-top:1.25rem}
+.profile-copy p:not(.lead-sum){color:var(--muted);font-size:1.06rem;line-height:1.85;max-width:60ch}
+.profile-copy strong{color:var(--ink);font-weight:600}
+.profile-facts{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:1.9rem 2rem;box-shadow:var(--shadow);transition:background .45s;min-width:0}
+.fact{padding:.95rem 0;border-bottom:1px solid var(--line-soft)}
+.fact:first-child{padding-top:0}
+.fact:last-of-type{border-bottom:0}
+.fk{display:block;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:.3rem}
+.fv{display:block;font-size:1rem;color:var(--ink);line-height:1.55;overflow-wrap:anywhere}
+.profile-facts .btn{width:100%;justify-content:center;margin-top:1.5rem}
+
+/* publications */
+.pub{
+  display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:3rem;align-items:center;
+  background:var(--surface);border:1px solid var(--line);border-radius:12px;
+  padding:clamp(1.7rem,4vw,3rem);box-shadow:var(--shadow);position:relative;overflow:hidden;
+  transition:transform .35s var(--ease),border-color .3s,background .45s;
+}
+.pub:hover{transform:translateY(-5px);border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+.pub::before{content:"C₂ₖ";position:absolute;right:-.6rem;bottom:-2.6rem;font-family:var(--font-display);font-weight:900;font-stretch:120%;font-size:8rem;color:transparent;-webkit-text-stroke:1px var(--line);pointer-events:none;opacity:.6}
+.pub-badges{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1.4rem}
+.venue{display:inline-flex;align-items:center;gap:.55rem;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;border-radius:999px;padding:.42rem 1rem}
+.venue.gold{color:var(--gold);border:1px solid var(--gold);background:var(--gold-soft)}
+.venue.vio{color:var(--accent);border:1px solid var(--accent);background:var(--accent-soft)}
+.venue.blu{color:var(--blue);border:1px solid var(--blue);background:var(--blue-soft)}
+.venue .pulse{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse 1.8s ease-in-out infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 var(--gold-soft)}50%{box-shadow:0 0 0 7px transparent}}
+.pub h3{font-size:clamp(1.5rem,2.8vw,2.15rem);font-weight:800;font-stretch:112%;line-height:1.14;margin-bottom:1rem}
+.pub h3 mark{background:none;color:var(--accent)}
+.authors{font-family:var(--font-mono);font-size:.78rem;color:var(--muted);letter-spacing:.03em;margin-bottom:1.2rem}
+.authors b{color:var(--ink);font-weight:500;border-bottom:2px solid var(--accent)}
+.pub p.abs{color:var(--muted)}
+.pub p.abs em{color:var(--gold);font-style:normal}
+.tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
+.tag{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);border-radius:4px;padding:.38rem .75rem;color:var(--muted);transition:.25s}
+.tag:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);transform:translateY(-2px)}
+.pub-links{display:flex;gap:.7rem;margin-top:1.6rem;flex-wrap:wrap}
+.plink{font-family:var(--font-mono);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;padding:.7rem 1.2rem;border-radius:6px;border:1px solid var(--accent);color:var(--accent);background:var(--accent-soft);transition:.25s var(--ease);font-weight:700}
+.plink:hover{transform:translateY(-3px);box-shadow:0 10px 24px var(--accent-soft)}
+.plink.alt{border-color:var(--blue);color:var(--blue);background:var(--blue-soft)}
+.plink.alt:hover{box-shadow:0 10px 24px var(--blue-soft)}
+.fig{border:1px dashed var(--line);border-radius:10px;padding:1.4rem;background:var(--surface2);text-align:center;transition:background .45s}
+.fig svg{margin:0 auto;width:100%;max-width:250px;height:auto}
+.fig .cap{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-top:1rem}
+.oct{stroke:var(--accent);stroke-width:2;fill:var(--accent-soft);stroke-dasharray:10 6;animation:dash 1.6s linear infinite}
+.sq{stroke:var(--blue);stroke-width:1.6;fill:none;stroke-dasharray:4 7;animation:dash 2.4s linear infinite reverse}
+@keyframes dash{to{stroke-dashoffset:-32}}
+.vtx{fill:var(--ink)} .vlbl{font-family:var(--font-mono);font-size:9px;fill:var(--faint)}
+.pub-row{
+  display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:2rem;align-items:center;
+  border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:10px;background:var(--surface);
+  padding:1.7rem 2rem;margin-top:1.5rem;transition:transform .3s var(--ease),border-color .3s,background .45s;
+}
+.pub-row:hover{transform:translateX(8px);border-left-color:var(--accent)}
+.pub-row .pnum2{font-family:var(--font-display);font-weight:900;font-stretch:118%;font-size:2.6rem;color:transparent;-webkit-text-stroke:1.5px var(--faint);line-height:1;opacity:.5}
+.pub-row h3{font-size:1.3rem;font-weight:800;font-stretch:112%;margin-bottom:.4rem}
+.pub-row p{color:var(--muted);font-size:1rem}
+.pub-row .side{display:flex;flex-direction:column;gap:.6rem;align-items:flex-end}
+
+/* experience timeline */
+.timeline{position:relative;padding-left:2.6rem}
+.rail{position:absolute;left:9px;top:6px;bottom:6px;width:2px;background:var(--line-soft)}
+.rail-fill{position:absolute;left:0;top:0;width:100%;height:0;background:linear-gradient(var(--blue),var(--accent));transition:height .2s linear}
+.t-item{position:relative;padding:0 0 2.6rem}
+.t-item:last-child{padding-bottom:0}
+.t-item::before{
+  content:"";position:absolute;left:-2.6rem;top:.45rem;width:14px;height:14px;border-radius:50%;
+  background:var(--bg);border:3px solid var(--accent);transition:background .3s,box-shadow .3s;z-index:2;
+}
+.t-item:hover::before{background:var(--accent);box-shadow:0 0 0 6px var(--accent-soft)}
+.t-card{border:1px solid var(--line);border-left:3px solid var(--line);border-radius:8px;background:var(--surface);padding:1.7rem 1.9rem;transition:transform .3s var(--ease),border-color .3s,background .45s}
+.t-item:hover .t-card{transform:translateX(8px);border-left-color:var(--accent)}
+.t-meta{display:flex;justify-content:space-between;gap:.5rem 1rem;flex-wrap:wrap;margin-bottom:.55rem}
+.t-when{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.t-where{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;color:var(--blue);text-transform:uppercase}
+html[data-theme="dark"] .t-where{color:#7fa9ff}
+.t-card h3{font-size:1.35rem;font-weight:780;font-stretch:110%;margin-bottom:.8rem}
+.t-card ul{list-style:none}
+.t-card li{color:var(--muted);padding-left:1.35rem;position:relative;margin-bottom:.55rem;font-size:1.02rem;line-height:1.75}
+.t-card li::before{content:"▸";position:absolute;left:0;color:var(--accent)}
+.t-card li b{color:var(--ink);font-weight:600}
+
+/* projects */
+.proj-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:1.6rem}
+.proj{
+  border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:2.3rem;position:relative;overflow:hidden;
+  transition:transform .35s var(--ease),border-color .3s,box-shadow .35s,background .45s;display:flex;flex-direction:column;min-width:0;
+}
+.proj:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:var(--shadow)}
+.proj .pnum{position:absolute;top:1rem;right:1.4rem;font-size:4.6rem;line-height:1;transition:.35s}
+.proj:hover .pnum{-webkit-text-stroke-color:var(--accent);opacity:.55}
+.status{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;padding:.38rem .85rem;border-radius:999px;display:inline-block;width:max-content;margin-bottom:1.3rem}
+.status.done{background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent)}
+.status.live{background:var(--gold-soft);color:var(--gold);border:1px solid var(--gold)}
+.status.live::before{content:"● ";animation:blink 1.4s steps(1) infinite}
+.proj h3{font-size:1.5rem;font-weight:800;font-stretch:112%;margin-bottom:.85rem;max-width:82%}
+.proj p{color:var(--muted);font-size:1.02rem;flex:1}
+.proj .tags{margin-top:1.5rem}
+
+/* teaching */
+.teach{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:3.2rem;align-items:start}
+.teach-copy{min-width:0}
+.teach-copy p{color:var(--muted);margin-top:1.3rem}
+.teach-copy p b{color:var(--ink)}
+.eras{display:grid;gap:1rem;min-width:0}
+.era{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:1.5rem 1.7rem;display:flex;gap:1.5rem;align-items:baseline;transition:transform .3s var(--ease),border-color .3s,background .45s}
+.era:hover{transform:translateX(8px);border-color:var(--gold)}
+.era .yrs{font-family:var(--font-mono);font-size:.73rem;letter-spacing:.1em;color:var(--accent);white-space:nowrap}
+.era h4{font-family:var(--font-display);font-stretch:110%;font-size:1.18rem;font-weight:780}
+.era p{color:var(--muted);font-size:.98rem;margin-top:.25rem}
+.syllabus{margin-top:1.2rem}
+
+/* education */
+.edu{display:grid;gap:1.4rem}
+.edu-row{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:2rem 2.3rem;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2.4rem;align-items:center;transition:transform .3s var(--ease),border-color .3s,background .45s}
+.edu-row:hover{transform:translateY(-4px);border-color:var(--accent)}
+.edu-row h3{font-size:1.4rem;font-weight:800;font-stretch:112%}
+.edu-row .sch{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:.45rem 0 1rem}
+.edu-row .sch i{font-style:normal;color:var(--accent)}
+.edu-row .sch em{font-style:normal;color:var(--blue)}
+html[data-theme="dark"] .edu-row .sch em{color:#7fa9ff}
+.bar{height:8px;background:var(--line-soft);border-radius:99px;overflow:hidden;max-width:440px}
+.bar-fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--accent));transition:width 1.4s var(--ease)}
+.in .bar-fill{width:var(--w)}
+.gpa{text-align:right}
+.gpa .n{font-family:var(--font-display);font-weight:900;font-stretch:116%;font-size:2.9rem;color:var(--accent);line-height:1}
+.gpa .n small{font-size:1.1rem;color:var(--faint);font-weight:600}
+.gpa .t{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-top:.35rem}
+
+/* toolkit */
+.skill-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.4rem}
+.sg{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:1.8rem 2rem;transition:transform .3s var(--ease),border-color .3s,background .45s;min-width:0}
+.sg:hover{transform:translateY(-4px);border-color:var(--accent)}
+.sg h4{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:1.2rem}
+.chips{display:flex;flex-wrap:wrap;gap:.55rem}
+.chip{font-family:var(--font-mono);font-size:.78rem;border:1px solid var(--line);border-radius:5px;padding:.52rem 1rem;color:var(--ink);display:inline-flex;align-items:center;gap:.5rem;transition:.25s var(--ease)}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--faint);transition:.25s;flex-shrink:0}
+.chip:hover{border-color:var(--accent);transform:translateY(-3px);background:var(--accent-soft)}
+.chip:hover::before{background:var(--accent)}
+.chip.lg{font-size:.9rem;padding:.68rem 1.25rem;font-weight:500}
+.chip.lg::before{background:var(--accent)}
+.chip.new::before{background:var(--gold);animation:pulse 1.8s ease-in-out infinite}
+
+/* distinctions */
+.dist-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:1.6rem}
+.dist{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:2.1rem 2.3rem;position:relative;overflow:hidden;transition:transform .3s var(--ease),border-color .3s,background .45s;min-width:0}
+.dist:hover{transform:translateY(-5px);border-color:var(--gold)}
+.dist::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(var(--gold),var(--accent))}
+.dist h3{font-size:1.28rem;font-weight:800;font-stretch:112%;margin-bottom:.4rem}
+.dist .yrs{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;color:var(--gold);text-transform:uppercase}
+.dist p{color:var(--muted);font-size:1rem;margin-top:.65rem}
+
+/* athletics — the track (finale) */
+.track-sec{background:var(--track);border-top:1px solid var(--line);border-bottom:1px solid var(--line);transition:background .45s;overflow:hidden}
+.track-sec::after{content:"PANCYPRIAN CHAMPION";position:absolute;bottom:-1.4rem;left:0;right:0;text-align:center;font-family:var(--font-display);font-weight:900;font-stretch:122%;font-size:clamp(3rem,9vw,7.5rem);color:transparent;-webkit-text-stroke:1px var(--line);opacity:.28;pointer-events:none;white-space:nowrap}
+.track-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:3.5rem;align-items:center;position:relative;z-index:2}
+.track-copy{min-width:0}
+.track-copy p{color:var(--muted);margin-top:1.3rem}
+.track-badges{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.7rem}
+.tbadge{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--gold);color:var(--gold);border-radius:999px;padding:.48rem 1.05rem;background:var(--gold-soft)}
+.lanes{display:grid;gap:1.6rem;min-width:0}
+.lane{display:grid;grid-template-columns:130px 1fr auto;gap:1.3rem;align-items:center}
+.lane .ev{font-family:var(--font-display);font-stretch:112%;font-weight:800;font-size:1.08rem;text-transform:uppercase}
+.lane .strip{height:3px;position:relative;background:repeating-linear-gradient(90deg,var(--accent) 0 26px,transparent 26px 48px);opacity:.85;animation:laneMove 1.1s linear infinite}
+@keyframes laneMove{to{background-position-x:-48px}}
+.lane .strip .runner{position:absolute;top:50%;left:0;width:11px;height:11px;border-radius:50%;background:var(--gold);transform:translateY(-50%);box-shadow:0 0 14px var(--gold);animation:run var(--dur,4.2s) linear var(--del,0s) infinite}
+@keyframes run{0%{left:0;opacity:0}8%{opacity:1}88%{opacity:1}100%{left:calc(100% - 11px);opacity:0}}
+.medal{font-family:var(--font-mono);font-size:.63rem;letter-spacing:.16em;color:var(--gold);border:1px solid var(--gold);border-radius:4px;padding:.32rem .75rem;background:var(--gold-soft);white-space:nowrap}
+
+/* contact + footer */
+.contact{padding:7.5rem 0 4rem}
+.contact h2{font-size:clamp(2.4rem,5.6vw,4.4rem);max-width:16ch}
+.contact h2 i{font-style:normal;color:var(--accent)}
+.contact-rows{display:flex;flex-wrap:wrap;gap:1rem;margin-top:2.6rem}
+.c-pill{font-family:var(--font-mono);font-size:.8rem;letter-spacing:.04em;border:1px solid var(--line);border-radius:999px;padding:.85rem 1.55rem;color:var(--muted);transition:.3s var(--ease);display:inline-flex;gap:.6rem;align-items:center;background:var(--surface)}
+.c-pill:hover{border-color:var(--accent);color:var(--ink);transform:translateY(-3px);background:var(--accent-soft)}
+.c-pill b{color:var(--accent);font-weight:500}
+footer{border-top:1px solid var(--line);padding:2.8rem 0 3.2rem;overflow:hidden}
+.wordmark{font-family:var(--font-display);font-weight:900;font-stretch:122%;text-transform:uppercase;font-size:clamp(2.6rem,9.5vw,7.6rem);line-height:.92;text-align:center;color:transparent;-webkit-text-stroke:1.5px var(--faint);opacity:.4;transition:.5s;user-select:none}
+.wordmark:hover{-webkit-text-stroke-color:var(--accent);opacity:.8}
+.foot-meta{display:flex;justify-content:space-between;gap:.8rem 1.5rem;flex-wrap:wrap;margin-top:2.4rem;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.foot-meta a:hover{color:var(--accent)}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal[data-d="1"]{transition-delay:.1s}.reveal[data-d="2"]{transition-delay:.2s}.reveal[data-d="3"]{transition-delay:.3s}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:1100px){
+  .nav-links{gap:1.05rem}
+  .nav-links a{font-size:.68rem}
+}
+@media(max-width:960px){
+  .hero-inner{grid-template-columns:1fr;gap:2.6rem}
+  .profile-grid,.pub,.teach,.track-grid,.dist-grid{grid-template-columns:1fr}
+  .proj-grid,.skill-groups{grid-template-columns:1fr}
+  .edu-row{grid-template-columns:1fr;gap:1.6rem}
+  .gpa{text-align:left}
+  .pub::before{font-size:5rem}
+  .pub{gap:2.2rem}
+  .pub-row{grid-template-columns:1fr;gap:1.2rem}
+  .pub-row .side{align-items:flex-start}
+  .teach{gap:2.2rem}
+  .track-grid{gap:2.4rem}
+  .track-sec::after{font-size:clamp(2.6rem,11vw,5rem)}
+  .profile-grid{gap:2.2rem}
+  .profile-facts{max-width:560px}
+  .console{max-width:560px}
+}
+@media(max-width:860px){
+  .nav-links{position:fixed;top:66px;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--line);box-shadow:0 24px 40px rgba(0,0,0,.25);flex-direction:column;align-items:flex-start;padding:1.2rem 4vw 1.6rem;gap:1rem;transform:translateY(-130%);transition:transform .4s var(--ease);max-height:calc(100vh - 66px);overflow:auto}
+  body.nav-open .nav-links{transform:none}
+  .nav-links a{font-size:.82rem;letter-spacing:.14em;padding:.45rem 0;width:100%}
+  .burger{display:flex;margin-left:.7rem}
+  .theme-btn{margin-left:auto}
+  .lane{grid-template-columns:90px 1fr auto;gap:1rem}
+}
+@media(max-width:720px){
+  .sec-head .idx{display:none}
+}
+@media(max-width:640px){
+  body{font-size:16.5px}
+  .wrap{width:min(var(--maxw),90vw)}
+  .sec{padding:4.6rem 0}
+  .sec-head{margin-bottom:2.2rem;gap:1rem}
+  .sec-head p{font-size:1rem}
+  .kicker{font-size:.68rem;letter-spacing:.16em}
+  .nav-in{height:60px;gap:.8rem}
+  .nav-links{top:60px;max-height:calc(100vh - 60px)}
+  .brand{font-size:.88rem}
+  .theme-btn{width:38px;height:38px}
+  .burger{width:40px;height:40px}
+  .hero{padding-top:96px}
+  .hero::after{height:120px}
+  .hero-inner{gap:2.2rem}
+  .hero-role{font-size:.7rem;letter-spacing:.1em}
+  .hero-copy p.lede{font-size:1.08rem}
+  .hero-cta{gap:.7rem}
+  .btn{padding:.8rem 1.2rem;font-size:.72rem}
+  .hero-stats{gap:1.3rem 2rem;margin-top:2rem}
+  .stat .n{font-size:1.8rem}
+  .stat .t{font-size:.62rem}
+  .areas{margin-top:3rem}
+  .areas-track{gap:.5rem .9rem;padding:.95rem 0}
+  .areas-track span{font-size:.6rem;letter-spacing:.14em}
+  .console{max-width:none}
+  .console-bar{padding:.6rem .9rem}
+  .console-title{font-size:.62rem}
+  .st-ve{display:none}
+  .console-stats{font-size:.64rem;gap:.6rem;margin-left:.5rem}
+  .console-body{height:288px;font-size:.72rem;padding:.8rem .9rem}
+  .lead-sum{font-size:1.28rem}
+  .profile-copy p:not(.lead-sum){font-size:1rem}
+  .profile-facts{padding:1.5rem 1.4rem}
+  .pub-row{padding:1.4rem 1.3rem}
+  .pub-row h3{font-size:1.2rem}
+  .pub-row .pnum2{font-size:2.1rem}
+  .authors{font-size:.72rem}
+  .venue{font-size:.6rem;letter-spacing:.1em;padding:.36rem .75rem}
+  .plink{font-size:.68rem;padding:.6rem 1rem}
+  .timeline{padding-left:2rem}
+  .t-item{padding-bottom:1.8rem}
+  .t-item::before{left:-2rem;width:12px;height:12px}
+  .rail{left:8px}
+  .t-card{padding:1.3rem 1.2rem}
+  .t-card h3{font-size:1.22rem}
+  .t-card li{font-size:.98rem}
+  .proj{padding:1.6rem 1.4rem}
+  .proj h3{font-size:1.32rem;max-width:100%}
+  .proj .pnum{font-size:3.4rem}
+  .era{padding:1.2rem 1.2rem;gap:1.1rem}
+  .edu-row{padding:1.5rem 1.3rem;gap:1.3rem}
+  .edu-row h3{font-size:1.26rem}
+  .edu-row .sch{font-size:.66rem;letter-spacing:.07em}
+  .bar{max-width:none}
+  .gpa .n{font-size:2.4rem}
+  .lanes{gap:1.2rem}
+  .lane{grid-template-columns:82px 1fr auto;gap:.8rem}
+  .lane .ev{font-size:.95rem}
+  .medal{font-size:.56rem;padding:.26rem .55rem;letter-spacing:.12em}
+  .tbadge{font-size:.62rem;padding:.42rem .85rem}
+  .sg{padding:1.4rem 1.3rem}
+  .chip{font-size:.74rem;padding:.48rem .85rem}
+  .chip.lg{font-size:.84rem;padding:.6rem 1.05rem}
+  .dist{padding:1.6rem 1.4rem}
+  .contact{padding:4.6rem 0 3rem}
+  .contact-rows{gap:.7rem;margin-top:1.8rem}
+  .c-pill{font-size:.74rem;padding:.75rem 1.1rem}
+  .foot-meta{font-size:.62rem;margin-top:1.8rem}
+}
+@media(max-width:520px){
+  .era{flex-direction:column;gap:.35rem;align-items:flex-start}
+}
+@media(max-width:400px){
+  .lane{grid-template-columns:70px 1fr auto}
+  .lane .ev{font-size:.88rem}
+  .hero-name{font-size:2.85rem}
+  .stat{flex:1 1 40%}
+  .hero-stats{gap:1.1rem 1rem}
+}
+@media(hover:none){
+  .pub:hover,.pub-row:hover,.proj:hover,.edu-row:hover,.sg:hover,.dist:hover,.era:hover,.console:hover,
+  .t-item:hover .t-card,.btn-solid:hover,.btn-ghost:hover,.plink:hover,.c-pill:hover,
+  .chip:hover,.tag:hover{transform:none;box-shadow:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .reveal{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="#top" aria-label="Andreas Panayi — home">
+      <svg viewBox="0 0 32 32" fill="none"><path d="M8 24 16 7l8 17z" stroke="var(--accent)" stroke-width="2"/><circle cx="8" cy="24" r="3.2" fill="var(--ink)"/><circle cx="16" cy="7" r="3.2" fill="var(--accent)"/><circle cx="24" cy="24" r="3.2" fill="var(--ink)"/></svg>
+      Panayi<b>.</b>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#publications">Publications</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#teaching">Teaching</a>
+      <a href="#athletics">Athletics</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="theme-btn" id="themeBtn" aria-label="Toggle light / dark mode">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.4"/><path d="M12 2v2.6M12 19.4V22M2 12h2.6M19.4 12H22M4.9 4.9l1.9 1.9M17.2 17.2l1.9 1.9M4.9 19.1l1.9-1.9M17.2 6.8l1.9-1.9"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>
+    </button>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main>
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <canvas id="graph" aria-hidden="true"></canvas>
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <p class="kicker">Algorithm Designer · Theoretical Computer Science</p>
+      <h1 class="hero-name"><span class="l1">Andreas</span><span class="l2">Panayi</span></h1>
+      <p class="hero-role">M.S. ALMA · NKUA × NTUA · <i>Algorithms, Logic &amp; Discrete Mathematics</i> · <b>GPA 9.89 / 10</b></p>
+      <p class="lede">I design algorithms — <strong>fine-grained &amp; parameterized complexity</strong>, <strong>dynamic &amp; geometric data structures</strong>, <strong>structural graph theory</strong> — and I build the systems that run them in C++, Python and TypeScript. Recent highlight: listing even cycles <strong>faster than the submodular-width barrier</strong>, a state-of-the-art result at the seam of graph algorithms and database theory (<a href="https://arxiv.org/abs/2605.30564">arXiv:2605.30564</a>). The graph behind this text is enumerating its own even cycles right now — one small demo of the machinery I study.</p>
+      <div class="hero-cta">
+        <a class="btn btn-solid" href="#publications">Selected work ↓</a>
+        <a class="btn btn-ghost" href="mailto:andreaspanayi8@gmail.com">andreaspanayi8@gmail.com</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="n"><span data-count="9.89" data-dec="2">0.00</span><i>/10</i></div><div class="t">M.Sc. GPA · ALMA</div></div>
+        <div class="stat"><div class="n"><span data-count="2">0</span><i>×</i></div><div class="t">Research papers</div></div>
+        <div class="stat"><div class="n"><span data-count="5">0</span><i>yrs</i></div><div class="t">University teaching</div></div>
+        <div class="stat"><div class="n"><span data-count="4">0</span><i>×</i></div><div class="t">Pancyprian gold medals</div></div>
+      </div>
+    </div>
+
+    <aside class="console" aria-label="Live algorithm console (decorative)">
+      <div class="console-bar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="live-dot" aria-hidden="true"></span>
+        <span class="console-title">algorithm-workbench — zsh</span>
+        <span class="console-stats"><span class="st-ve">V <b id="nNodes">—</b></span><span class="st-ve">E <b id="nEdges">—</b></span><span>CYCLES <b id="cycCount">0000</b></span></span>
+      </div>
+      <div class="console-body" id="log"></div>
+    </aside>
+  </div>
+
+  <div class="areas" aria-label="Research and build areas">
+    <div class="areas-track">
+      <span class="al">Areas</span>
+      <span>Fine-grained complexity</span><i>✦</i>
+      <span>Parameterized algorithms</span><i>✦</i>
+      <span>Dynamic data structures</span><i>✦</i>
+      <span>Geometric data structures</span><i>✦</i>
+      <span>Structural graph theory</span><i>✦</i>
+      <span>Enumeration &amp; database theory</span><i>✦</i>
+      <span>ML systems engineering</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROFILE ============ -->
+<section class="sec" id="profile">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><p class="kicker">§ 00 — Profile</p><h2>The short<br>version.</h2></div>
+      <span class="ghost idx">Σ</span>
+      <p>Algorithm designer, systems engineer, national-team athlete — the whole profile in three paragraphs.</p>
+    </div>
+    <div class="profile-grid">
+      <div class="profile-copy reveal">
+        <p class="lead-sum">Algorithm designer working across <mark>fine-grained &amp; parameterized complexity</mark>, <mark>dynamic &amp; geometric data structures</mark> and <mark>structural graph theory</mark> — and the engineering to make it all run.</p>
+        <p>My research asks which problems admit fast algorithms, then engineers the ones that do — spanning fine-grained and parameterized complexity, advanced dynamic and geometric data structures, and extremal and structural graph theory. The sharpest result so far <strong>breaks the submodular-width barrier for even-cycle enumeration</strong>: a state-of-the-art output-sensitive algorithm with Vasileios Nakos and Hung Q. Ngo (arXiv:2605.30564, submitted to SIGMOD/PODS 2027). Alongside it: skyline (Pareto-front) reporting, an extended survey of advanced data structures — van Emde Boas, Micro-Macro, external memory — and a <strong>9.89/10 M.Sc.</strong> in the ALMA track (NKUA × NTUA) built on a mathematics degree.</p>
+        <p>On the applied side I move between <strong>C++, Python and TypeScript</strong> — currently adding <strong>Go</strong> — and I've led systems end-to-end: a machine-learning database-compression engine at the Research and Innovation Foundation of Cyprus, geometric data structures at the Athena Research Center, a blockchain node shipped to production, and five years of university teaching. Two full scholarships, technical military service, and years as a national-team sprinter round out the habit: train hard, prove things, ship.</p>
+      </div>
+      <aside class="profile-facts reveal" data-d="1">
+        <div class="fact"><span class="fk">Focus</span><span class="fv">Fine-grained &amp; parameterized algorithms · dynamic &amp; geometric data structures · structural graph theory &amp; complexity</span></div>
+        <div class="fact"><span class="fk">Languages</span><span class="fv">C++ · Python · TypeScript · Go (learning)</span></div>
+        <div class="fact"><span class="fk">Based in</span><span class="fv">Athens, Greece · Limassol, Cyprus</span></div>
+        <div class="fact"><span class="fk">Open to</span><span class="fv">Research roles · algorithm engineering · systems R&amp;D · PhD positions</span></div>
+        <a class="btn btn-solid" href="mailto:andreaspanayi8@gmail.com">Get in touch</a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PUBLICATIONS ============ -->
+<section class="sec" id="publications">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><p class="kicker">§ 01 — Publications</p><h2>Proof,<br>published.</h2></div>
+      <span class="ghost idx">C₂ₖ</span>
+      <p>Two papers on even-cycle enumeration — the sharpest edge of a broader agenda across fine-grained complexity, advanced data structures, and graph theory.</p>
+    </div>
+
+    <article class="pub reveal">
+      <div>
+        <div class="pub-badges">
+          <span class="venue gold"><span class="pulse"></span> Submitted · SIGMOD / PODS 2027 — flagship venue for data management</span>
+          <span class="venue vio">arXiv preprint · 2026</span>
+        </div>
+        <h3>Listing Even Cycles <mark>Faster than the Submodular-Width Barrier</mark></h3>
+        <p class="authors">Vasileios Nakos · Hung Q. Ngo · <b>Andreas Panayi</b></p>
+        <p class="abs">We develop <em>output-sensitive algorithms</em> for listing even-cycle queries, connecting classical graph algorithms with database-theoretic enumeration — going <em>faster than the submodular-width barrier</em> that bounds decomposition-based approaches. The background graph on this page is quietly running the same kind of enumeration in your browser.</p>
+        <div class="pub-links">
+          <a class="plink" href="https://arxiv.org/abs/2605.30564" target="_blank" rel="noopener">arXiv:2605.30564 ↗</a>
+        </div>
+        <div class="tags">
+          <span class="tag">Graph algorithms</span><span class="tag">Enumeration</span><span class="tag">Database theory</span><span class="tag">Output-sensitivity</span>
+        </div>
+      </div>
+      <figure class="fig">
+        <svg viewBox="-14 -14 288 288" width="250" height="250" role="img" aria-label="An even cycle C8 with a nested C4">
+          <polygon class="oct" points="130,30 200.7,59.3 230,130 200.7,200.7 130,230 59.3,200.7 30,130 59.3,59.3"/>
+          <polygon class="sq" points="130,82 178,130 130,178 82,130"/>
+          <g class="vtx">
+            <circle cx="130" cy="30" r="4"/><circle cx="200.7" cy="59.3" r="4"/><circle cx="230" cy="130" r="4"/><circle cx="200.7" cy="200.7" r="4"/>
+            <circle cx="130" cy="230" r="4"/><circle cx="59.3" cy="200.7" r="4"/><circle cx="30" cy="130" r="4"/><circle cx="59.3" cy="59.3" r="4"/>
+          </g>
+          <text class="vlbl" x="126" y="14">v₁</text><text class="vlbl" x="208" y="50">v₂</text><text class="vlbl" x="240" y="134">v₃</text><text class="vlbl" x="208" y="222">v₄</text>
+          <text class="vlbl" x="126" y="252">v₅</text><text class="vlbl" x="46" y="222">v₆</text><text class="vlbl" x="8" y="134">v₇</text><text class="vlbl" x="46" y="50">v₈</text>
+        </svg>
+        <figcaption class="cap">C₈ ⊃ C₄ · nested even cycles · listed in output-sensitive time</figcaption>
+      </figure>
+    </article>
+
+    <article class="pub-row reveal" data-d="1">
+      <span class="pnum2">02</span>
+      <div>
+        <h3>Faster Even-Cycle Listing via Unbalanced Supersaturation</h3>
+        <p class="authors" style="margin-bottom:.5rem"><b>Andreas Panayi</b> · National and Kapodistrian University of Athens · 2026</p>
+        <p>A unifying treatment of even-cycle listing through unbalanced supersaturation — extending the arXiv results with full proofs, reductions and the underlying machinery. Archived in Pergamos, the NKUA institutional repository.</p>
+      </div>
+      <div class="side">
+        <a class="plink alt" href="https://pergamos.lib.uoa.gr/uoa/dl/object/5402752" target="_blank" rel="noopener">Pergamos · 5402752 ↗</a>
+        <span class="venue blu">M.Sc. thesis work</span>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ EXPERIENCE ============ -->
+<section class="sec" id="experience">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><p class="kicker">§ 02 — Experience</p><h2>From proof<br>to production.</h2></div>
+      <span class="ghost idx">02</span>
+      <p>Algorithm design and research engineering — from complexity theory to ML systems to the undergraduate lab.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="rail"><div class="rail-fill" id="railFill"></div></div>
+
+      <div class="t-item reveal">
+        <div class="t-card">
+          <div class="t-meta"><span class="t-when">Jun 2026 — Jul 2026</span><span class="t-where">Research &amp; Innovation Foundation of Cyprus · Rinnoco Ltd</span></div>
+          <h3>Research Intern · R&amp;D Systems Engineer</h3>
+          <ul>
+            <li>Conducted industry research bridging <b>Big Data and machine learning</b>, developing algorithmic and ML methods to drive a novel database compression system.</li>
+            <li><b>Led the design and optimization of the underlying system</b> — from theoretical formulation through proof-of-concept implementation — in C++20 with MLPack, PostgreSQL and Docker; Python for testing; statistical approaches alongside supervised and unsupervised ML.</li>
+          </ul>
+          <div class="tags"><span class="tag">C++20</span><span class="tag">MLPack</span><span class="tag">PostgreSQL</span><span class="tag">Docker</span><span class="tag">Python</span></div>
+        </div>
+      </div>
+
+      <div class="t-item reveal">
+        <div class="t-card">
+          <div class="t-meta"><span class="t-when">Jun 2025 — Jan 2026</span><span class="t-where">Archimedes Research Unit · Athena Research Center</span></div>
+          <h3>Intern Researcher</h3>
+          <ul>
+            <li>Designed and implemented advanced data structures for computational-geometry problems, focusing on <b>skyline (Pareto-front / maxima) reporting</b>, with applications to multi-objective optimization.</li>
+            <li>Authored an extended survey on <b>models of computation and advanced data structures</b> — computational-geometry trees, external-memory structures, and van Emde Boas–based techniques — culminating in an implementation and analysis of the <b>Micro-Macro technique</b>.</li>
+          </ul>
+          <div class="tags"><span class="tag">Computational geometry</span><span class="tag">Skyline reporting</span><span class="tag">External memory</span><span class="tag">Micro-Macro</span></div>
+        </div>
+      </div>
+
+      <div class="t-item reveal">
+        <div class="t-card">
+          <div class="t-meta"><span class="t-when">2021 — 2026</span><span class="t-where">National &amp; Kapodistrian University of Athens</span></div>
+          <h3>Teaching Assistant · Computer Science I</h3>
+          <ul>
+            <li>Conducted undergraduate laboratory sessions for the mandatory <b>Computer Science I</b> course in the Department of Mathematics — five consecutive years.</li>
+            <li>Taught programming in MATLAB (2021–2024) and Python (2024–2026), as well as LaTeX, computer arithmetic and numerical linear algebra.</li>
+          </ul>
+          <div class="tags"><span class="tag">MATLAB</span><span class="tag">Python</span><span class="tag">LaTeX</span><span class="tag">Numerical linear algebra</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECTS ============ -->
+<section class="sec" id="projects">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><p class="kicker">§ 03 — Projects</p><h2>Built, shipped,<br>deployed.</h2></div>
+      <span class="ghost idx">03</span>
+      <p>Systems written end-to-end: from protocol spec to a live server answering over the network.</p>
+    </div>
+
+    <div class="proj-grid">
+      <article class="proj reveal">
+        <span class="ghost pnum">01</span>
+        <span class="status done">Complete</span>
+        <h3>Marabu Blockchain Implementation</h3>
+        <p>A complete blockchain node implementing the Marabu protocol, written across TypeScript and C++. Deployed, tested and debugged on a remote Vultr server over SSH, with GitHub-based workflows throughout the build.</p>
+        <div class="tags"><span class="tag">TypeScript</span><span class="tag">C++</span><span class="tag">Linux</span><span class="tag">SSH</span><span class="tag">GitHub</span></div>
+      </article>
+
+      <article class="proj reveal" data-d="1">
+        <span class="ghost pnum">02</span>
+        <span class="status live">Ongoing</span>
+        <h3>Personal Webpage &amp; Coursework Archive</h3>
+        <p>A portfolio site showcasing research, publications and academic profile — plus a living online archive of coursework, university projects and exercises, including introductory LaTeX and XeLaTeX notes taught in university courses.</p>
+        <div class="tags"><span class="tag">GitHub Pages</span><span class="tag">HTML / CSS</span><span class="tag">XeLaTeX</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TEACHING ============ -->
+<section class="sec" id="teaching">
+  <div class="wrap teach">
+    <div class="teach-copy reveal">
+      <p class="kicker">§ 04 — Teaching</p>
+      <h2>Five years in front of the lab.</h2>
+      <p>As Teaching Assistant for <b>Computer Science I</b> — a mandatory course for the Department of Mathematics at NKUA — I ran the undergraduate laboratory for five consecutive years, guiding students from their first line of code to numerical linear algebra. Mid-way through, I migrated the entire curriculum from MATLAB to Python.</p>
+      <div class="syllabus tags">
+        <span class="tag">LaTeX</span><span class="tag">Computer arithmetic</span><span class="tag">Numerical linear algebra</span><span class="tag">Programming fundamentals</span>
+      </div>
+    </div>
+    <div class="eras">
+      <div class="era reveal"><span class="yrs">2021 — 2024</span><div><h4>The MATLAB era</h4><p>Three years of laboratory instruction in MATLAB: vectors, matrices, numerical methods and first principles of scientific computing.</p></div></div>
+      <div class="era reveal" data-d="1"><span class="yrs">2024 — 2026</span><div><h4>The Python era</h4><p>Redesigned labs around Python — the language of modern data science and ML — while keeping the mathematical rigour intact.</p></div></div>
+      <div class="era reveal" data-d="2"><span class="yrs">Every year</span><div><h4>Typesetting as a craft</h4><p>Authored and taught introductory LaTeX and XeLaTeX notes, now used within university courses.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EDUCATION ============ -->
+<section class="sec" id="education">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><p class="kicker">§ 05 — Education</p><h2>Two degrees,<br>one trajectory.</h2></div>
+      <span class="ghost idx">05</span>
+      <p>From pure mathematics to the theory of computation — the ALMA master's track shared by NKUA and NTUA.</p>
+    </div>
+    <div class="edu">
+      <div class="edu-row reveal">
+        <div>
+          <h3>M.S. in Theoretical Computer Science — ALMA</h3>
+          <p class="sch">NKUA × NTUA · <em>Track: Algorithms, Logic &amp; Discrete Mathematics</em> · <i>2024 — 2026</i></p>
+          <div class="bar"><div class="bar-fill" style="--w:98.9%"></div></div>
+          <div class="tags" style="margin-top:1.2rem">
+            <span class="tag">Advanced Algorithms</span><span class="tag">Advanced Data Structures</span><span class="tag">Graph Theory</span><span class="tag">Advanced Computational Complexity</span><span class="tag">Theory of Computation</span><span class="tag">Machine Learning</span><span class="tag">Statistical Learning</span><span class="tag">Algorithmic Data Science</span>
+          </div>
+        </div>
+        <div class="gpa"><div class="n"><span data-count="9.89" data-dec="2">0.00</span><small>/10</small></div><div class="t">GPA</div></div>
+      </div>
+      <div class="edu-row reveal" data-d="1">
+        <div>
+          <h3>B.Sc. in Mathematics</h3>
+          <p class="sch">National &amp; Kapodistrian University of Athens · <i>2020 — 2024</i></p>
+          <div class="bar"><div class="bar-fill" style="--w:88.4%"></div></div>
+        </div>
+        <div class="gpa"><div class="n"><span data-count="8.84" data-dec="2">0.00</span><small>/10</small></div><div class="t">GPA</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOOLKIT ============ -->
+<section class="sec" id="toolkit">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><p class="kicker">§ 06 — Toolkit</p><h2>Languages &amp;<br>instruments.</h2></div>
+      <span class="ghost idx">06</span>
+      <p>Polyglot by design: prototypes in Python, hot paths in C++, full systems in TypeScript — with Go next on the bench.</p>
+    </div>
+    <div class="skill-groups">
+      <div class="sg reveal"><h4>Core languages</h4><div class="chips"><span class="chip lg">C++</span><span class="chip lg">Python</span><span class="chip lg">TypeScript</span><span class="chip new">Go · learning</span></div></div>
+      <div class="sg reveal" data-d="1"><h4>Working knowledge</h4><div class="chips"><span class="chip">MATLAB</span><span class="chip">Julia</span><span class="chip">R</span><span class="chip">Haskell</span><span class="chip">Prolog</span></div></div>
+      <div class="sg reveal" data-d="2"><h4>Tools &amp; environments</h4><div class="chips"><span class="chip">Git</span><span class="chip">GitHub</span><span class="chip">SSH</span><span class="chip">Linux</span><span class="chip">Docker</span><span class="chip">LaTeX</span><span class="chip">XeLaTeX</span></div></div>
+      <div class="sg reveal" data-d="3"><h4>Spoken</h4><div class="chips"><span class="chip lg">Greek — native</span><span class="chip lg">English — fluent</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DISTINCTIONS ============ -->
+<section class="sec" id="distinctions">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><p class="kicker">§ 07 — Distinctions</p><h2>Fully funded,<br>fully committed.</h2></div>
+      <span class="ghost idx">07</span>
+      <p>Scholarships covering the full arc of study — and fourteen months of national service in uniform.</p>
+    </div>
+    <div class="dist-grid">
+      <div class="dist reveal"><span class="yrs">2020 — 2026</span><h3>Cyprus State Scholarships Foundation</h3><p>Full scholarship for the entire duration of both bachelor's and master's studies — six consecutive academic years.</p></div>
+      <div class="dist reveal" data-d="1"><span class="yrs">2020 — 2024</span><h3>Hellenic Bank Cyprus</h3><p>Full scholarship for undergraduate studies in Mathematics at the National and Kapodistrian University of Athens.</p></div>
+      <div class="dist reveal" data-d="2" style="grid-column:1/-1"><span class="yrs">Jul 2019 — Sep 2020</span><h3>Military Service · Republic of Cyprus</h3><p>Fourteen months of national service, attached to the technical department.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ATHLETICS (finale) ============ -->
+<section class="sec track-sec" id="athletics">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><p class="kicker" style="color:var(--gold)">§ 08 — Athletics</p><h2>The other<br>kind of sprint.</h2></div>
+      <span class="ghost idx">400H</span>
+      <p>Character, measured in hundredths of a second — the coda to the résumé.</p>
+    </div>
+    <div class="track-grid">
+      <div class="track-copy reveal">
+        <p style="color:var(--muted)">I have represented the <b style="color:var(--ink)">Cyprus National Athletics Team</b> in international competition across all age categories, earning multiple distinctions in individual and relay events. On the domestic circuit: Pancyprian champion and gold medallist across four events, in school and club competition. The same discipline that splits a 400m race into segments splits a proof into lemmas.</p>
+        <div class="track-badges">
+          <span class="tbadge">🇨 Cyprus National Athletics Team</span>
+          <span class="tbadge">All age categories</span>
+          <span class="tbadge">Individual &amp; relay distinctions</span>
+        </div>
+      </div>
+      <div class="lanes">
+        <div class="lane reveal"><span class="ev">100m</span><div class="strip"><span class="runner" style="--dur:2.6s"></span></div><span class="medal">Gold</span></div>
+        <div class="lane reveal" data-d="1"><span class="ev">300m H</span><div class="strip"><span class="runner" style="--dur:3.4s;--del:.6s"></span></div><span class="medal">Gold</span></div>
+        <div class="lane reveal" data-d="2"><span class="ev">400m</span><div class="strip"><span class="runner" style="--dur:4.2s;--del:.2s"></span></div><span class="medal">Gold</span></div>
+        <div class="lane reveal" data-d="3"><span class="ev">400m H</span><div class="strip"><span class="runner" style="--dur:4.8s;--del:1s"></span></div><span class="medal">Gold</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <p class="kicker reveal">§ 09 — Contact</p>
+    <h2 class="reveal" data-d="1">Let's build something <i>provable.</i></h2>
+    <div class="contact-rows reveal" data-d="2">
+      <a class="c-pill" href="mailto:andreaspanayi8@gmail.com"><b>@</b> andreaspanayi8@gmail.com</a>
+      <a class="c-pill" href="tel:+35796614842"><b>CY</b> +357 96 614 842</a>
+      <a class="c-pill" href="tel:+306945202600"><b>GR</b> +30 694 520 2600</a>
+      <span class="c-pill"><b>◎</b> Athens, Greece · Limassol, Cyprus</span>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="wordmark">Andreas Panayi</div>
+    <div class="foot-meta">
+      <span>© 2026 Andreas Panayi · Algorithm Designer</span>
+      <span>Live algorithm canvas on this page — vanilla JS, no libraries</span>
+      <a href="#top">↑ Back to top</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+const root=document.documentElement;
+const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- theme ---------- */
+const metaTheme=document.querySelector('meta[name="theme-color"]');
+function applyMeta(){metaTheme.setAttribute("content",root.dataset.theme==="dark"?"#0a0f24":"#eef1fa");}
+const saved=localStorage.getItem("ap-theme");
+if(saved) root.dataset.theme=saved;
+else if(matchMedia("(prefers-color-scheme: light)").matches) root.dataset.theme="light";
+applyMeta();
+document.getElementById("themeBtn").addEventListener("click",()=>{
+  root.dataset.theme=root.dataset.theme==="dark"?"light":"dark";
+  localStorage.setItem("ap-theme",root.dataset.theme);
+  applyMeta(); readPalette(); fitConsole(); if(reduced) drawStatic();
+});
+
+/* ---------- mobile nav ---------- */
+const burger=document.getElementById("burger");
+burger.addEventListener("click",()=>{
+  const open=document.body.classList.toggle("nav-open");
+  burger.setAttribute("aria-expanded",open);
+});
+document.querySelectorAll("#navLinks a").forEach(a=>a.addEventListener("click",()=>document.body.classList.remove("nav-open")));
+
+/* ---------- progress bar + rail fill ---------- */
+const progress=document.getElementById("progress");
+const expSec=document.getElementById("experience");
+const railFill=document.getElementById("railFill");
+function onScroll(){
+  const h=document.documentElement;
+  progress.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+"%";
+  if(expSec&&railFill){
+    const r=expSec.getBoundingClientRect(),vh=innerHeight;
+    const p=Math.min(1,Math.max(0,(vh*0.75-r.top)/r.height));
+    railFill.style.height=(p*100)+"%";
+  }
+}
+addEventListener("scroll",onScroll,{passive:true}); onScroll();
+
+/* ---------- scroll reveal ---------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}}),{threshold:.14});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+
+/* ---------- counters ---------- */
+const cio=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting)return; cio.unobserve(e.target);
+  const el=e.target,end=parseFloat(el.dataset.count),dec=+(el.dataset.dec||0),t0=performance.now(),dur=1400;
+  (function tick(t){const k=Math.min(1,(t-t0)/dur),ease=1-Math.pow(1-k,3);
+    el.textContent=(end*ease).toFixed(dec); if(k<1)requestAnimationFrame(tick);})(t0);
+}),{threshold:.5});
+document.querySelectorAll("[data-count]").forEach(el=>cio.observe(el));
+
+/* ---------- scrollspy ---------- */
+const spyLinks=[...document.querySelectorAll("#navLinks a[href^='#']")];
+const spy=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){spyLinks.forEach(a=>a.classList.toggle("active",a.getAttribute("href")==="#"+e.target.id));}
+}),{rootMargin:"-40% 0px -55% 0px"});
+document.querySelectorAll("main section[id]").forEach(s=>spy.observe(s));
+
+/* ================= GRAPH CANVAS (calmer) ================= */
+const cv=document.getElementById("graph"),ctx=cv.getContext("2d");
+const hero=document.querySelector(".hero");
+let W=0,H=0,nodes=[],edges=[],polys=[],pulses=[],mouse=null,cycles=0,spawnTimer=0,last=0;
+let P={edge:"#8f9dff",node:"#b6bfe3",accent:"#8f7bff"};
+function readPalette(){
+  const s=getComputedStyle(root);
+  P.edge=s.getPropertyValue("--gline").trim()||P.edge;
+  P.node=s.getPropertyValue("--muted").trim()||P.node;
+  P.accent=s.getPropertyValue("--accent").trim()||P.accent;
+}
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const R=mulberry32(20260730);
+
+function build(){
+  const dpr=Math.min(devicePixelRatio||1,2);
+  W=hero.clientWidth;H=hero.clientHeight;
+  cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+  nodes=[];edges=[];polys=[];pulses=[];
+  const m=80,count=W<760?6:8;
+  for(let i=0;i<count;i++){
+    const k=[4,4,6,6,8][Math.floor(R()*5)];
+    const cx=m+R()*(W-2*m),cy=m+R()*(H-2*m),rad=46+R()*(W<760?55:90),rot=R()*Math.PI*2,idx=[];
+    for(let j=0;j<k;j++){
+      const a=rot+j/k*Math.PI*2,rr=rad*(0.8+R()*0.4);
+      const x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;
+      idx.push(nodes.length);
+      nodes.push({x,y,bx:x,by:y,ph:R()*6.28,sp:0.3+R()*0.7,poly:i});
+    }
+    polys.push({idx,segs:[],perim:0,flash:0,k});
+  }
+  const seen=new Set(),addE=(a,b)=>{if(a===b)return;const key=Math.min(a,b)+"-"+Math.max(a,b);if(seen.has(key))return;seen.add(key);edges.push([a,b]);};
+  polys.forEach(p=>{for(let j=0;j<p.idx.length;j++)addE(p.idx[j],p.idx[(j+1)%p.idx.length]);});
+  let br=0;
+  for(let i=0;i<nodes.length&&br<18;i++){
+    let best=-1,bd=150;
+    for(let j=0;j<nodes.length;j++){
+      if(nodes[j].poly===nodes[i].poly)continue;
+      const d=Math.hypot(nodes[i].bx-nodes[j].bx,nodes[i].by-nodes[j].by);
+      if(d<bd){bd=d;best=j;}
+    }
+    if(best>=0){addE(i,best);br++;}
+  }
+  polys.forEach(p=>{
+    let acc=0;
+    p.segs=p.idx.map((vi,j)=>{
+      const a=nodes[vi],b=nodes[p.idx[(j+1)%p.idx.length]];
+      const len=Math.hypot(a.bx-b.bx,a.by-b.by);
+      const s={a:vi,b:p.idx[(j+1)%p.idx.length],start:acc,len};acc+=len;return s;
+    });
+    p.perim=acc;
+  });
+  document.getElementById("nNodes").textContent=nodes.length;
+  document.getElementById("nEdges").textContent=edges.length;
+}
+function pointAt(p,d){
+  d=((d%p.perim)+p.perim)%p.perim;
+  for(const s of p.segs){
+    if(d<=s.start+s.len){
+      const t=(d-s.start)/s.len,a=nodes[s.a],b=nodes[s.b];
+      return{x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t};
+    }
+  }
+  const s=p.segs[p.segs.length-1];return{x:nodes[s.b].x,y:nodes[s.b].y};
+}
+const SUB={4:"₄",6:"₆",8:"₈"};
+function onCycle(k){
+  cycles++;
+  document.getElementById("cycCount").textContent=String(cycles).padStart(4,"0");
+  if(Math.random()<0.4){
+    addLine('<span class="ok">✓</span> <span class="hi">C'+(SUB[k]||"₂ₖ")+' #'+String(cycles).padStart(4,"0")+'</span> <span class="dim">'+(0.18+Math.random()*0.9).toFixed(2)+'ms</span>');
+  }
+}
+function update(dt,t){
+  nodes.forEach(n=>{
+    let nx=n.bx+Math.sin(t*0.001*n.sp+n.ph)*1.6, ny=n.by+Math.cos(t*0.0012*n.sp+n.ph)*1.6;
+    if(mouse){
+      const dx=nx-mouse.x,dy=ny-mouse.y,d=Math.hypot(dx,dy);
+      if(d<110&&d>0.01){const f=(1-d/110)*12;nx+=dx/d*f;ny+=dy/d*f;}
+    }
+    n.x=nx;n.y=ny;
+  });
+  polys.forEach(p=>p.flash=Math.max(0,p.flash-dt*1.1));
+  spawnTimer-=dt;
+  if(spawnTimer<=0&&pulses.length<1){
+    const p=polys[Math.floor(Math.random()*polys.length)];
+    pulses.push({p,d:0,speed:100+Math.random()*60});
+    spawnTimer=2.4+Math.random()*2.4;
+  }
+  pulses=pulses.filter(pl=>{
+    pl.d+=pl.speed*dt;
+    if(pl.d>=pl.p.perim){pl.p.flash=1;onCycle(pl.p.k);return false;}
+    return true;
+  });
+}
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  ctx.lineWidth=1;ctx.strokeStyle=P.edge;
+  ctx.beginPath();
+  edges.forEach(([a,b])=>{ctx.moveTo(nodes[a].x,nodes[a].y);ctx.lineTo(nodes[b].x,nodes[b].y);});
+  ctx.stroke();
+  polys.forEach(p=>{
+    if(p.flash<=0)return;
+    ctx.strokeStyle=P.accent;ctx.globalAlpha=p.flash*0.5;ctx.lineWidth=1.5;
+    ctx.beginPath();
+    p.segs.forEach(s=>{ctx.moveTo(nodes[s.a].x,nodes[s.a].y);ctx.lineTo(nodes[s.b].x,nodes[s.b].y);});
+    ctx.stroke();ctx.globalAlpha=1;
+  });
+  pulses.forEach(pl=>{
+    const p=pl.p;
+    ctx.strokeStyle=P.accent;ctx.lineWidth=2;ctx.globalAlpha=.85;
+    ctx.beginPath();
+    for(const s of p.segs){
+      if(pl.d<=s.start)break;
+      const a=nodes[s.a],b=nodes[s.b];
+      const t=Math.min(1,(pl.d-s.start)/s.len);
+      ctx.moveTo(a.x,a.y);ctx.lineTo(a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t);
+    }
+    ctx.stroke();ctx.globalAlpha=1;
+    const h=pointAt(p,pl.d);
+    ctx.save();ctx.shadowColor=P.accent;ctx.shadowBlur=12;
+    ctx.fillStyle=P.accent;ctx.beginPath();ctx.arc(h.x,h.y,3.2,0,6.29);ctx.fill();ctx.restore();
+  });
+  ctx.fillStyle=P.node;
+  nodes.forEach(n=>{ctx.beginPath();ctx.arc(n.x,n.y,2.1,0,6.29);ctx.fill();});
+}
+function drawStatic(){build();update(0,0);draw();}
+function loop(t){
+  const dt=Math.min(0.05,(t-last)/1000||0.016);last=t;
+  update(dt,t);draw();requestAnimationFrame(loop);
+}
+hero.addEventListener("pointermove",e=>{const r=cv.getBoundingClientRect();mouse={x:e.clientX-r.left,y:e.clientY-r.top};});
+hero.addEventListener("pointerleave",()=>mouse=null);
+let rsz;addEventListener("resize",()=>{clearTimeout(rsz);rsz=setTimeout(()=>{reduced?drawStatic():build();fitConsole();},180);});
+
+/* ================= CONSOLE (refined) ================= */
+const log=document.getElementById("log");
+const MAXL=11;
+function fitConsole(){
+  const cs=getComputedStyle(log);
+  let lh=parseFloat(cs.lineHeight);
+  if(!lh||isNaN(lh)) lh=parseFloat(cs.fontSize)*2;
+  const pt=parseFloat(cs.paddingTop)||0, pb=parseFloat(cs.paddingBottom)||0;
+  log.style.height=(MAXL*lh+pt+pb)+"px";
+}
+function addLine(html){
+  const d=document.createElement("div");d.className="cl";d.innerHTML=html;
+  log.appendChild(d);
+  while(log.children.length>MAXL)log.removeChild(log.firstChild);
+}
+const boot=[
+  '<span class="p">$</span> <span class="cmd">ssh andreas@athens</span>',
+  '<span class="p">$</span> <span class="cmd">./workbench --init</span>',
+  '<span class="p">›</span> <span class="dim">modules loaded</span> <span class="ok">ok</span>',
+  '<span class="p">›</span> <span class="dim">enum online · sw(G)=4 ·</span> <span class="ok">barrier off</span>',
+  '<span class="p">›</span> <span class="bl">status:</span> <span class="dim">designing algorithms</span>'
+];
+const ambient=[
+  '<span class="p">›</span> <span class="dim">fine-grained · O(n²⁻ᵋ)</span> <span class="ok">✓</span>',
+  '<span class="p">›</span> <span class="dim">param k fixed · FPT</span> <span class="ok">✓</span>',
+  '<span class="p">›</span> <span class="dim">dyn-tree rotate · O(log n)</span>',
+  '<span class="p">›</span> <span class="dim">geom range · O(log² n)</span>',
+  '<span class="p">›</span> <span class="bl">skyline</span> <span class="dim">· 128 maxima</span>',
+  '<span class="p">›</span> <span class="dim">memo hit · DP[sw=4]</span>',
+  '<span class="p">›</span> <span class="bl">go build ./...</span> <span class="ok">ok</span>',
+  '<span class="p">›</span> <span class="dim">prune · 312 dominated</span>'
+];
+function bootSeq(){
+  if(reduced){boot.forEach(addLine);addCursor();return;}
+  boot.forEach((l,i)=>setTimeout(()=>{addLine(l);if(i===boot.length-1)addCursor();},420*i+300));
+}
+function addCursor(){const d=document.createElement("div");d.className="cl cursor-line";d.innerHTML='<span class="p">$</span> ';log.appendChild(d);}
+function ambientLoop(){
+  setInterval(()=>{
+    const cur=log.querySelector(".cursor-line");if(cur)cur.remove();
+    addLine(ambient[Math.floor(Math.random()*ambient.length)]);
+    addCursor();
+  },3000);
+}
+
+/* ---------- init ---------- */
+readPalette();build();fitConsole();bootSeq();
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitConsole);
+if(!reduced){ambientLoop();requestAnimationFrame(loop);}
+else drawStatic();
+})();
+</script>
+</body>
+</html>
