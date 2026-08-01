@@ -103,9 +103,39 @@
   .hero .role-line{font-family:'IBM Plex Mono',monospace;font-size:14px;color:var(--ink-soft);margin-top:28px;min-height:24px;letter-spacing:0.02em;}
   .hero .role-line .cursor{display:inline-block;width:8px;height:16px;background:var(--gold);vertical-align:middle;margin-left:2px;animation:blink 1s infinite;}
   @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
-  .hero-links {margin-top: 30px;display: flex;gap: 24px;font-family: 'IBM Plex Mono', monospace;font-size: 13px;flex-wrap: wrap;}
-  .hero-links a {color: var(--ink-soft);text-decoration: none;display: flex;align-items: center;gap: 8px;transition: color 0.2s;}
-  .hero-links a:hover { color: var(--gold); }
+  
+  /* Hero Links Organized */
+  .hero-links {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+  }
+  .link-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .hero-links a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    padding: 8px 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--surface) 50%, transparent);
+  }
+  .hero-links a:hover { 
+    color: var(--gold); 
+    border-color: var(--gold);
+    background: rgba(212,165,72,0.05);
+  }
   .hero-links i { color: var(--gold); font-size: 14px; }
 
   .hero-card{background:var(--surface);border:1px solid var(--line-strong);border-radius:18px;padding:36px;box-shadow: 0 10px 40px rgba(0,0,0,0.2);position:relative;overflow:hidden;}
@@ -317,13 +347,26 @@
     .file-modal { height: 100vh; max-width: 100%; border-radius: 0; }
     .skill-row { flex-direction: column; gap: 16px; } .skill-cat-title { width: 100%; padding-top: 0; }
     .timeline { padding-left: 30px; } .tl-item::before { left: -30px; } .tl-item::after { left: -22px; width: 18px; }
-    .hero-links { gap: 12px; font-size: 12px; } .hero-links a { padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; } .hero-links i { font-size: 12px; }
   }
   @media (max-width: 480px) {
     section { padding: 60px 6vw; } h2 { font-size: 32px; margin-bottom: 30px; } .hero h1 { font-size: 15vw; }
     .hero-card { padding: 24px; } .hero-card .stat-row .v { font-size: 16px; }
     .edu-head { flex-direction: column; gap: 4px; align-items: flex-start; } .project { padding: 24px; } .project h3 { font-size: 20px; }
     .file-modal-header { flex-direction: column; align-items: flex-start; gap: 10px; } .file-modal-name { font-size: 12px; }
+    /* Mobile tweaks for Hero Links */
+    .hero-links {
+      gap: 12px;
+    }
+    .link-group {
+      gap: 8px;
+    }
+    .hero-links a {
+      flex: 1 1 auto; /* Grows to fill the row nicely */
+      justify-content: center;
+      padding: 10px 12px;
+      font-size: 12px;
+    }
+    .hero-links i { font-size: 12px; }
   }
 </style>
 </head>
@@ -414,12 +457,19 @@
             <span id="typed"></span><span class="cursor"></span>
           </div>
           <div class="hero-links">
-            <a href="mailto:andreaspanayi8@gmail.com"><i class="fas fa-envelope"></i> Email</a>
-            <a href="https://github.com/andreaspanayi8" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-            <a href="https://scholar.google.com/citations?user=ZMQ-fdQAAAAJ&hl=en&oi=ao" target="_blank"><i class="fas fa-graduation-cap"></i> Scholar</a>
-            <a href="https://orcid.org/0009-0007-2703-5130" target="_blank"><i class="fab fa-orcid"></i> ORCID</a>
-            <a href="CV - Academic.pdf" download><i class="fas fa-file-pdf"></i> Academic CV</a>
-            <a href="CV - Tech.pdf" download><i class="fas fa-file-code"></i> Tech CV</a>
+            <div class="link-group">
+              <a href="mailto:andreaspanayi8@gmail.com"><i class="fas fa-envelope"></i> Email</a>
+              <a href="https://github.com/andreaspanayi8" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+              <a href="https://www.linkedin.com/in/antreas-panagi/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            </div>
+            <div class="link-group">
+              <a href="https://scholar.google.com/citations?user=ZMQ-fdQAAAAJ&hl=en&oi=ao" target="_blank"><i class="fas fa-graduation-cap"></i> Scholar</a>
+              <a href="https://orcid.org/0009-0007-2703-5130" target="_blank"><i class="fab fa-orcid"></i> ORCID</a>
+            </div>
+            <div class="link-group">
+              <a href="CV - Academic.pdf" download><i class="fas fa-file-pdf"></i> Academic CV</a>
+              <a href="CV - Tech.pdf" download><i class="fas fa-file-code"></i> Tech CV</a>
+            </div>
           </div>
         </div>
         <div class="hero-card" id="heroCard">
