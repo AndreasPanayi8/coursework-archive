@@ -92,8 +92,7 @@
   h3{font-size:22px;font-weight:500;margin-bottom:8px}
 
   .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:120px;position:relative;}
-  .hero-grid{display:grid;grid-template-columns:1.4fr 1fr;grid-template-rows:auto auto;gap:40px 60px;align-items:center;}
-  .hero-left{grid-column:1;grid-row:1;}
+  .hero-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:60px;align-items:center;}
   .hero-left .tag{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:30px;display:flex;align-items:center;gap:14px;}
   .hero-left .tag .live{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 10px var(--teal);animation:pulse 2s infinite;}
   .hero h1{font-size:clamp(56px,9vw,128px);font-weight:300;line-height:0.95;margin-bottom:8px;}
@@ -104,36 +103,61 @@
   
   /* Hero Links Organized */
   .hero-links {
-    grid-column: 1; grid-row: 2; align-self: start;
-    display: flex; flex-direction: column; gap: 16px;
-    font-family: 'IBM Plex Mono', monospace; font-size: 13px;
+    margin-top: 32px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 24px;
+    align-items: center;
   }
-  .link-group { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
   .hero-links a {
-    color: var(--ink-soft); text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
-    transition: all 0.2s; padding: 8px 14px; border: 1px solid var(--line-strong); border-radius: 8px;
-    background: color-mix(in srgb, var(--surface) 50%, transparent);
+    color: var(--ink-soft); text-decoration: none; font-size: 14px;
+    display: inline-flex; align-items: center; gap: 8px; transition: color 0.2s;
   }
-  .hero-links a:hover { color: var(--gold); border-color: var(--gold); background: rgba(212,165,72,0.05); }
-  .hero-links i { color: var(--gold); font-size: 14px; }
+  .hero-links a:hover { color: var(--gold); }
+  .hero-links i { color: var(--muted); font-size: 14px; transition: color 0.2s; }
+  .hero-links a:hover i { color: var(--gold); }
 
   /* Hero Right Column */
-  .hero-right { grid-column: 2; grid-row: 1 / span 2; display: flex; flex-direction: column; gap: 16px; align-items: flex-end; }
-  .hero-card{background:var(--surface);border:1px solid var(--line-strong);border-radius:14px;padding:24px;width:100%;max-width:320px;box-shadow: 0 10px 40px rgba(0,0,0,0.2);position:relative;overflow:hidden;}
-  .hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
-  .hero-card .label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
-  .hero-card .stat-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dashed var(--line);gap:20px;}
-  .hero-card .stat-row:last-child{border-bottom:none}
-  .hero-card .stat-row .k{font-size:12px;color:var(--ink-soft);text-align:right;}
-  .hero-card .stat-row .v{font-family:'Fraunces',serif;font-size:16px;color:var(--gold-soft);text-align:left;}
+  .hero-right { display: flex; flex-direction: column; gap: 16px; align-items: flex-end; }
+  
+  /* Softened Profile Snapshot */
+  .hero-card {
+    background: color-mix(in srgb, var(--surface) 50%, transparent);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 24px;
+    width: 100%;
+    max-width: 320px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-soft), transparent);
+    opacity: 0.6;
+  }
+  .hero-card .label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .hero-card .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed var(--line); gap: 20px; }
+  .hero-card .stat-row:last-of-type { border-bottom: none; }
+  .hero-card .stat-row .k { font-size: 12px; color: var(--ink-soft); text-align: right; }
+  .hero-card .stat-row .v { font-family: 'Fraunces', serif; font-size: 16px; color: var(--gold-soft); text-align: left; }
 
-  .cv-links { display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-end; width: 100%; max-width: 320px; }
+  .cv-links {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    width: 100%;
+    max-width: 320px;
+    margin-top: 4px;
+  }
   .cv-links a {
     font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft);
-    text-decoration: none; border: 1px solid var(--line-strong); padding: 8px 14px;
-    border-radius: 8px; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+    text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.2s;
   }
-  .cv-links a:hover { border-color: var(--gold); color: var(--gold); }
+  .cv-links a:hover { color: var(--gold); }
 
   .scroll-cue{position:absolute;bottom:30px;left:5vw;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.3em;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:12px;}
   .scroll-cue .line{width:60px;height:1px;background:var(--line);position:relative;overflow:hidden}
@@ -365,13 +389,15 @@
 
     /* Hero Mobile Reorganization */
     .hero-grid { display: flex; flex-direction: column; align-items: stretch; gap: 24px; }
-    .hero-left { order: 1; }
-    .hero-right { order: 2; align-items: flex-start; }
-    .hero-links { order: 3; margin-top: 8px; }
+    .hero-right { align-items: stretch; }
+    .hero-card { max-width: 100%; }
 
     /* Discreet Snapshot on Mobile */
-    .hero-card { 
-      background: transparent; border: none; box-shadow: none; padding: 0; max-width: 100%; 
+    .hero-card {
+      background: transparent;
+      backdrop-filter: none;
+      border: none;
+      padding: 0;
     }
     .hero-card::before { display: none; }
     .hero-card .label { display: none; }
@@ -380,23 +406,20 @@
     .hero-card .stat-row .k { font-size: 12px; }
 
     /* Discreet CV Links on Mobile */
-    .cv-links { justify-content: flex-start; max-width: 100%; }
-    .cv-links a { font-size: 11px; padding: 6px 12px; }
+    .cv-links { justify-content: flex-start; max-width: 100%; margin-top: 8px; }
+    .cv-links a { font-size: 11px; }
 
     /* Discreet Hero Links on Mobile */
-    .hero-links { gap: 12px; }
-    .link-group { gap: 8px; }
-    .hero-links a { 
-      border: none; background: transparent; padding: 4px 0; 
-      font-size: 12px; color: var(--muted); 
-    }
-    .hero-links a:hover { color: var(--gold); }
-    .hero-links i { color: var(--muted); font-size: 12px; }
+    .hero-links { gap: 16px 20px; }
+    .hero-links a { font-size: 13px; }
+    .hero-links i { font-size: 13px; }
   }
   @media (max-width: 480px) {
     section { padding: 60px 6vw; } h2 { font-size: 32px; margin-bottom: 30px; } .hero h1 { font-size: 15vw; }
     .edu-head { flex-direction: column; gap: 4px; align-items: flex-start; } .project { padding: 24px; } .project h3 { font-size: 20px; }
     .file-modal-header { flex-direction: column; align-items: flex-start; gap: 10px; } .file-modal-name { font-size: 12px; }
+    .hero-links { gap: 12px 16px; }
+    .hero-links a { font-size: 12px; }
   }
 </style>
 </head>
@@ -497,6 +520,13 @@
           <div class="role-line">
             <span id="typed"></span><span class="cursor"></span>
           </div>
+          <div class="hero-links">
+            <a href="mailto:andreaspanayi8@gmail.com"><i class="fas fa-envelope"></i> Email</a>
+            <a href="https://github.com/andreaspanayi8" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            <a href="https://www.linkedin.com/in/antreas-panagi/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            <a href="https://scholar.google.com/citations?user=ZMQ-fdQAAAAJ&hl=en&oi=ao" target="_blank"><i class="fas fa-graduation-cap"></i> Scholar</a>
+            <a href="https://orcid.org/0009-0007-2703-5130" target="_blank"><i class="fab fa-orcid"></i> ORCID</a>
+          </div>
         </div>
         
         <div class="hero-right">
@@ -522,18 +552,6 @@
           <div class="cv-links">
             <a href="CV - Academic.pdf" download><i class="fas fa-file-pdf"></i> Academic CV</a>
             <a href="CV - Tech.pdf" download><i class="fas fa-file-code"></i> Tech CV</a>
-          </div>
-        </div>
-
-        <div class="hero-links">
-          <div class="link-group">
-            <a href="mailto:andreaspanayi8@gmail.com"><i class="fas fa-envelope"></i> Email</a>
-            <a href="https://github.com/andreaspanayi8" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-            <a href="https://www.linkedin.com/in/antreas-panagi/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
-          </div>
-          <div class="link-group">
-            <a href="https://scholar.google.com/citations?user=ZMQ-fdQAAAAJ&hl=en&oi=ao" target="_blank"><i class="fas fa-graduation-cap"></i> Scholar</a>
-            <a href="https://orcid.org/0009-0007-2703-5130" target="_blank"><i class="fab fa-orcid"></i> ORCID</a>
           </div>
         </div>
 
@@ -963,7 +981,7 @@
   </section>
 
   <footer>
-    <div>© Andreas Panayi — Theoretical CS & Systems Engineering</div>
+    <div>© Andreas Panayi — Theoretical CS & Research Engineering</div>
     <div>Athens · Limassol · 2026</div>
   </footer>
 </main>
@@ -1082,7 +1100,6 @@
 
   function initNodes() {
     components = [];
-    // Increased count: 10 on mobile, 20 on desktop
     const count = window.innerWidth < 768 ? 10 : 20; 
     for (let i = 0; i < count; i++) {
       components.push(createComponent());
@@ -1098,7 +1115,6 @@
       comp.y += comp.vy;
       comp.rotation += comp.rotSpeed;
       
-      // Wrap around screen
       const margin = 100;
       if (comp.x < -margin) comp.x = W + margin;
       if (comp.x > W + margin) comp.x = -margin;
@@ -1109,7 +1125,6 @@
       ctx.translate(comp.x, comp.y);
       ctx.rotate(comp.rotation);
       
-      // Draw edges
       ctx.strokeStyle = getEdgeColor(0.15);
       ctx.lineWidth = 1.0;
       for (const edge of comp.edges) {
@@ -1121,7 +1136,6 @@
         ctx.stroke();
       }
       
-      // Draw nodes
       ctx.fillStyle = getNodeColor(0.6);
       for (const node of comp.nodes) {
         ctx.beginPath();
@@ -1159,7 +1173,6 @@
     return 'fa-file';
   }
 
-  // Hidden dev/build files to exclude from the library UI
   const hiddenFiles = ['index.html', 'manifest.json', 'og-image.png', 'README.md', 'LICENSE', 'Panayi Andreas.png'];
   const hiddenDirs = ['old_html', 'build'];
   const hiddenExtensions = ['.aux', '.log', '.out', '.synctex.gz', '.toc'];
@@ -1341,7 +1354,6 @@
   themeToggle.addEventListener('click', toggleThemeAction);
   brandLogo.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-  // Mobile drawer logic with no-scroll lock
   function openDrawer() {
     mobileDrawer.classList.add('open');
     drawerOverlay.classList.add('active');
