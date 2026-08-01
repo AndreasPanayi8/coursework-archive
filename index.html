@@ -52,18 +52,15 @@
   }
   *{box-sizing:border-box;margin:0;padding:0} html{scroll-behavior:smooth}
   body{background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .4s ease, color .4s ease;}
+  body.no-scroll { overflow: hidden; }
   ::selection{background:var(--gold);color:var(--bg)} a{color:inherit}
   
   .progress-bar{position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,var(--gold),var(--rust));z-index:200;transition:width .1s linear;}
   
   /* Background Layers */
   #bgCanvas{position:fixed;inset:0;z-index:0;opacity:0.75}
-  /* Clever mask to hide background graphs in the center where text is */
   .canvas-mask {
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
     background: radial-gradient(ellipse 75% 65% at center, var(--bg) 35%, rgba(0,0,0,0) 85%);
   }
   .grain{position:fixed;inset:0;pointer-events:none;z-index:2;opacity:0.04;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");mix-blend-mode:overlay;}
@@ -95,7 +92,8 @@
   h3{font-size:22px;font-weight:500;margin-bottom:8px}
 
   .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:120px;position:relative;}
-  .hero-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:60px;align-items:center;}
+  .hero-grid{display:grid;grid-template-columns:1.4fr 1fr;grid-template-rows:auto auto;gap:40px 60px;align-items:center;}
+  .hero-left{grid-column:1;grid-row:1;}
   .hero-left .tag{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:30px;display:flex;align-items:center;gap:14px;}
   .hero-left .tag .live{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 10px var(--teal);animation:pulse 2s infinite;}
   .hero h1{font-size:clamp(56px,9vw,128px);font-weight:300;line-height:0.95;margin-bottom:8px;}
@@ -106,45 +104,36 @@
   
   /* Hero Links Organized */
   .hero-links {
-    margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 13px;
+    grid-column: 1; grid-row: 2; align-self: start;
+    display: flex; flex-direction: column; gap: 16px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 13px;
   }
-  .link-group {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
+  .link-group { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
   .hero-links a {
-    color: var(--ink-soft);
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.2s;
-    padding: 8px 14px;
-    border: 1px solid var(--line-strong);
-    border-radius: 8px;
+    color: var(--ink-soft); text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+    transition: all 0.2s; padding: 8px 14px; border: 1px solid var(--line-strong); border-radius: 8px;
     background: color-mix(in srgb, var(--surface) 50%, transparent);
   }
-  .hero-links a:hover { 
-    color: var(--gold); 
-    border-color: var(--gold);
-    background: rgba(212,165,72,0.05);
-  }
+  .hero-links a:hover { color: var(--gold); border-color: var(--gold); background: rgba(212,165,72,0.05); }
   .hero-links i { color: var(--gold); font-size: 14px; }
 
-  .hero-card{background:var(--surface);border:1px solid var(--line-strong);border-radius:18px;padding:36px;box-shadow: 0 10px 40px rgba(0,0,0,0.2);position:relative;overflow:hidden;}
+  /* Hero Right Column */
+  .hero-right { grid-column: 2; grid-row: 1 / span 2; display: flex; flex-direction: column; gap: 16px; align-items: flex-end; }
+  .hero-card{background:var(--surface);border:1px solid var(--line-strong);border-radius:14px;padding:24px;width:100%;max-width:320px;box-shadow: 0 10px 40px rgba(0,0,0,0.2);position:relative;overflow:hidden;}
   .hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
-  .hero-card .label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;}
-  .hero-card .stat-row{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px dashed var(--line);gap:20px;}
+  .hero-card .label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
+  .hero-card .stat-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dashed var(--line);gap:20px;}
   .hero-card .stat-row:last-child{border-bottom:none}
-  .hero-card .stat-row .k{font-size:13px;color:var(--ink-soft);text-align:right;}
-  .hero-card .stat-row .v{font-family:'Fraunces',serif;font-size:19px;color:var(--gold-soft);text-align:left;}
+  .hero-card .stat-row .k{font-size:12px;color:var(--ink-soft);text-align:right;}
+  .hero-card .stat-row .v{font-family:'Fraunces',serif;font-size:16px;color:var(--gold-soft);text-align:left;}
+
+  .cv-links { display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-end; width: 100%; max-width: 320px; }
+  .cv-links a {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft);
+    text-decoration: none; border: 1px solid var(--line-strong); padding: 8px 14px;
+    border-radius: 8px; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+  }
+  .cv-links a:hover { border-color: var(--gold); color: var(--gold); }
 
   .scroll-cue{position:absolute;bottom:30px;left:5vw;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.3em;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:12px;}
   .scroll-cue .line{width:60px;height:1px;background:var(--line);position:relative;overflow:hidden}
@@ -328,12 +317,38 @@
   .cmd-item span{font-family:'IBM Plex Sans',sans-serif;font-size:14px}
   .cmd-item small{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted)}
 
-  .mobile-drawer{ position:fixed;top:0;right:0;height:100vh;width:85vw;max-width:340px; background:var(--bg-2);border-left:1px solid var(--line); z-index:150;transform:translateX(100%);transition:transform .4s cubic-bezier(.16,1,.3,1); padding:80px 30px 30px;display:flex;flex-direction:column;gap:12px; }
+  /* Mobile Drawer Redesign */
+  .mobile-drawer{ 
+    position:fixed;top:0;right:0;height:100vh;width:300px;
+    background:linear-gradient(180deg, var(--bg-2), var(--bg)); 
+    border-left:1px solid var(--line); z-index:150;
+    transform:translateX(100%);transition:transform .4s cubic-bezier(.16,1,.3,1); 
+    padding:24px; display:flex; flex-direction:column; gap:16px;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.2);
+  }
   .mobile-drawer.open{transform:translateX(0)}
-  .mobile-drawer a{ font-family:'Fraunces',serif;font-size:22px;text-decoration:none;color:var(--ink-soft); padding:12px 0;border-bottom:1px solid var(--line);transition:color .2s; }
-  .mobile-drawer a:hover{color:var(--gold)}
-  .drawer-close{ position:absolute;top:20px;right:20px;background:none;border:none; color:var(--ink);font-size:20px;cursor:pointer; }
-  .drawer-overlay{ position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:140; opacity:0;pointer-events:none;transition:opacity .3s; }
+  .drawer-header {
+    display:flex; justify-content:space-between; align-items:center;
+    padding-bottom:16px; border-bottom:1px solid var(--line);
+    font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted);
+    text-transform:uppercase; letter-spacing:0.1em;
+  }
+  .drawer-close{ background:none;border:none; color:var(--ink); font-size:18px; cursor:pointer; padding:4px; transition: color 0.2s; }
+  .drawer-close:hover { color: var(--gold); }
+  .drawer-nav { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+  .mobile-drawer a.drawer-link{ 
+    font-family:'Fraunces',serif;font-size:20px;text-decoration:none;color:var(--ink-soft); 
+    padding:12px 16px; border-radius:8px; transition: all 0.2s; border-bottom:none;
+  }
+  .mobile-drawer a.drawer-link:hover{ color:var(--gold); background: rgba(212,165,72,0.05); }
+  .drawer-footer { 
+    display: flex; gap: 20px; padding-top: 16px; border-top: 1px solid var(--line);
+    margin-top: auto;
+  }
+  .drawer-footer a { color: var(--ink-soft); font-size: 18px; transition: color 0.2s; }
+  .drawer-footer a:hover { color: var(--gold); }
+
+  .drawer-overlay{ position:fixed;inset:0;background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:140; opacity:0;pointer-events:none;transition:opacity .3s; }
   .drawer-overlay.active{opacity:1;pointer-events:auto}
 
   @media (max-width:900px){
@@ -347,26 +362,41 @@
     .file-modal { height: 100vh; max-width: 100%; border-radius: 0; }
     .skill-row { flex-direction: column; gap: 16px; } .skill-cat-title { width: 100%; padding-top: 0; }
     .timeline { padding-left: 30px; } .tl-item::before { left: -30px; } .tl-item::after { left: -22px; width: 18px; }
+
+    /* Hero Mobile Reorganization */
+    .hero-grid { display: flex; flex-direction: column; align-items: stretch; gap: 24px; }
+    .hero-left { order: 1; }
+    .hero-right { order: 2; align-items: flex-start; }
+    .hero-links { order: 3; margin-top: 8px; }
+
+    /* Discreet Snapshot on Mobile */
+    .hero-card { 
+      background: transparent; border: none; box-shadow: none; padding: 0; max-width: 100%; 
+    }
+    .hero-card::before { display: none; }
+    .hero-card .label { display: none; }
+    .hero-card .stat-row { padding: 4px 0; border: none; }
+    .hero-card .stat-row .v { font-size: 14px; color: var(--ink-soft); font-family: 'IBM Plex Mono', monospace; font-style: normal; }
+    .hero-card .stat-row .k { font-size: 12px; }
+
+    /* Discreet CV Links on Mobile */
+    .cv-links { justify-content: flex-start; max-width: 100%; }
+    .cv-links a { font-size: 11px; padding: 6px 12px; }
+
+    /* Discreet Hero Links on Mobile */
+    .hero-links { gap: 12px; }
+    .link-group { gap: 8px; }
+    .hero-links a { 
+      border: none; background: transparent; padding: 4px 0; 
+      font-size: 12px; color: var(--muted); 
+    }
+    .hero-links a:hover { color: var(--gold); }
+    .hero-links i { color: var(--muted); font-size: 12px; }
   }
   @media (max-width: 480px) {
     section { padding: 60px 6vw; } h2 { font-size: 32px; margin-bottom: 30px; } .hero h1 { font-size: 15vw; }
-    .hero-card { padding: 24px; } .hero-card .stat-row .v { font-size: 16px; }
     .edu-head { flex-direction: column; gap: 4px; align-items: flex-start; } .project { padding: 24px; } .project h3 { font-size: 20px; }
     .file-modal-header { flex-direction: column; align-items: flex-start; gap: 10px; } .file-modal-name { font-size: 12px; }
-    /* Mobile tweaks for Hero Links */
-    .hero-links {
-      gap: 12px;
-    }
-    .link-group {
-      gap: 8px;
-    }
-    .hero-links a {
-      flex: 1 1 auto; /* Grows to fill the row nicely */
-      justify-content: center;
-      padding: 10px 12px;
-      font-size: 12px;
-    }
-    .hero-links i { font-size: 12px; }
   }
 </style>
 </head>
@@ -405,17 +435,28 @@
 
 <div class="drawer-overlay" id="drawerOverlay"></div>
 <aside class="mobile-drawer" id="mobileDrawer">
-  <button class="drawer-close" id="drawerClose"><i class="fas fa-times"></i></button>
-  <a href="#about" class="drawer-link">About</a>
-  <a href="#education" class="drawer-link">Education</a>
-  <a href="#experience" class="drawer-link">Experience</a>
-  <a href="#research" class="drawer-link">Research</a>
-  <a href="#publications" class="drawer-link">Publications</a>
-  <a href="#projects" class="drawer-link">Engineering</a>
-  <a href="#skills" class="drawer-link">Skills</a>
-  <a href="#beyond" class="drawer-link">Beyond</a>
-  <a href="#library" class="drawer-link">Library</a>
-  <a href="#contact" class="drawer-link">Contact</a>
+  <div class="drawer-header">
+    <span>Menu</span>
+    <button class="drawer-close" id="drawerClose"><i class="fas fa-times"></i></button>
+  </div>
+  <nav class="drawer-nav">
+    <a href="#about" class="drawer-link">About</a>
+    <a href="#education" class="drawer-link">Education</a>
+    <a href="#experience" class="drawer-link">Experience</a>
+    <a href="#research" class="drawer-link">Research</a>
+    <a href="#publications" class="drawer-link">Publications</a>
+    <a href="#projects" class="drawer-link">Engineering</a>
+    <a href="#skills" class="drawer-link">Skills</a>
+    <a href="#beyond" class="drawer-link">Beyond</a>
+    <a href="#library" class="drawer-link">Library</a>
+    <a href="#contact" class="drawer-link">Contact</a>
+  </nav>
+  <div class="drawer-footer">
+    <a href="mailto:andreaspanayi8@gmail.com"><i class="fas fa-envelope"></i></a>
+    <a href="https://github.com/andreaspanayi8" target="_blank"><i class="fab fa-github"></i></a>
+    <a href="https://www.linkedin.com/in/antreas-panagi/" target="_blank"><i class="fab fa-linkedin"></i></a>
+    <a href="https://scholar.google.com/" target="_blank"><i class="fas fa-graduation-cap"></i></a>
+  </div>
 </aside>
 
 <nav class="top" id="nav">
@@ -451,46 +492,51 @@
     <div class="container">
       <div class="hero-grid">
         <div class="hero-left">
-          <div class="tag"><span class="live"></span> Athens, GR · Limassol, CY · Available 2026</div>
+          <div class="tag"><span class="live"></span> Athens, GR · Limassol, CY</div>
           <h1>Andreas<br><span class="last">Panayi</span></h1>
           <div class="role-line">
             <span id="typed"></span><span class="cursor"></span>
           </div>
-          <div class="hero-links">
-            <div class="link-group">
-              <a href="mailto:andreaspanayi8@gmail.com"><i class="fas fa-envelope"></i> Email</a>
-              <a href="https://github.com/andreaspanayi8" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-              <a href="https://www.linkedin.com/in/antreas-panagi/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        </div>
+        
+        <div class="hero-right">
+          <div class="hero-card" id="heroCard">
+            <div class="label">Profile Snapshot</div>
+            <div class="stat-row">
+              <span class="k">Masters</span>
+              <span class="v">MSc Theoretical CS</span>
             </div>
-            <div class="link-group">
-              <a href="https://scholar.google.com/citations?user=ZMQ-fdQAAAAJ&hl=en&oi=ao" target="_blank"><i class="fas fa-graduation-cap"></i> Scholar</a>
-              <a href="https://orcid.org/0009-0007-2703-5130" target="_blank"><i class="fab fa-orcid"></i> ORCID</a>
+            <div class="stat-row">
+              <span class="k">Bachelors</span>
+              <span class="v">BSc Mathematics</span>
             </div>
-            <div class="link-group">
-              <a href="CV - Academic.pdf" download><i class="fas fa-file-pdf"></i> Academic CV</a>
-              <a href="CV - Tech.pdf" download><i class="fas fa-file-code"></i> Tech CV</a>
+            <div class="stat-row">
+              <span class="k">Academic Work</span>
+              <span class="v">Algorithm Design</span>
             </div>
+            <div class="stat-row">
+              <span class="k">Applied Work</span>
+              <span class="v">Research Engineer</span>
+            </div>
+          </div>
+          <div class="cv-links">
+            <a href="CV - Academic.pdf" download><i class="fas fa-file-pdf"></i> Academic CV</a>
+            <a href="CV - Tech.pdf" download><i class="fas fa-file-code"></i> Tech CV</a>
           </div>
         </div>
-        <div class="hero-card" id="heroCard">
-          <div class="label">Profile Snapshot</div>
-          <div class="stat-row">
-            <span class="k">Masters</span>
-            <span class="v">MSc Theoretical CS</span>
+
+        <div class="hero-links">
+          <div class="link-group">
+            <a href="mailto:andreaspanayi8@gmail.com"><i class="fas fa-envelope"></i> Email</a>
+            <a href="https://github.com/andreaspanayi8" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            <a href="https://www.linkedin.com/in/antreas-panagi/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
           </div>
-          <div class="stat-row">
-            <span class="k">Bachelors</span>
-            <span class="v">BSc Mathematics</span>
-          </div>
-          <div class="stat-row">
-            <span class="k">Academic Work</span>
-            <span class="v">Algorithm Design</span>
-          </div>
-          <div class="stat-row">
-            <span class="k">Applied Work</span>
-            <span class="v">Research Engineer</span>
+          <div class="link-group">
+            <a href="https://scholar.google.com/citations?user=ZMQ-fdQAAAAJ&hl=en&oi=ao" target="_blank"><i class="fas fa-graduation-cap"></i> Scholar</a>
+            <a href="https://orcid.org/0009-0007-2703-5130" target="_blank"><i class="fab fa-orcid"></i> ORCID</a>
           </div>
         </div>
+
       </div>
     </div>
     <div class="scroll-cue"><span>Scroll</span><span class="line"></span></div>
@@ -894,7 +940,7 @@
   <section id="contact" class="contact">
     <div class="container">
       <div class="eyebrow reveal" style="justify-content:center">10 — Let's Talk</div>
-      <h2 class="reveal">Always <span class="em" style="font-style:italic">curious</span>.<br>Always <span class="em" style="font-style:italic">building</span>.</h2>
+      <h2 class="reveal">Always <span class="em" style="font-style:italic">curious</span>.<br>Always <span class="em" style="font-style:italic">exploring</span>.</h2>
       <p class="lead reveal">Open to research collaborations and engineering opportunities where theoretical depth meets real-world systems.</p>
       <div class="contact-actions reveal">
         <a href="mailto:andreaspanayi8@gmail.com" class="btn btn-primary">
@@ -952,9 +998,10 @@
   const roles = [
     "Theoretical Computer Scientist",
     "Algorithms & Complexity Researcher",
-    "Systems Engineer · C++ / TypeScript",
-    "M.S. ALMA · NKUA × NTUA · 9.9/10",
-    "Former National Athlete · Cyprus"
+    "MSc in Theoretical Computer Science",
+    "Research Engineer",
+    "Systems Engineer",
+    "Former National Team Athlete"
   ];
 
   function getEdgeColor(alpha) {
@@ -1294,10 +1341,22 @@
   themeToggle.addEventListener('click', toggleThemeAction);
   brandLogo.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-  menuToggle.addEventListener('click', () => { mobileDrawer.classList.add('open'); drawerOverlay.classList.add('active'); });
-  drawerClose.addEventListener('click', () => { mobileDrawer.classList.remove('open'); drawerOverlay.classList.remove('active'); });
-  drawerOverlay.addEventListener('click', () => { mobileDrawer.classList.remove('open'); drawerOverlay.classList.remove('active'); });
-  document.querySelectorAll('.drawer-link').forEach(link => link.addEventListener('click', () => { mobileDrawer.classList.remove('open'); drawerOverlay.classList.remove('active'); }));
+  // Mobile drawer logic with no-scroll lock
+  function openDrawer() {
+    mobileDrawer.classList.add('open');
+    drawerOverlay.classList.add('active');
+    document.body.classList.add('no-scroll');
+  }
+  function closeDrawer() {
+    mobileDrawer.classList.remove('open');
+    drawerOverlay.classList.remove('active');
+    document.body.classList.remove('no-scroll');
+  }
+
+  menuToggle.addEventListener('click', openDrawer);
+  drawerClose.addEventListener('click', closeDrawer);
+  drawerOverlay.addEventListener('click', closeDrawer);
+  document.querySelectorAll('.drawer-link').forEach(link => link.addEventListener('click', closeDrawer));
 
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1337,6 +1396,7 @@
     if (e.key === 'Escape') {
       cmdOverlay.classList.remove('active');
       closeFileModal();
+      closeDrawer();
     }
   });
 </script>
