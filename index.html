@@ -117,38 +117,29 @@
   .hero-links i { color: var(--muted); font-size: 14px; transition: color 0.2s; }
   .hero-links a:hover i { color: var(--gold); }
 
-  /* Hero Right Column */
+  /* Hero Right Column (Discreet Snapshot) */
   .hero-right { display: flex; flex-direction: column; gap: 16px; align-items: flex-end; }
-  
-  /* Softened Profile Snapshot */
   .hero-card {
-    background: color-mix(in srgb, var(--surface) 50%, transparent);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 24px;
     width: 100%;
     max-width: 320px;
-    position: relative;
-    overflow: hidden;
+    padding: 0;
+    text-align: right;
   }
-  .hero-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gold-soft), transparent);
-    opacity: 0.6;
+  .hero-card .label { display: none; }
+  .hero-card .stat-row { 
+    display: flex; justify-content: space-between; align-items: center; 
+    padding: 4px 0; border: none; gap: 20px; 
   }
-  .hero-card .label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
-  .hero-card .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed var(--line); gap: 20px; }
-  .hero-card .stat-row:last-of-type { border-bottom: none; }
-  .hero-card .stat-row .k { font-size: 12px; color: var(--ink-soft); text-align: right; }
-  .hero-card .stat-row .v { font-family: 'Fraunces', serif; font-size: 16px; color: var(--gold-soft); text-align: left; }
+  .hero-card .stat-row .k { font-size: 12px; color: var(--muted); text-align: right; }
+  .hero-card .stat-row .v { 
+    font-size: 14px; color: var(--ink-soft); 
+    font-family: 'IBM Plex Mono', monospace; font-style: normal; text-align: left; 
+  }
 
   .cv-links {
     display: flex;
     gap: 16px;
-    justify-content: center;
+    justify-content: flex-end;
     width: 100%;
     max-width: 320px;
     margin-top: 4px;
@@ -173,14 +164,23 @@
   .about-text p .hl{color:var(--gold-soft);font-style:italic}
   .about-text p:first-of-type::first-letter{font-size:64px;float:left;line-height:0.9;padding:6px 12px 0 0;color:var(--gold);font-weight:400;}
 
+  /* Education & Honors Styles - Grid Layout */
   .edu-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; align-items: start; }
   .edu-list { display: flex; flex-direction: column; gap: 40px; }
-  .edu-item { border-left: 2px solid var(--gold); padding-left: 24px; }
-  .edu-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; gap: 20px; flex-wrap: wrap; }
-  .edu-name { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500; color: var(--ink); }
-  .edu-date { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--gold); }
-  .edu-school { font-size: 14px; color: var(--teal); font-family: 'IBM Plex Mono', monospace; margin-bottom: 12px; }
-  .edu-details { font-size: 15px; color: var(--ink-soft); line-height: 1.6; margin-bottom: 10px; }
+  .edu-item { 
+    display: grid; 
+    grid-template-columns: 1fr auto; 
+    column-gap: 24px; 
+    row-gap: 8px; 
+    align-items: start; 
+    border-left: 2px solid var(--gold); 
+    padding-left: 24px; 
+  }
+  .edu-name { grid-column: 1; grid-row: 1; font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500; color: var(--ink); }
+  .edu-date { grid-column: 2; grid-row: 1; font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--gold); text-align: right; }
+  .edu-school { grid-column: 1; grid-row: 2; font-size: 14px; color: var(--teal); font-family: 'IBM Plex Mono', monospace; margin-top: 4px; }
+  .edu-gpa { grid-column: 2; grid-row: 2; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--teal); text-align: right; margin-top: 4px; }
+  .edu-details { grid-column: 1; grid-row: 3; font-size: 15px; color: var(--ink-soft); line-height: 1.6; margin-top: 8px; }
   .edu-details strong { color: var(--ink); font-weight: 500; }
 
   .honor-cards { display: flex; flex-direction: column; gap: 20px; }
@@ -375,6 +375,21 @@
   .drawer-overlay{ position:fixed;inset:0;background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:140; opacity:0;pointer-events:none;transition:opacity .3s; }
   .drawer-overlay.active{opacity:1;pointer-events:auto}
 
+  /* Large Desktop Sizing for Hero Snapshot */
+  @media (min-width: 1280px) {
+    .hero-card { max-width: 380px; }
+    .hero-card .stat-row { padding: 6px 0; }
+    .hero-card .stat-row .k { font-size: 13px; }
+    .hero-card .stat-row .v { font-size: 15px; }
+    .cv-links { max-width: 380px; }
+    .cv-links a { font-size: 13px; }
+  }
+  @media (min-width: 1600px) {
+    .hero-card { max-width: 420px; }
+    .hero-card .stat-row .k { font-size: 14px; }
+    .hero-card .stat-row .v { font-size: 16px; }
+  }
+
   @media (max-width:900px){
     .hero-grid,.about-grid,.research-grid,.projects-grid,.skills-grid,.edu-grid,.beyond-grid{grid-template-columns:1fr;gap:40px}
     .nav-links{display:none} .menu-toggle{display:block}
@@ -389,25 +404,21 @@
 
     /* Hero Mobile Reorganization */
     .hero-grid { display: flex; flex-direction: column; align-items: stretch; gap: 24px; }
-    .hero-right { align-items: stretch; }
-    .hero-card { max-width: 100%; }
+    .hero-right { align-items: flex-start; }
+    .hero-card { text-align: left; max-width: 100%; }
 
-    /* Discreet Snapshot on Mobile */
-    .hero-card {
-      background: transparent;
-      backdrop-filter: none;
-      border: none;
-      padding: 0;
+    /* Education Mobile Adjustments - Stack vertically */
+    .edu-item {
+      grid-template-columns: 1fr;
+      row-gap: 6px;
     }
-    .hero-card::before { display: none; }
-    .hero-card .label { display: none; }
-    .hero-card .stat-row { padding: 4px 0; border: none; }
-    .hero-card .stat-row .v { font-size: 14px; color: var(--ink-soft); font-family: 'IBM Plex Mono', monospace; font-style: normal; }
-    .hero-card .stat-row .k { font-size: 12px; }
+    .edu-date { grid-column: 1; grid-row: 2; text-align: left; margin-bottom: 4px; }
+    .edu-school { grid-column: 1; grid-row: 3; margin-top: 0; }
+    .edu-gpa { grid-column: 1; grid-row: 4; text-align: left; margin-top: 0; margin-bottom: 8px; }
+    .edu-details { grid-column: 1; grid-row: 5; margin-top: 0; }
 
     /* Discreet CV Links on Mobile */
     .cv-links { justify-content: flex-start; max-width: 100%; margin-top: 8px; }
-    .cv-links a { font-size: 11px; }
 
     /* Discreet Hero Links on Mobile */
     .hero-links { gap: 16px 20px; }
@@ -416,7 +427,9 @@
   }
   @media (max-width: 480px) {
     section { padding: 60px 6vw; } h2 { font-size: 32px; margin-bottom: 30px; } .hero h1 { font-size: 15vw; }
-    .edu-head { flex-direction: column; gap: 4px; align-items: flex-start; } .project { padding: 24px; } .project h3 { font-size: 20px; }
+    .edu-head { flex-direction: column; align-items: flex-start; gap: 4px; }
+    .edu-meta { flex-direction: row; align-items: center; gap: 10px; }
+    .project { padding: 24px; } .project h3 { font-size: 20px; }
     .file-modal-header { flex-direction: column; align-items: flex-start; gap: 10px; } .file-modal-name { font-size: 12px; }
     .hero-links { gap: 12px 16px; }
     .hero-links a { font-size: 12px; }
@@ -531,7 +544,6 @@
         
         <div class="hero-right">
           <div class="hero-card" id="heroCard">
-            <div class="label">Profile Snapshot</div>
             <div class="stat-row">
               <span class="k">Masters</span>
               <span class="v">MSc Theoretical CS</span>
@@ -585,24 +597,21 @@
         <div class="reveal">
           <div class="edu-list">
             <div class="edu-item">
-              <div class="edu-head">
-                <span class="edu-name">MSc in Theoretical Computer Science (ALMA)</span>
-                <span class="edu-date">2024 — 2026</span>
-              </div>
+              <div class="edu-name">MSc in Theoretical Computer Science (ALMA)</div>
+              <div class="edu-date">2024 — 2026</div>
               <div class="edu-school">National Technical University of Athens & National and Kapodistrian University of Athens</div>
+              <div class="edu-gpa">GPA: 9.9/10</div>
               <div class="edu-details">
                 <strong>Specialization:</strong> Algorithms, Logic, and Discrete Mathematics <br>
-                <strong>Selected Coursework:</strong> Advanced Algorithms, Advanced Data Structures, Graph Theory, Advanced Computational Complexity
+                <strong>Selected Coursework:</strong> Advanced courses in Algorithms, Data Structures, Graph Theory and Computational Complexity
               </div>
             </div>
             <div class="edu-item">
-              <div class="edu-head">
-                <span class="edu-name">BSc in Mathematics</span>
-                <span class="edu-date">2020 — 2024</span>
-              </div>
+              <div class="edu-name">BSc in Mathematics</div>
+              <div class="edu-date">2020 — 2024</div>
               <div class="edu-school">National and Kapodistrian University of Athens</div>
+              <div class="edu-gpa">GPA: 8.9/10</div>
               <div class="edu-details">
-                <strong>GPA:</strong> 8.9/10 <br>
                 <strong>Direction:</strong> Applied Mathematics <br>
                 <strong>Concentration:</strong> Computational Mathematics
               </div>
