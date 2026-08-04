@@ -107,8 +107,14 @@
     margin-top: 32px;
     display: flex;
     flex-wrap: wrap;
-    gap: 20px 24px;
+    gap: 16px 20px;
     align-items: center;
+  }
+  @media (min-width: 1024px) {
+    .hero-links {
+      flex-wrap: nowrap;
+      gap: 20px 24px;
+    }
   }
   .hero-links a {
     color: var(--ink-soft); text-decoration: none; font-size: 14px;
@@ -283,7 +289,7 @@
   .explorer-header .dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--line-strong); }
   .explorer-body { padding: 20px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; }
   .tree-folder { margin-bottom: 8px; }
-  .tree-folder-header { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 8px 10px; border-radius: 6px; transition: background 0.2s; }
+  .tree-folder-header { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 8px 10px; border-radius: 6px; transition: background 0.2s; background: none; border: none; color: inherit; font-family: inherit; font-size: inherit; text-align: left; width: 100%; }
   .tree-folder-header:hover { background: rgba(212,165,72,0.05); }
   .tree-folder-header .toggle-icon { font-size: 10px; color: var(--muted); transition: transform 0.2s; }
   .tree-folder.expanded > .tree-folder-header .toggle-icon { transform: rotate(90deg); }
@@ -291,7 +297,7 @@
   .tree-folder-header span { color: var(--ink); }
   .tree-children { margin-left: 24px; border-left: 1px dashed var(--line); padding-left: 12px; margin-top: 4px; display: none; }
   .tree-folder.expanded > .tree-children { display: block; }
-  .tree-file { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 6px; color: var(--ink-soft); text-decoration: none; transition: all 0.2s; cursor: pointer; }
+  .tree-file { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 6px; color: var(--ink-soft); text-decoration: none; transition: all 0.2s; cursor: pointer; background: none; border: none; font-family: inherit; font-size: inherit; text-align: left; width: 100%; }
   .tree-file:hover { background: rgba(212,165,72,0.05); color: var(--gold); }
   .tree-file .file-icon { font-size: 14px; }
 
@@ -538,7 +544,7 @@
           <div class="tag"><span class="live"></span> Athens, GR · Limassol, CY</div>
           <h1>Andreas<br><span class="last">Panayi</span></h1>
           <div class="role-line">
-            <span id="typed"></span><span class="cursor"></span>
+            <span id="typed" aria-live="polite" aria-atomic="true"></span><span class="cursor"></span>
           </div>
           <div class="hero-links">
             <a href="mailto:andreaspanayi8@gmail.com"><i class="fas fa-envelope"></i> Email</a>
@@ -1248,19 +1254,19 @@
   function renderNode(node, level) {
     let htmlStr = '';
     const path = node.path || '.';
-    
+
     if (node.dirs && node.dirs.length > 0) {
       node.dirs.forEach(dir => {
-        if (hiddenDirs.includes(dir.name)) return; 
-        
+        if (hiddenDirs.includes(dir.name)) return;
+
         const id = 'dir-' + Math.random().toString(36).substr(2, 9);
         htmlStr += `
           <div class="tree-folder" id="${id}">
-            <div class="tree-folder-header" onclick="toggleFolder('${id}')">
+            <button class="tree-folder-header" data-folder-id="${id}">
               <i class="fas fa-chevron-right toggle-icon"></i>
               <i class="fas fa-folder folder-icon"></i>
               <span>${dir.name}</span>
-            </div>
+            </button>
             <div class="tree-children">
               ${renderNode(dir, level + 1)}
             </div>
@@ -1268,18 +1274,18 @@
         `;
       });
     }
-    
+
     if (node.files && node.files.length > 0) {
       node.files.forEach(file => {
         if (hiddenFiles.includes(file) || file.startsWith('.') || hiddenExtensions.some(ext => file.endsWith(ext))) return;
-        
+
         const filePath = path === '.' ? file : `${path}/${file}`;
         const icon = getFileIcon(file);
         htmlStr += `
-          <div class="tree-file" onclick="openFileModal('${filePath}', '${file}')">
+          <button class="tree-file" data-file-path="${filePath}" data-file-name="${file}">
             <i class="fas ${icon} file-icon"></i>
             <span>${file}</span>
-          </div>
+          </button>
         `;
       });
     }
@@ -1297,15 +1303,17 @@
     fileModalOpen.href = filePath;
     fileModalBody.innerHTML = '<div class="modal-loader">Loading...</div>';
     fileModal.classList.add('active');
+    document.body.classList.add('no-scroll');
+    setTimeout(() => fileModalDownload.focus(), 100);
 
     if (fileName.endsWith('.pdf')) {
       fileModalBody.innerHTML = `<iframe src="${filePath}" frameborder="0" style="width:100%; height:100%;"></iframe>`;
     } else if (
-      fileName.endsWith('.py') || 
-      fileName.endsWith('.tex') || 
-      fileName.endsWith('.html') || 
-      fileName.endsWith('.ipynb') || 
-      fileName.endsWith('.csv') || 
+      fileName.endsWith('.py') ||
+      fileName.endsWith('.tex') ||
+      fileName.endsWith('.html') ||
+      fileName.endsWith('.ipynb') ||
+      fileName.endsWith('.csv') ||
       fileName.endsWith('.md')
     ) {
       fetch(filePath)
@@ -1325,6 +1333,7 @@
   window.closeFileModal = () => {
     fileModal.classList.remove('active');
     fileModalBody.innerHTML = '';
+    document.body.classList.remove('no-scroll');
   };
 
   fileModal.addEventListener('click', (e) => {
@@ -1344,10 +1353,28 @@
           folder.classList.add('expanded');
         }
       });
+      attachTreeListeners();
     } catch (error) {
       console.error('Failed to load manifest:', error);
       explorerBody.innerHTML = '<div style="padding: 20px; color: var(--rust);">Failed to load manifest.json. Ensure it is in the root directory.</div>';
     }
+  }
+
+  function attachTreeListeners() {
+    explorerBody.addEventListener('click', (e) => {
+      const folderBtn = e.target.closest('.tree-folder-header');
+      if (folderBtn) {
+        const folderId = folderBtn.getAttribute('data-folder-id');
+        toggleFolder(folderId);
+      }
+
+      const fileBtn = e.target.closest('.tree-file');
+      if (fileBtn) {
+        const filePath = fileBtn.getAttribute('data-file-path');
+        const fileName = fileBtn.getAttribute('data-file-name');
+        openFileModal(filePath, fileName);
+      }
+    });
   }
 
   function renderCmds(filter = '') {
@@ -1399,24 +1426,26 @@
   typeLoop();
   loadManifest();
 
+  const sections = Array.from(document.querySelectorAll('section[id]'));
+  const navLinks = Array.from(document.querySelectorAll('.nav-links a'));
+
   window.addEventListener('resize', () => {
     resize();
-    initNodes(); 
+    initNodes();
   });
 
   window.addEventListener('scroll', () => {
     const total = document.documentElement.scrollHeight - window.innerHeight;
     progressBar.style.width = (window.scrollY / total) * 100 + '%';
     nav.classList.toggle('scrolled', window.scrollY > 40);
-    
+
     let current = '';
-    document.querySelectorAll('section[id]').forEach(section => {
+    for (const section of sections) {
       if (window.scrollY >= section.offsetTop - 150) current = section.getAttribute('id');
-    });
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.classList.remove('active');
-      if (link.getAttribute('href') === '#' + current) link.classList.add('active');
-    });
+    }
+    for (const link of navLinks) {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    }
   });
 
   themeToggle.addEventListener('click', toggleThemeAction);
@@ -1450,7 +1479,17 @@
     });
   });
 
-  document.querySelectorAll('.pub-card').forEach(card => card.addEventListener('click', () => card.classList.toggle('expanded')));
+  document.querySelectorAll('.pub-card').forEach(card => {
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.addEventListener('click', () => card.classList.toggle('expanded'));
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        card.classList.toggle('expanded');
+      }
+    });
+  });
 
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
@@ -1463,18 +1502,33 @@
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
   openCmdBtn.addEventListener('click', () => {
-    cmdOverlay.classList.add('active'); cmdInput.value = ''; renderCmds(''); setTimeout(() => cmdInput.focus(), 50);
+    cmdOverlay.classList.add('active');
+    document.body.classList.add('no-scroll');
+    cmdInput.value = '';
+    renderCmds('');
+    setTimeout(() => cmdInput.focus(), 50);
   });
-  cmdOverlay.addEventListener('click', (e) => { if (e.target === cmdOverlay) cmdOverlay.classList.remove('active'); });
+  cmdOverlay.addEventListener('click', (e) => {
+    if (e.target === cmdOverlay) {
+      cmdOverlay.classList.remove('active');
+      document.body.classList.remove('no-scroll');
+    }
+  });
   cmdInput.addEventListener('input', (e) => renderCmds(e.target.value));
 
   document.addEventListener('keydown', (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
       e.preventDefault();
-      cmdOverlay.classList.contains('active') ? cmdOverlay.classList.remove('active') : openCmdBtn.click();
+      if (cmdOverlay.classList.contains('active')) {
+        cmdOverlay.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+      } else {
+        openCmdBtn.click();
+      }
     }
     if (e.key === 'Escape') {
       cmdOverlay.classList.remove('active');
+      document.body.classList.remove('no-scroll');
       closeFileModal();
       closeDrawer();
     }
