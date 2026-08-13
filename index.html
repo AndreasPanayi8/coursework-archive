@@ -260,6 +260,9 @@
   .project .stack{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0;}
   .project .stack span{ font-family:'IBM Plex Mono',monospace;font-size:10px; padding:4px 8px;background:rgba(212,165,72,0.08); color:var(--gold-soft);border-radius:4px;letter-spacing:0.05em; }
   .project p{font-size:14px;color:var(--ink-soft);line-height:1.6}
+  .project p + p{margin-top:12px}
+  .project p a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(212,165,72,0.4)}
+  .project p a:hover{border-bottom-color:var(--gold)}
   .project .status{ position:absolute;top:24px;right:24px; font-family:'IBM Plex Mono',monospace;font-size:10px; color:var(--teal);letter-spacing:0.1em; }
   .proj-category { margin-bottom: 40px; }
   .proj-category h3 { font-family: 'IBM Plex Mono',monospace; font-size:14px; color:var(--gold); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:20px; border-left:3px solid var(--gold); padding-left:12px; }
@@ -828,13 +831,14 @@
       </div>
 
       <div class="proj-category reveal">
-        <h3>// Completed Systems</h3>
+        <h3>// Completed Systems and Projects</h3>
         <div class="projects-grid">
           <div class="project">
             <div class="status">● Completed</div>
             <div class="num">/ 03</div>
             <h3>Marabu Blockchain Node</h3>
             <p>A complete blockchain node based on the Marabu protocol. Designed, deployed, tested, and debugged on a remote Vultr server using SSH and GitHub-based workflows.</p>
+            <a href="https://github.com/AndreasPanayi8/blockchain-foundations" target="_blank" class="pub-link">View Repository →</a>
             <div class="stack">
               <span>TypeScript</span><span>C++</span><span>Linux</span><span>SSH</span><span>GitHub</span>
             </div>
@@ -843,9 +847,20 @@
             <div class="status">● Completed</div>
             <div class="num">/ 04</div>
             <h3>Database Compression System</h3>
-            <p>Industry research bridging Big Data and ML. Built the full proof-of-concept system end-to-end — from theoretical formulation to deployment — with statistical and ML-driven compression.</p>
+            <p>Industry research bridging Big Data and ML. Built the full proof-of-concept system end-to-end — from theoretical formulation to deployment — with statistical and ML-driven compression. The system is now a product sold to companies across Cyprus and is also used in the United States for the MRI scans of US Veterans. The work resulted in a patent.</p>
             <div class="stack">
-              <span>C++20</span><span>MLPack</span><span>PostgreSQL</span><span>Docker</span><span>Python</span>
+              <span>C++20</span><span>MLPack</span><span>PostgreSQL</span><span>Docker</span><span>Python</span><span>Patent</span>
+            </div>
+          </div>
+          <div class="project">
+            <div class="status">● Completed</div>
+            <div class="num">/ 05</div>
+            <h3>Classical Machine Learning Models</h3>
+            <p>Trained and evaluated a broad range of classical models and techniques: regression (linear, polynomial, multivariable, logistic), cross-validation (k-fold CV, LOOCV), the bootstrap, shrinkage methods (Ridge, Lasso, Elastic Net), dimension reduction (PCA, PCR, PLS), polynomial methods (splines, GAMs), tree-based methods (decision trees, bagging, random forests, boosting, and Bayesian Additive Regression Trees), and support vector machines (SVMs, SVC, ROC curves). On the unsupervised side: market basket analysis and clustering (hierarchical, k-Means, k-Medoids, DBSCAN), along with recommendation systems (user-to-user, user-to-item, and item-to-item).</p>
+            <p>All scripts can be found in the archive on this page under the courses <em>Machine Learning</em> and <em>Algorithmic Data Science</em>, and follow the book <a href="https://www.statlearning.com" target="_blank">An Introduction to Statistical Learning</a>.</p>
+            <a href="#library" class="pub-link">Browse the Archive →</a>
+            <div class="stack">
+              <span>Python</span><span>R</span><span>Supervised ML</span><span>Unsupervised ML</span><span>Recommender Systems</span>
             </div>
           </div>
         </div>
@@ -856,18 +871,22 @@
         <div class="projects-grid">
           <div class="project">
             <div class="status">● Research</div>
-            <div class="num">/ 05</div>
+            <div class="num">/ 06</div>
             <h3>Skyline Reporting Engine (PQA)</h3>
             <p>Advanced data structures for computational geometry — Pareto-front / maxima reporting. Implements the Micro-Macro technique over van Emde Boas foundations, with C++ and Python implementations of amortized and worst-case Priority Queue Algorithms.</p>
+            <p>The open-course side of the coding can also be found in the coursework archive on this page.</p>
+            <a href="#library" class="pub-link">Browse the Archive →</a>
             <div class="stack">
               <span>C++</span><span>Python</span><span>Computational Geometry</span><span>vEB</span>
             </div>
           </div>
           <div class="project">
             <div class="status">● Academic</div>
-            <div class="num">/ 06</div>
+            <div class="num">/ 07</div>
             <h3>Algorithmic Presentations & Reports</h3>
             <p>A series of deep-dive academic presentations on cutting-edge topics: Lossy Kernelization, Goldberg-Rao Max Flow, Smoothed Analysis, Communication Complexity, and Exact Edge-Cover in Temporal Graphs.</p>
+            <p>These presentations, together with material from my teaching experience — including the introductory XeLaTeX notes — can also be found in the coursework archive on this page.</p>
+            <a href="#library" class="pub-link">Browse the Archive →</a>
             <div class="stack">
               <span>LaTeX</span><span>Complexity Theory</span><span>Graph Algorithms</span><span>Approximation</span>
             </div>
