@@ -44,14 +44,14 @@
     --bg:#0a0d14; --bg-2:#0e1219; --surface:#141925; --surface-2:#1a2030;
     --ink:#ece6d6; --ink-soft:#c8c2b1; --muted:#7c7866;
     --line:rgba(236,230,214,0.08); --line-strong:rgba(236,230,214,0.15);
-    --gold:#d4a548; --gold-soft:#e8c579; --teal:#6ba4b8; --rust:#c2613f;
+    --gold:#d4a548; --gold-soft:#e8c579; --teal:#6ba4b8; --rust:#c2613f; --green:#4db8a8; --green-soft:#5ecfbe;
     --shadow:0 30px 80px rgba(0,0,0,0.5);
   }
   [data-theme="light"]{
     --bg:#f4f1ea; --bg-2:#eae6dc; --surface:#ffffff; --surface-2:#f9f6ee;
     --ink:#1a1f2c; --ink-soft:#3c4252; --muted:#76705f;
     --line:rgba(26,31,44,0.1); --line-strong:rgba(26,31,44,0.2);
-    --gold:#a87a22; --gold-soft:#8a6418; --teal:#2c5868; --rust:#a14a2e;
+    --gold:#a87a22; --gold-soft:#8a6418; --teal:#2c5868; --rust:#a14a2e; --green:#1a8a7c; --green-soft:#2aaa9c;
     --shadow:0 30px 60px rgba(0,0,0,0.08);
   }
   *{box-sizing:border-box;margin:0;padding:0} html{scroll-behavior:smooth}
@@ -249,6 +249,7 @@
   .pub-status{ font-family:'IBM Plex Mono',monospace;font-size:10px;padding:6px 12px; border-radius:100px;letter-spacing:0.1em;text-transform:uppercase; height:fit-content; }
   .pub-status.published{background:rgba(107,164,184,0.1);color:var(--teal);border:1px solid rgba(107,164,184,0.3)}
   .pub-status.submitted{background:rgba(212,165,72,0.1);color:var(--gold);border:1px solid rgba(212,165,72,0.3)}
+  .pub-status.accepted{background:rgba(77,184,168,0.1);color:var(--green);border:1px solid rgba(77,184,168,0.3)}
 
   .projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
   .project{ padding:36px;border:1px solid var(--line);border-radius:16px; background:var(--surface);position:relative;overflow:hidden; transition:all .4s;cursor:pointer; }
@@ -776,13 +777,13 @@
         <div>
           <div class="pub-title">Listing Even Cycles Faster than the Submodular-Width Barrier <i class="fas fa-plus expand-icon"></i></div>
           <div class="pub-authors">Vasileios Nakos, Hung Q. Ngo, <span class="me">Andreas Panayi</span></div>
-          <div class="pub-venue">arXiv preprint · Submitted to SIGMOD/PODS</div>
+          <div class="pub-venue">arXiv preprint · Accepted to SIGMOD/PODS 2027</div>
           <div class="pub-abstract">
-            Introduces a novel unbalanced supersaturation approach to enumerate even cycles faster than permitted by the submodular-width barrier, yielding optimal output-sensitive algorithms for a broad class of graph queries. This connects graph algorithms with database-theoretic enumeration beyond the submodular-width barrier.
+            Introduces a novel unbalanced supersaturation approach to enumerate even cycles faster than permitted by the submodular-width barrier, yielding optimal output-sensitive algorithms for a broad class of graph queries. This connects graph algorithms with database-theoretic enumeration beyond the submodular-width barrier. To be presented at SIGMOD/PODS 2027, the flagship venue for data management.
             <a href="https://arxiv.org/abs/2605.30564" target="_blank" class="pub-link">View on arXiv →</a>
           </div>
         </div>
-        <div class="pub-status submitted">Submitted</div>
+        <div class="pub-status accepted">Accepted</div>
       </div>
 
       <div class="pub-card reveal">
