@@ -19,7 +19,8 @@ IGNORE_FILES = {
 
 # Glob patterns to skip. The ".*" rule hides every dotfile
 # (.DS_Store, .gitignore, .nojekyll, etc.) without listing each one.
-IGNORE_PATTERNS = [".*", "*.pyc", "*.tmp"]
+IGNORE_PATTERNS = [".*", "*.pyc", "*.tmp",
+                   "google*.html"]                # Search Console verification
 
 
 def skip(name):
