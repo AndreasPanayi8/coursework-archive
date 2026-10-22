@@ -246,11 +246,9 @@
   .pub-abstract{ max-height:0;overflow:hidden;transition:max-height .4s ease, margin .4s ease; font-size:14px;color:var(--ink-soft);line-height:1.6; }
   .pub-card.expanded .pub-abstract{max-height:400px;margin-top:14px;}
   .pub-link { display: inline-block; margin-top: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 2px; }
-  .pub-status{ font-family:'IBM Plex Mono',monospace;font-size:10px;padding:6px 12px; border-radius:100px;letter-spacing:0.1em;text-transform:uppercase; height:fit-content; }
-  .pub-status.published{background:rgba(107,164,184,0.1);color:var(--teal);border:1px solid rgba(107,164,184,0.3)}
-  .pub-status.submitted{background:rgba(212,165,72,0.1);color:var(--gold);border:1px solid rgba(212,165,72,0.3)}
-  .pub-status.accepted{background:rgba(77,184,168,0.1);color:var(--green);border:1px solid rgba(77,184,168,0.3)}
-  .pub-status.progress{background:transparent;color:var(--ink-soft);border:1px dashed var(--line-strong)}
+  .pub-status{ font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;padding:7px 14px; border-radius:100px;letter-spacing:0.1em;text-transform:uppercase; height:fit-content; white-space:nowrap; color:#fff; box-shadow:0 2px 10px rgba(0,0,0,0.25); }
+  .pub-status.accepted{background:#2e9a57;border:1px solid #3fbf6f}
+  .pub-status.writing{background:#5f636b;border:1px solid #80858e}
 
   .projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
   .project{ padding:36px;border:1px solid var(--line);border-radius:16px; background:var(--surface);position:relative;overflow:hidden; transition:all .4s;cursor:pointer; }
@@ -798,12 +796,12 @@
         <div>
           <div class="pub-title">Beyond the Unbalanced Supersaturation Conjecture: Lossy Supersaturation <i class="fas fa-plus expand-icon"></i></div>
           <div class="pub-authors">Vasileios Nakos, Hung Q. Ngo, <span class="me">Andreas Panayi</span></div>
-          <div class="pub-venue">Manuscript in writing</div>
+          <div class="pub-venue">Expected to be submitted to an A* computer science conference</div>
           <div class="pub-abstract">
             Extremal graph theory and fine-grained algorithms on even-length cycles. The paper is currently being written.
           </div>
         </div>
-        <div class="pub-status progress">In Writing</div>
+        <div class="pub-status writing">In Writing</div>
       </div>
 
       <div class="pub-card reveal">
@@ -816,7 +814,7 @@
             <a href="https://arxiv.org/abs/2605.30564" target="_blank" class="pub-link">View on arXiv →</a>
           </div>
         </div>
-        <div class="pub-status accepted">Accepted</div>
+        <div class="pub-status accepted">Accepted · PODS 2027</div>
       </div>
 
       <div class="pub-card reveal">
@@ -825,11 +823,11 @@
           <div class="pub-authors"><span class="me">Andreas Panayi</span></div>
           <div class="pub-venue">National & Kapodistrian University of Athens · Pergamos</div>
           <div class="pub-abstract">
-            Master's thesis exploring the frontier of fine-grained algorithm design for graph enumeration. Establishes new combinatorial bounds via unbalanced supersaturation, translating them into algorithmic speedups for even-cycle listing.
+            Examines the fundamental problem of listing even-length cycles in simple graphs and hypergraphs. It surveys the extremal graph theory landscape of even cycles alongside the algorithmic side of listing them. It proves a weaker but tractable version of the Unbalanced Supersaturation Conjecture and combines the existing DKS and WW frameworks to derive state-of-the-art running times for listing even cycles C<sub>2k</sub> for arbitrary k ≥ 3. The work then extends to hypergraphs, giving state-of-the-art algorithms for the anchored listing problem, and closes with open problems and directions for future research.
             <a href="https://pergamos.lib.uoa.gr/en/item/uoadl:5402752" target="_blank" class="pub-link">View on Pergamos →</a>
           </div>
         </div>
-        <div class="pub-status published">Thesis</div>
+        <div class="pub-status accepted">Accepted · Pergamos 2026</div>
       </div>
     </div>
   </section>
