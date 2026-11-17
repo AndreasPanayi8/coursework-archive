@@ -8,6 +8,7 @@ ROOT = os.getcwd()
 IGNORE_DIRS = {
     ".git", ".github", ".meta", "__pycache__",   # (originals)
     ".idea", ".vscode",                           # editor folders
+    "old_html",                                   # archived page versions (untracked, not published)
 }
 
 # Exact filenames to skip. Only real OS junk here now — everything else

@@ -218,6 +218,9 @@
   .research-row:last-child { border-bottom: none; }
   .r-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500; color: var(--ink); width: 30%; }
   .r-desc { font-size: 14px; color: var(--ink-soft); text-align: right; width: 65%; line-height: 1.5; }
+  .r-meta { display: block; margin-top: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 400; color: var(--teal); letter-spacing: 0.08em; text-transform: uppercase; }
+  .r-link { color: var(--gold); text-decoration: none; white-space: nowrap; }
+  .r-link:hover { text-decoration: underline; }
 
   .filters{display:flex;gap:12px;margin-bottom:40px;flex-wrap:wrap}
   .filter-btn{padding:8px 16px;border-radius:100px;border:1px solid var(--line-strong);background:transparent;color:var(--ink-soft);cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;transition:all .25s;}
@@ -277,7 +280,7 @@
   .proj-links{display:flex;flex-wrap:wrap;gap:8px 24px}
   @media (max-width:640px){ .project.featured .status{position:static;margin-bottom:10px} }
   .proj-category { margin-bottom: 40px; }
-  .proj-category h3 { font-family: 'IBM Plex Mono',monospace; font-size:14px; color:var(--gold); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:20px; border-left:3px solid var(--gold); padding-left:12px; }
+  .proj-category > h3 { font-family: 'IBM Plex Mono',monospace; font-size:14px; color:var(--gold); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:20px; border-left:3px solid var(--gold); padding-left:12px; }
 
   .skills-container { display: flex; flex-direction: column; gap: 24px; }
   .skill-row { display: flex; gap: 40px; align-items: flex-start; padding: 28px 0; border-bottom: 1px solid var(--line); }
@@ -407,9 +410,8 @@
     .pub-card{grid-template-columns:1fr;gap:20px} .pub-status{justify-self:start}
     section{padding:80px 5vw} .hero{padding-top:100px; min-height: auto; padding-bottom: 80px;}
     .hero h1{font-size:clamp(52px, 13vw, 120px);}
-    .theme-toggle{display:none}
     .research-row { flex-direction: column; align-items: flex-start; gap: 8px; }
-    .r-desc { text-align: left; width: 100%; }
+    .r-title, .r-desc { text-align: left; width: 100%; }
     .file-modal { height: 100vh; max-width: 100%; border-radius: 0; }
     .skill-row { flex-direction: column; gap: 16px; } .skill-cat-title { width: 100%; padding-top: 0; font-size: clamp(10px, 2vw, 13px); }
     .timeline { padding-left: 30px; } .tl-item::before { left: -30px; } .tl-item::after { left: -22px; width: 18px; }
@@ -504,7 +506,8 @@
     <a href="mailto:andreaspanayi8@gmail.com"><i class="fas fa-envelope"></i></a>
     <a href="https://github.com/andreaspanayi8" target="_blank"><i class="fab fa-github"></i></a>
     <a href="https://www.linkedin.com/in/antreas-panagi/" target="_blank"><i class="fab fa-linkedin"></i></a>
-    <a href="https://scholar.google.com/" target="_blank"><i class="fas fa-graduation-cap"></i></a>
+    <a href="https://scholar.google.com/citations?user=ZMQ-fdQAAAAJ&hl=en&oi=ao" target="_blank"><i class="fas fa-graduation-cap"></i></a>
+    <a href="https://orcid.org/0009-0007-2703-5130" target="_blank"><i class="fab fa-orcid"></i></a>
   </div>
 </aside>
 
@@ -591,7 +594,7 @@
       <h2 class="reveal">Integrating <span class="em">theoretical research</span> and <span class="em">systems engineering</span>.</h2>
       <div class="about-grid">
         <div class="about-portrait reveal">
-          <img src="Panayi Andreas.png" alt="Andreas Panayi" class="portrait-img" />
+          <img src="Panayi Andreas.webp" alt="Andreas Panayi" class="portrait-img" width="502" height="497" loading="lazy" decoding="async" />
         </div>
         <div class="about-text reveal">
           <p>I hold a BSc in Mathematics from the National and Kapodistrian University of Athens and an M.S. in Theoretical Computer Science (ALMA) jointly offered by the National and Kapodistrian University of Athens and the National Technical University of Athens.</p>
@@ -670,6 +673,7 @@
           <div class="tl-org">Algolysis Ltd · Full-time</div>
           <div class="tl-desc">
             <ul>
+              <li>Working on the Horizon Europe <a href="#projects" style="color:var(--gold);text-decoration:none">XR-Sense</a> project: distributed graphics state, real-time synchronisation of shared VR experiences, and distributed graphics operations.</li>
               <li>Conducting research and development in the design of novel algorithmic solutions.</li>
               <li>Conducting research on algorithms and distributed systems, with a focus on fault-tolerant and consistent data replication across networked devices.</li>
               <li>Developing and applying computer graphics and computer vision techniques.</li>
@@ -777,6 +781,14 @@
           <div class="r-desc">Protocols, distributed ledgers, and node architecture</div>
         </div>
       </div>
+
+      <div class="research-subheader reveal">// FUNDED RESEARCH PROJECTS</div>
+      <div class="research-list reveal">
+        <div class="research-row">
+          <div class="r-title">XR-Sense <span class="r-meta">Horizon Europe · 2026 — 2029</span></div>
+          <div class="r-desc">Distributed graphics state, real-time synchronisation of shared VR experiences, and distributed graphics operations. <a href="#projects" class="r-link">Project details →</a></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -835,16 +847,17 @@
         <div class="projects-grid">
           <div class="project featured">
             <div class="status">● Ongoing · 2026 — 2029</div>
-            <div class="num">/ 01 · Horizon Europe</div>
-            <h3>XR-Sense: Visuo-Haptic Media for Immersive XR</h3>
-            <p>A European research project funded by Horizon Europe (grant 101297892) that is building core technologies for next-generation virtual worlds. Instead of today's static or pre-computed XR content, it creates a joint visuo-haptic medium: visual and tactile information is processed, coded and rendered together in real time. The work covers intelligent processing of dynamic scenes, optimised coding and interactive rendering for adaptive streaming, and perceptual and social-science research for inclusive, ethical XR. It will be validated in three demonstrators: support for autonomous driving, remote surgery and collaborative broadcasting.</p>
-            <p>A consortium of 17 European partners, coordinated by the University of Patras. I work on the project through Algolysis Ltd.</p>
+            <div class="num">/ 01 · Horizon Europe · Research &amp; Engineering</div>
+            <h3>XR-Sense: Distributed State &amp; Synchronisation for Shared XR</h3>
+            <p>A Horizon Europe research and innovation project (grant 101297892) building core technologies for next-generation virtual worlds, in which visual and haptic information is processed, coded and rendered together in real time for collaborative, multi-user XR.</p>
+            <p>My work is on the distributed side of the system. It covers how the graphics state of a shared virtual scene is represented, replicated and kept consistent across networked devices. It also covers how the VR experience is synchronised between participants in real time, so that everyone sees and interacts with the same world, and how graphics operations are distributed and coordinated across nodes. The work combines research on consistency, replication and fault tolerance with the engineering of the running system.</p>
+            <p>A consortium of 17 European partners coordinated by the University of Patras; I work on the project as a Research Engineer at Algolysis Ltd.</p>
             <div class="proj-links">
               <a href="https://xr-sense.eu" target="_blank" rel="noopener" class="pub-link">Project Website →</a>
               <a href="https://cordis.europa.eu/project/id/101297892" target="_blank" rel="noopener" class="pub-link">CORDIS Record →</a>
             </div>
             <div class="stack">
-              <span>Extended Reality</span><span>Haptics</span><span>Computer Vision</span><span>Media Coding</span><span>Real-time Rendering</span><span>Horizon Europe</span>
+              <span>Distributed Systems</span><span>State Replication</span><span>Real-time Synchronisation</span><span>Distributed Graphics</span><span>Extended Reality</span><span>Horizon Europe</span>
             </div>
           </div>
           <div class="project">
@@ -859,8 +872,8 @@
           <div class="project">
             <div class="status">● Ongoing</div>
             <div class="num">/ 03</div>
-            <h3>MIT 6.824: Distributed Systems</h3>
-            <p>Completing the MIT 6.824 Distributed Systems course labs. Implementing core distributed systems concepts in Go, including Raft consensus, fault-tolerant key-value stores, and sharded databases.</p>
+            <h3>MIT 6.5840: Distributed Systems</h3>
+            <p>Completing the MIT 6.5840 (formerly 6.824) Distributed Systems course labs. Implementing core distributed systems concepts in Go, including Raft consensus, fault-tolerant key-value stores, and sharded databases.</p>
             <a href="https://pdos.csail.mit.edu/6.824/schedule.html" target="_blank" class="pub-link">View Course Schedule →</a>
             <div class="stack">
               <span>Go</span><span>Raft</span><span>Distributed Systems</span><span>Fault Tolerance</span>
@@ -1309,7 +1322,7 @@
     return 'fa-file';
   }
 
-  const hiddenFiles = ['index.html', 'manifest.json', 'og-image.png', 'README.md', 'LICENSE', 'Panayi Andreas.png'];
+  const hiddenFiles = ['index.html', 'manifest.json', 'og-image.png', 'README.md', 'LICENSE', 'Panayi Andreas.webp'];
   const hiddenDirs = ['old_html', 'build'];
   const hiddenExtensions = ['.aux', '.log', '.out', '.synctex.gz', '.toc'];
 

@@ -5,7 +5,7 @@
     "CV - Academic.pdf",
     "CV - Tech.pdf",
     "LICENSE",
-    "Panayi Andreas.png",
+    "Panayi Andreas.webp",
     "README.md",
     "gen_manifest.py",
     "index.html",
@@ -492,16 +492,6 @@
       "files": [
         "Presentation.pdf",
         "thesis.pdf"
-      ],
-      "dirs": []
-    },
-    {
-      "name": "old_html",
-      "path": "old_html",
-      "files": [
-        "index2.html",
-        "index3.html",
-        "og-image2.png"
       ],
       "dirs": []
     }
