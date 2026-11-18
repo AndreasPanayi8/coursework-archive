@@ -10,7 +10,8 @@
     "gen_manifest.py",
     "index.html",
     "manifest.json",
-    "og-image.png"
+    "og-image.png",
+    "sitemap.xml"
   ],
   "dirs": [
     {

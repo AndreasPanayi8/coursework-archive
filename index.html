@@ -9,6 +9,33 @@
 <meta name="description" content="Personal portfolio of Andreas Panayi: theoretical computer scientist and systems engineer specializing in algorithms, data structures, computational complexity, and systems engineering." />
 <meta name="author" content="Andreas Panayi" />
 <meta name="keywords" content="Andreas Panayi, Theoretical Computer Science, Algorithms, Data Structures, Graph Theory, Systems Engineer, C++, TypeScript, Python, NKUA, NTUA, ALMA" />
+<link rel="canonical" href="https://andreaspanayi8.github.io/coursework-archive/" />
+
+<!-- Structured data: identifies the person this page is about and links their profiles -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Andreas Panayi",
+  "alternateName": "Antreas Panagi",
+  "url": "https://andreaspanayi8.github.io/coursework-archive/",
+  "image": "https://andreaspanayi8.github.io/coursework-archive/Panayi%20Andreas.webp",
+  "email": "mailto:andreaspanayi8@gmail.com",
+  "jobTitle": "Research Engineer",
+  "worksFor": { "@type": "Organization", "name": "Algolysis Ltd" },
+  "alumniOf": [
+    { "@type": "CollegeOrUniversity", "name": "National and Kapodistrian University of Athens" },
+    { "@type": "CollegeOrUniversity", "name": "National Technical University of Athens" }
+  ],
+  "knowsAbout": ["Algorithms", "Fine-Grained Algorithms", "Parameterized Algorithms", "Data Structures", "Computational Geometry", "Graph Theory", "Computational Complexity", "Distributed Systems", "Extended Reality"],
+  "sameAs": [
+    "https://scholar.google.com/citations?user=ZMQ-fdQAAAAJ",
+    "https://orcid.org/0009-0007-2703-5130",
+    "https://github.com/AndreasPanayi8",
+    "https://www.linkedin.com/in/antreas-panagi/"
+  ]
+}
+</script>
 
 <!-- Favicon — "AP" monogram (inline SVG matching your theme) -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230a0d14'/%3E%3Crect x='6' y='6' width='88' height='88' rx='16' fill='none' stroke='%23d4a548' stroke-width='2' opacity='0.5'/%3E%3Ctext x='50' y='67' font-family='Georgia, serif' font-size='44' font-weight='700' font-style='italic' fill='%23d4a548' text-anchor='middle'%3EAP%3C/text%3E%3C/svg%3E" />
@@ -706,7 +733,7 @@
           <div class="tl-desc">
             <ul>
               <li>Conducted research in algorithms, artificial intelligence, and data science.</li>
-              <li>Designed and implemented advanced data structures for computational geometry — skyline (Pareto-front) reporting.</li>
+              <li>Designed and implemented advanced data structures for computational geometry — skyline (Pareto-front) reporting; a paper on this work is forthcoming.</li>
               <li>Authored an extended survey on models of computation and advanced data structures (vEB, external-memory).</li>
             </ul>
           </div>
@@ -787,6 +814,10 @@
         <div class="research-row">
           <div class="r-title">XR-Sense <span class="r-meta">Horizon Europe · 2026 — 2029</span></div>
           <div class="r-desc">Distributed graphics state, real-time synchronisation of shared VR experiences, and distributed graphics operations. <a href="#projects" class="r-link">Project details →</a></div>
+        </div>
+        <div class="research-row">
+          <div class="r-title">Skyline Reporting <span class="r-meta">Archimedes R.U. · Athena R.C. · 2025 — 2026</span></div>
+          <div class="r-desc">Data structures for skyline (Pareto-front) reporting in computational geometry, built on the Micro-Macro technique over van Emde Boas foundations. Paper forthcoming. <a href="#projects" class="r-link">Project details →</a></div>
         </div>
       </div>
     </div>
@@ -922,10 +953,11 @@
         <h3>// Research & Academic Projects</h3>
         <div class="projects-grid">
           <div class="project">
-            <div class="status">● Research</div>
-            <div class="num">/ 07</div>
+            <div class="status">● Research · Paper forthcoming</div>
+            <div class="num">/ 07 · Archimedes R.U. · Athena R.C.</div>
             <h3>Skyline Reporting Engine (PQA)</h3>
             <p>Advanced data structures for computational geometry — Pareto-front / maxima reporting. Implements the Micro-Macro technique over van Emde Boas foundations, with C++ and Python implementations of amortized and worst-case Priority Queue Algorithms.</p>
+            <p>Funded by the Archimedes Research Unit, Athena Research Center. A paper on this work will be published soon.</p>
             <p>The open-course side of the coding can also be found in the coursework archive on this page.</p>
             <a href="#library" class="pub-link">Browse the Archive →</a>
             <div class="stack">
@@ -1322,7 +1354,7 @@
     return 'fa-file';
   }
 
-  const hiddenFiles = ['index.html', 'manifest.json', 'og-image.png', 'README.md', 'LICENSE', 'Panayi Andreas.webp'];
+  const hiddenFiles = ['index.html', 'manifest.json', 'og-image.png', 'README.md', 'LICENSE', 'Panayi Andreas.webp', 'sitemap.xml'];
   const hiddenDirs = ['old_html', 'build'];
   const hiddenExtensions = ['.aux', '.log', '.out', '.synctex.gz', '.toc'];
 
