@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -1164,9 +1164,11 @@
       : `rgba(212, 165, 72, ${alpha})`;
   }
 
-  function setTheme(theme) {
+  // Light is the default. Only an explicit toggle is remembered ('theme-choice');
+  // the old 'theme' key was written on every page load, so it is ignored.
+  function setTheme(theme, remember) {
     html.setAttribute('data-theme', theme);
-    try { localStorage.setItem('theme', theme); } catch (e) {}
+    if (remember) { try { localStorage.setItem('theme-choice', theme); } catch (e) {} }
     themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
   }
 
@@ -1341,7 +1343,7 @@
     setTimeout(typeLoop, deleting ? 30 : 55);
   }
 
-  function toggleThemeAction() { setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); }
+  function toggleThemeAction() { setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark', true); }
 
   function getFileIcon(filename) {
     if (filename.endsWith('.pdf')) return 'fa-file-pdf';
@@ -1516,6 +1518,7 @@
 
   function executeCmd(cmd) {
     cmdOverlay.classList.remove('active');
+    document.body.classList.remove('no-scroll');
     if (cmd.target) {
       setTimeout(() => document.querySelector(cmd.target).scrollIntoView({ behavior: 'smooth' }), 100);
     } else if (cmd.action) {
@@ -1523,8 +1526,8 @@
     }
   }
 
-  let savedTheme = 'dark';
-  try { savedTheme = localStorage.getItem('theme') || 'dark'; } catch (e) {}
+  let savedTheme = 'light';
+  try { savedTheme = localStorage.getItem('theme-choice') || 'light'; } catch (e) {}
   setTheme(savedTheme);
 
   resize();
